@@ -1,0 +1,157 @@
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(26, 26, 26, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.subcategories-container {
+  display: grid;
+  gap: 1.5rem;
+  padding: 0.5rem;
+  
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+}
+
+.mobile-filter-button {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  z-index: 1050;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scroll-target {
+  scroll-margin-top: 10px;
+}
+
+.custom-scroll-target {
+  scroll-margin-top: 65px;
+}
+
+[ref*="category-container"] {
+  padding-top: 1rem;
+  margin-top: -1rem;
+}
+
+
+@media (min-width: 768px) {
+  .products-column-scrollable {
+    height: auto;
+    overflow-y: visible;
+    padding-right: 10px;
+    position: sticky;
+    top: 70px;
+  }
+
+  .sticky-filters-container {
+    position: sticky;
+    top: 100px;
+  }
+
+  .products-column-content {
+    padding-bottom: 20px;
+  }
+}
+
+
+@media (max-width: 767px) {
+  .products-column-scrollable {
+    overflow-y: visible;
+    height: auto;
+  }
+  
+  .products-column-content {
+    padding-bottom: 10px;
+  }
+}
+
+
+.category-section {
+  scroll-margin-top: 120px;
+}
+
+
+.filters-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 85%;
+  max-width: 350px;
+  background-color: var(--bg-color);
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  z-index: 1060;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  overflow-y: auto;
+  padding: 20px;
+  
+  &.show {
+    transform: translateX(0);
+  }
+  
+  .filters-sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+    
+    h4 {
+      margin: 0;
+      font-weight: 600;
+    }
+    
+    .close-button {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--text-secondary);
+      
+      &:hover {
+        color: var(--font-color);
+      }
+    }
+  }
+  
+  .filters-sidebar-body {
+    padding-bottom: 80px;
+  }
+  
+
+  @media (min-width: 768px) {
+    width: 320px;
+    
+    .filters-sidebar-body {
+      padding-bottom: 40px;
+    }
+  }
+}
+
+
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1050;
+}

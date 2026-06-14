@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  postgres-e2e:
+    image: postgres:15-alpine
+    container_name: graf-postgres-e2e
+    environment:
+      POSTGRES_USER: test_user
+      POSTGRES_PASSWORD: test_password
+      POSTGRES_DB: graf_test_e2e
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_e2e_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U test_user -d graf_test_e2e"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_e2e_data:

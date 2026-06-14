@@ -1,0 +1,12 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "tsconfig": "tsconfig.docs.json",
+  "entryPoints": ["src/**/*.ts"],
+  "entryPointStrategy": "resolve",
+  "out": "docs",
+  "exclude": ["**/*.spec.ts", "**/*.e2e-spec.ts", "test/**/*"],
+  "excludeExternals": true,
+  "excludePrivate": true,
+  "excludeInternal": true,
+  "readme": "README.md"
+}

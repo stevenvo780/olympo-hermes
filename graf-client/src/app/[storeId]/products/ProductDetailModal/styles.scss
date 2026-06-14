@@ -1,0 +1,374 @@
+.product-detail-row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.product-images-column,
+.product-info-column {
+  @media (min-width: 768px) {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+}
+
+.card-selected-variant-products {
+  background-color: var(--bg-color) !important;
+}
+
+.card-variation {
+  background-color: var(--bg-color) !important;
+}
+
+.product-images-swiper {
+  width: 95%;
+  position: relative;
+  height: 300px;
+  margin-left: 10px;
+
+  @media (min-width: 768px) {
+    width: 100%;
+    height: 300px;
+  }
+
+  .swiper {
+    width: 100%;
+    height: 100%;
+  }
+
+  .swiper-slide {
+    background: var(--bg-color);
+  }
+
+  .swiper-button-prev,
+  .swiper-button-next {
+    color: var(--primary-color);
+  }
+
+  .swiper-pagination-bullet-active {
+    background: var(--primary-color);
+  }
+}
+
+@media (min-width: 992px) {
+  .product-images-swiper .swiper-slide {
+    min-height: 250px;
+  }
+
+  .product-detail-modal .modal-lg {
+    max-width: 900px;
+  }
+}
+
+.product-price-container {
+  margin-bottom: 1rem;
+  
+  .original-price {
+    margin-bottom: 0.2rem;
+  }
+  
+  .discounted-price {
+    color: var(--primary-color) !important;
+    font-size: 1.8rem;
+  }
+}
+
+.badge-info {
+  background-color: var(--info-color) !important;
+  color: var(--info-text) !important;
+}
+
+.badge-discount {
+  background-color: var(--danger-color) !important;
+  color: var(--danger-text) !important;
+}
+
+.badge-measure {
+  background-color: var(--primary-color) !important;
+  color: var(--primary-text) !important;
+}
+
+.product-info-column .card-body p {
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// Modal Large styles - fullscreen-like layout (except navbar)
+.product-detail-modal.modal-large {
+  padding: 0 1rem !important; // Add horizontal padding
+  top: 60px !important; // Push below navbar
+  
+  @media (min-width: 992px) {
+    padding: 0 2rem !important; // Larger padding on desktop
+  }
+  
+  @media (max-width: 767px) {
+    top: 50px !important;
+    padding: 0 0.5rem !important;
+  }
+  
+  .modal-dialog {
+    margin: 0 auto; // Center the modal
+    max-width: 1400px; // Maximum width
+    width: 100%;
+    height: calc(100vh - 60px) !important; // Subtract navbar height
+    max-height: calc(100vh - 60px) !important;
+    min-height: calc(100vh - 60px) !important;
+    
+    @media (max-width: 767px) {
+      height: calc(100vh - 50px) !important;
+      max-height: calc(100vh - 50px) !important;
+      min-height: calc(100vh - 50px) !important;
+    }
+  }
+  
+  .modal-content {
+    height: 100%;
+    border: none;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  .modal-header {
+    flex-shrink: 0;
+    border-radius: 8px 8px 0 0;
+    background: var(--bg-color);
+    border-bottom: 1px solid var(--border-color, #dee2e6);
+    padding: 0.75rem 1.5rem;
+    
+    .modal-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      padding-right: 2rem; // Space for close button
+    }
+    
+    .btn-close {
+      position: relative;
+      z-index: 10;
+    }
+  }
+  
+  .modal-body {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0;
+  }
+  
+  .modal-footer {
+    flex-shrink: 0;
+    border-radius: 0;
+    background: var(--bg-color);
+    border-top: 1px solid var(--border-color, #dee2e6);
+    padding: 0.5rem 1.5rem;
+  }
+}
+
+.modal-large-layout {
+  padding: 0;
+  
+  .large-modal-gallery {
+    width: 100%;
+    position: relative;
+    background: var(--bg-color, #f8f9fa);
+    overflow: hidden;
+    
+    .large-modal-swiper {
+      width: 100%;
+      height: 50vh;
+      min-height: 350px;
+      max-height: 550px;
+      
+      @media (min-width: 768px) {
+        height: 45vh;
+        min-height: 400px;
+        max-height: 600px;
+      }
+      
+      @media (min-width: 1200px) {
+        height: 50vh;
+        min-height: 450px;
+        max-height: 700px;
+      }
+      
+      .swiper-slide {
+        background: var(--bg-color, #f8f9fa);
+      }
+      
+      .swiper-button-prev,
+      .swiper-button-next {
+        color: var(--primary-color);
+        background: rgba(255, 255, 255, 0.9);
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        
+        &::after {
+          font-size: 20px;
+        }
+      }
+      
+      .swiper-pagination-bullet-active {
+        background: var(--primary-color);
+      }
+    }
+  }
+  
+  .large-modal-content {
+    background: var(--bg-color);
+    padding: 1.5rem;
+    
+    @media (min-width: 992px) {
+      padding: 2rem 3rem;
+    }
+  }
+  
+  .large-description {
+    font-size: 1rem;
+    line-height: 1.7;
+    max-height: none !important;
+    overflow: visible !important;
+    
+    @media (min-width: 992px) {
+      font-size: 1.1rem;
+    }
+  }
+  
+  // Recommended products section in modal large
+  .large-modal-recommendations {
+    padding: 1.5rem;
+    border-top: 1px solid var(--border-color, #dee2e6);
+    background: var(--bg-color);
+    
+    @media (min-width: 992px) {
+      padding: 2rem 3rem;
+    }
+    
+    .card {
+      background: transparent;
+      
+      .card-body {
+        padding: 0;
+      }
+    }
+  }
+}
+
+// HTML content styles within description
+.product-description {
+  overflow: hidden;
+  border-radius: 4px;
+  
+  h1, h2, h3, h4, h5, h6 {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  ul, ol {
+    padding-left: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 0.5rem;
+    
+    th, td {
+      border: 1px solid var(--border-color, #dee2e6);
+      padding: 0.25rem 0.5rem;
+      font-size: 0.8rem;
+    }
+  }
+  
+  // Ensure child elements don't overflow
+  > * {
+    max-width: 100%;
+    overflow-wrap: break-word;
+  }
+  
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+// Standard modal - ensure content stays within bounds
+.product-detail-modal:not(.modal-large) {
+  .product-info-column {
+    overflow: hidden;
+    
+    .product-description {
+      background: transparent;
+    }
+  }
+}
+
+// Quantity controls - improved styling for +/- buttons
+.quantity-control-card {
+  border-radius: 12px !important;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--border-color, #dee2e6) !important;
+  
+  .card-body {
+    padding: 0 !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .quantity-btn {
+    border-radius: 0 !important;
+    padding: 0.75rem 1.25rem !important;
+    min-width: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      opacity: 0.9;
+    }
+    
+    &:first-of-type {
+      border-radius: 12px 0 0 12px !important;
+    }
+    
+    &:last-of-type {
+      border-radius: 0 12px 12px 0 !important;
+    }
+  }
+  
+  .quantity-display {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    min-width: 60px;
+  }
+}
+
+// Price section card styling
+.price-action-card {
+  border-radius: 16px !important;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: none !important;
+  
+  .card-body {
+    padding: 1.25rem !important;
+  }
+  
+  .btn-add-cart {
+    border-radius: 12px !important;
+    padding: 0.875rem 1.5rem !important;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+}

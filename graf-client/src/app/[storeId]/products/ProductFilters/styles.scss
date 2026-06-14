@@ -1,0 +1,154 @@
+.product-filters {
+  .custom-input {
+    background-color: var(--bg-color);
+    color: var(--font-color);
+    border-color: var(--border-color);
+    
+    &:focus {
+      background-color: var(--bg-color);
+      color: var(--font-color);
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--primary-color) 25%, transparent);
+    }
+    
+    &.has-value {
+      background-color: var(--bg-color) !important;
+      border-color: var(--primary-color) !important;
+    }
+  }
+  
+  .input-group {
+    position: relative;
+    
+    .clear-btn {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      padding: 0;
+      font-size: 1.5rem;
+      line-height: 1;
+      color: var(--text-secondary);
+      z-index: 5;
+    }
+  }
+  
+  .discount-options {
+    display: flex;
+  }
+  
+  .custom-card {
+    background-color: var(--card-color);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+  }
+  
+  .filter-button {
+    transition: transform 0.15s ease, background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+    padding: 0.6rem 0.5rem;
+    position: relative;
+    overflow: hidden;
+    min-height: 45px;
+    font-weight: 500;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.05);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+    
+    &:active::after {
+      opacity: 1;
+    }
+    
+    &.active {
+      background-color: var(--primary-color) !important;
+      border-color: var(--primary-border) !important;
+      color: var(--primary-text) !important;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+      transform: translateY(1px);
+      
+      &::before {
+        content: '✓ ';
+        display: inline-block;
+        margin-right: 4px;
+      }
+    }
+    
+    &:not(.active) {
+      background-color: transparent;
+      border-color: var(--border-color);
+      color: var(--font-color);
+      
+      &:hover {
+        background-color: var(--primary-hover);
+        border-color: var(--primary-border);
+        color: var(--primary-text);
+      }
+      
+      &:active {
+        transform: translateY(1px);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      margin-bottom: 8px;
+      
+      &:active {
+        transform: scale(0.98);
+      }
+      
+      &.active {
+        transform: translateY(0);
+      }
+    }
+  }
+  
+  .reset-filters-btn {
+    font-size: 0.85rem;
+    padding: 0.25rem 0.5rem;
+    
+    &:hover {
+      background-color: var(--danger-color);
+      color: var(--primary-text);
+    }
+    
+    @media (max-width: 768px) {
+      padding: 0.4rem 0.7rem;
+      min-height: 38px;
+    }
+  }
+  
+
+  .form-control,
+  .btn,
+  .card {
+    color: var(--font-color);
+    background-color: var(--bg-color);
+    border-color: var(--border-color);
+    
+    &:focus {
+      color: var(--font-color);
+      background-color: var(--bg-color);
+    }
+  }
+  
+  .card {
+    background-color: var(--card-color);
+  }
+  
+
+  .filters-sidebar & {
+    width: 100%;
+    
+    .form-control {
+      width: 100%;
+    }
+  }
+}

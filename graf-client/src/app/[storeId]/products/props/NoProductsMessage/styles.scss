@@ -1,0 +1,14 @@
+.card-no--products {
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  background-color: var(--card-color);
+  border: 1px solid var(--card-border);
+  max-width: 600px;
+  margin: 0 auto;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+    transform: translateY(-5px);
+  }
+}

@@ -1,0 +1,32 @@
+.navbar {
+  color: 'white' !important;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  gap: 0.5rem;
+}
+.userIcon {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 1.3rem;
+  line-height: 1;
+  margin-top: 0.5rem;
+  margin-left: 0.5rem;
+  color: var(--white-color) !important;
+}
+.navItem {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.navItemText{
+  color: var(--white-color) !important;
+}

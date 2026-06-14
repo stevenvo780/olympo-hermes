@@ -1,0 +1,31 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 100%;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overflow-y: auto;
+}
+
+* {
+  touch-action: manipulation;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+:root {
+  --vh: 1vh;
+}
+
+.header-navbar,
+.compact-category-slider,
+.floating-buttons-container {
+  will-change: transform;
+}

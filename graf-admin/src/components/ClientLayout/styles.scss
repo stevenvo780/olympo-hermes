@@ -1,0 +1,96 @@
+$sidebar-width: 240px;
+$sidebar-collapsed-width: 70px;
+$mobile-breakpoint: 992px;
+$mobile-breakpoint-max: 991px;
+
+.appLayout {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  /* overflow-x removido: rompía position:fixed de la navbar en ciertos navegadores.
+     El overflow-x:hidden se aplica ahora en .mainContent */
+}
+
+.mainContent {
+  padding: 20px;
+  margin-top: var(--header-offset, var(--navbar-height, 60px));
+  transition: margin-left 0.3s ease, width 0.3s ease;
+  position: relative;
+  min-height: calc(100vh - var(--header-offset, var(--navbar-height, 60px)));
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.mainContentExpanded {
+  @media (min-width: $mobile-breakpoint) {
+    margin-left: $sidebar-width;
+    width: calc(100% - #{$sidebar-width});
+    max-width: calc(100% - #{$sidebar-width});
+  }
+}
+
+.mainContentCollapsed {
+  @media (min-width: $mobile-breakpoint) {
+    margin-left: $sidebar-collapsed-width;
+    width: calc(100% - #{$sidebar-collapsed-width});
+    max-width: calc(100% - #{$sidebar-collapsed-width});
+  }
+}
+
+.mainContentMobile {
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%;
+  max-width: 100%;
+  padding: 15px;
+  box-sizing: border-box;
+  
+  > * {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: $mobile-breakpoint-max) {
+  .mainContentMobile {
+    .container, 
+    .container-fluid, 
+    .container-sm, 
+    .container-md, 
+    .container-lg, 
+    .container-xl, 
+    .container-xxl {
+      width: 100% !important;
+      max-width: 100% !important;
+      padding-left: 15px !important;
+      padding-right: 0px !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
+    
+    .row {
+      margin-left: -10px !important;
+      margin-right: -10px !important;
+      width: calc(100% + 20px) !important;
+    }
+    
+    [class*="col-"] {
+      padding-left: 10px !important;
+      padding-right: 10px !important;
+    }
+  }
+}
+
+.appFooter {
+  margin-top: auto;
+  padding: 20px 0;
+  width: 100%;
+  text-align: center;
+}

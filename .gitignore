@@ -29,9 +29,6 @@ PLAN_DE_TRABAJO
 # Archivos de build temporales en logs
 logs_detallados/build/
 logs_detallados/dist/
-graf-admin
-graf-backend
-graf-client
 backups
 node_modules
 .playwright-mcp
@@ -40,7 +37,6 @@ node_modules
 .env.development
 .env.production
 .env.test
-webhook-reports-totalpedidos
 *.xlsx
 
 # --- olympo push safety (secrets & build artifacts) ---

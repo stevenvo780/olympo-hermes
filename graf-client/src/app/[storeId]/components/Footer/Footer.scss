@@ -1,0 +1,185 @@
+.footer {
+  background-color: var(--bg-color);
+  padding: 40px 0 20px;
+  color: var(--font-color);
+  margin-top: 20px;
+  border-top: 1px solid var(--border-color);
+}
+
+.section-title {
+  border-bottom: 2px solid var(--primary-color);
+  padding-bottom: 8px;
+  margin-bottom: 15px;
+  font-weight: 600;
+  color: var(--font-color);
+}
+
+.link {
+  color: var(--link-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+  
+  &:hover {
+    color: var(--link-hover);
+  }
+}
+
+.social-link {
+  @extend .link;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.contact-text {
+  color: var(--font-color);
+}
+
+.icon {
+  margin-right: 10px;
+  font-size: 18px;
+  color: var(--font-color);
+}
+
+.logo {
+  max-height: 60px;
+  margin-bottom: 15px;
+}
+
+.mobile-accordion-button {
+  background: none !important;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0;
+  color: var(--text-color);
+  font-weight: 600;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 15px;
+  padding-bottom: 8px;
+}
+
+.accordion-collapse {
+  background-color: var(--bg-color);
+}
+
+.accordion-body {
+  background-color: var(--bg-color);
+  padding: 0;
+}
+
+.accordion-collapse div {
+  background-color: var(--bg-color);
+}
+
+.accordion-icon {
+  transition: transform 0.3s ease;
+}
+
+.border-top {
+  border-top: 1px solid var(--border-color);
+}
+
+.powered-by-container {
+  margin-bottom: 0.5rem;
+}
+
+.graf-text {
+  color: var(--font-color);
+  font-weight: 500;
+}
+
+.accordion, 
+.accordion-item,
+.accordion-header,
+.accordion-button,
+.accordion-collapse, 
+.accordion-body {
+  background-color: var(--bg-color) !important;
+  color: var(--font-color) !important;
+}
+
+.accordion-collapse * {
+  background-color: var(--bg-color) !important;
+}
+
+.accordion-body ul,
+.accordion-body li,
+.accordion-body a:not(.btn),
+.accordion-body p,
+.accordion-body div {
+  background-color: var(--bg-color) !important;
+}
+
+.accordion-body ul {
+  margin-bottom: 0;
+}
+
+.accordion-body li:last-child {
+  margin-bottom: 0 !important;
+}
+
+.card-body {
+  padding: 10px 0 !important;
+  background-color: var(--bg-color) !important;
+}
+
+.accordion .card {
+  margin-bottom: 15px;
+}
+
+.card {
+  border: none !important;
+  background-color: var(--bg-color) !important;
+}
+
+.list-unstyled li {
+  background-color: var(--bg-color) !important;
+}
+
+.mb-3:last-child {
+  margin-bottom: 0 !important;
+}
+
+p.small:last-child {
+  margin-bottom: 0;
+}
+
+.accordion.flush .accordion-item,
+.accordion.flush .accordion-body {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.accordion.flush .card {
+  margin-bottom: 0 !important;
+}
+
+.accordion.flush .card-body {
+  padding: 0 !important;
+}
+
+.accordion.flush .card-header {
+  background-color: var(--bg-color) !important;
+  border-bottom: none !important;
+}
+
+.accordion-body .list-unstyled li {
+  margin: 0 !important;
+  padding: 5px 0 !important;
+  background-color: var(--bg-color) !important;
+}
+
+li.mb-1,
+li.mb-2 {
+  margin-bottom: 0 !important;
+}
+
+.footer ul.list-unstyled li {
+  margin: 0 !important;
+  padding: 5px 0 !important;
+  background-color: var(--bg-color) !important;
+}

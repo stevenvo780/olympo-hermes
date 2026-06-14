@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  backend-test:
+    build:
+      context: .
+      target: test
+    environment:
+      - NODE_ENV=test
+      - ENCRYPTION_KEY=12345678901234567890123456789012
+      - DB_HOST=localhost
+      - DB_PORT=5432
+      - DB_USERNAME=test
+      - DB_PASSWORD=test
+      - DB_NAME=test_db
+      - DB_SYNCHRONIZE=true
+      - FIREBASE_PROJECT_ID=test-project
+      - FIREBASE_CLIENT_EMAIL=test@test.com
+      - FIREBASE_PRIVATE_KEY=test-key
+      - WOMPI_PRIVATE_KEY=test-wompi-key
+      - WOMPI_PUBLIC_KEY=test-wompi-public-key
+      - WOMPI_EVENTS_SECRET=test-events-secret
+      - WOMPI_STORE_SKU=TEST_STORE_SKU
+    volumes:
+      - ./coverage:/app/coverage
+    command: npm run test:cov
+
+  backend-test-watch:
+    build:
+      context: .
+      target: test
+    environment:
+      - NODE_ENV=test
+      - ENCRYPTION_KEY=12345678901234567890123456789012
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm run test:watch
+    stdin_open: true
+    tty: true

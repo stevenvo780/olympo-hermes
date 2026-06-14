@@ -1,0 +1,241 @@
+{
+  "publicRoutes": [
+    {
+      "path": "/login",
+      "name": "Login",
+      "icon": "CgLogIn",
+      "viewHeader": false,
+      "hidden": false,
+      "seo": {
+        "title": "Iniciar Sesión | Graf Admin",
+        "description": "Accede al panel de administración de Graf.",
+        "keywords": "login, admin, acceso",
+        "type": "website",
+        "robots": "noindex, nofollow"
+      }
+    },
+    {
+      "path": "/register",
+      "name": "Registrarse",
+      "icon": "CgUserAdd",
+      "viewHeader": false,
+      "hidden": false,
+      "seo": {
+        "title": "Registrarse | Graf Admin",
+        "description": "Crea tu cuenta para administrar Graf.",
+        "keywords": "registrarse, admin, cuenta",
+        "type": "website"
+      }
+    },
+    {
+      "path": "/pricing",
+      "name": "Planes",
+      "icon": "CgTag",
+      "viewHeader": true,
+      "hidden": false,
+      "seo": {
+        "title": "Planes y Precios | Graf",
+        "description": "Conoce nuestros planes y precios para tu tienda online.",
+        "keywords": "planes, precios, ecommerce, tienda online",
+        "type": "website"
+      }
+    },
+    {
+      "path": "/privacyPolicies",
+      "name": "Policítica de Privacidad",
+      "icon": "CgFileDocument",
+      "viewHeader": false,
+      "hidden": false,
+      "seo": {
+        "title": "Política de Privacidad | Graf Admin",
+        "description": "Consulta nuestro aviso de privacidad y el manejo de datos.",
+        "keywords": "privacidad, aviso, admin",
+        "type": "article"
+      }
+    }
+  ],
+  "roleRoutes": {
+    "business_owner": [
+      {
+        "path": "/[storeId]/orders",
+        "name": "Órdenes",
+        "icon": "CgNotes",
+        "owner": false,
+        "viewHeader": true,
+        "hidden": false,
+        "seo": {
+          "title": "Gestión de Órdenes | Graf Admin",
+          "description": "Gestiona y actualiza los pedidos de tus clientes.",
+          "keywords": "órdenes, pedidos, comercio, admin, gestión",
+          "type": "dashboard"
+        }
+      },
+      {
+        "path": "/[storeId]/distribucion",
+        "name": "Distribución",
+        "icon": "CgList",
+        "owner": false,
+        "viewHeader": true,
+        "hidden": false,
+        "seo": {
+          "title": "Distribución",
+          "description": "Cola de pedidos y enrutamiento",
+          "keywords": "distribucion",
+          "type": "dashboard"
+        }
+      },
+      {
+        "path": "/[storeId]/customers",
+        "name": "Clientes",
+        "icon": "CgUser",
+        "owner": false,
+        "viewHeader": true,
+        "hidden": false,
+        "seo": {
+          "title": "Clientes | Graf Admin",
+          "description": "Gestiona los clientes de tu tienda y sus datos de contacto.",
+          "keywords": "clientes, usuarios, gestión, tienda, admin",
+          "type": "dashboard"
+        }
+      },
+      {
+        "path": "/[storeId]/products",
+        "name": "Productos",
+        "icon": "CgShoppingBag",
+        "owner": false,
+        "viewHeader": true,
+        "hidden": false,
+        "seo": {
+          "title": "Productos | Graf Admin",
+          "description": "Gestione los productos del comercio.",
+          "keywords": "productos, comercio, admin",
+          "type": "dashboard"
+        }
+      },
+      {
+        "path": "/[storeId]/categories",
+        "name": "Categorías",
+        "icon": "CgFolder",
+        "owner": false,
+        "viewHeader": true,
+        "hidden": false,
+        "seo": {
+          "title": "Categorías | Graf Admin",
+          "description": "Gestiona las categorías de productos de tu comercio",
+          "keywords": "categorías, productos, comercio, admin",
+          "type": "dashboard"
+        }
+      },
+      {
+        "path": "/[storeId]/discounts",
+        "name": "Descuentos",
+        "icon": "CgTag",
+        "owner": false,
+        "viewHeader": true,
+        "hidden": false,
+        "seo": {
+          "title": "Descuentos | Graf Admin",
+          "description": "Gestiona los descuentos de tu comercio",
+          "keywords": "descuentos, ofertas, comercio, admin",
+          "type": "dashboard"
+        }
+      },
+      {
+        "path": "/[storeId]/taxes",
+        "name": "Impuestos",
+        "icon": "CgDollar",
+        "owner": false,
+        "viewHeader": true,
+        "hidden": false,
+        "seo": {
+          "title": "Impuestos | Graf Admin",
+          "description": "Gestiona los impuestos de tu comercio",
+          "keywords": "impuestos, tasas, comercio, admin",
+          "type": "dashboard"
+        }
+      },
+      {
+        "path": "/[storeId]/delivery",
+        "name": "Zonas de Entrega",
+        "icon": "CgPin",
+        "owner": false,
+        "viewHeader": true,
+        "hidden": false,
+        "seo": {
+          "title": "Zonas de Entrega | Graf Admin",
+          "description": "Gestiona las zonas de entrega de tu comercio",
+          "keywords": "delivery, zonas, entregas, comercio, admin",
+          "type": "dashboard"
+        }
+      },
+      {
+        "path": "/[storeId]/team",
+        "name": "Equipo",
+        "icon": "CgUserList",
+        "owner": true,
+        "viewHeader": true,
+        "hidden": false,
+        "seo": {
+          "title": "Equipo | Graf Admin",
+          "description": "Gestiona los miembros del equipo de tu tienda",
+          "keywords": "equipo, colaboradores, tienda, admin, gestión",
+          "type": "dashboard"
+        }
+      },
+      {
+        "path": "/[storeId]/config",
+        "name": "Configuración",
+        "icon": "CgOptions",
+        "owner": true,
+        "viewHeader": true,
+        "hidden": false,
+        "seo": {
+          "title": "Configuración | Graf Admin",
+          "description": "Edita la configuración de tu tienda.",
+          "keywords": "tienda, configuración, admin",
+          "type": "dashboard"
+        }
+      },
+      {
+        "path": "/",
+        "name": "Mis tiendas",
+        "icon": "CgShop",
+        "viewHeader": true,
+        "hidden": false,
+        "seo": {
+          "title": "Graf Admin | Inicio",
+          "description": "Panel de administración de Graf.",
+          "keywords": "admin, Graf, panel",
+          "type": "website"
+        }
+      },
+      {
+        "path": "/profile",
+        "name": "Editar Usuario",
+        "owner": false,
+        "viewHeader": false,
+        "hidden": true,
+        "seo": {
+          "title": "Editar Usuario | Graf",
+          "description": "Edita tu cuenta y perfil en Graf.",
+          "keywords": "editar usuario, perfil, cuenta",
+          "type": "dashboard"
+        }
+      },
+      {
+        "path": "/[storeId]/about",
+        "name": "Información",
+        "icon": "CgInfo",
+        "owner": false,
+        "viewHeader": true,
+        "hidden": true,
+        "seo": {
+          "title": "Acerca del Comercio | Graf Admin",
+          "description": "Información detallada del comercio.",
+          "keywords": "comercio, información, admin",
+          "type": "dashboard"
+        }
+      }
+    ]
+  }
+}

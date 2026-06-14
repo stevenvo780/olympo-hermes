@@ -1,0 +1,106 @@
+.privacy-policy-container {
+  max-width: 900px;
+  margin: 0 auto;
+
+  .privacy-policy-content {
+    background-color: var(--bg-color);
+    color: var(--font-color);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-color);
+  }
+
+  .policy-header {
+    margin-bottom: 2rem;
+    text-align: center;
+    
+    .policy-title {
+      color: var(--primary-color);
+      font-size: 2rem;
+      font-weight: bold;
+    }
+    
+    .policy-divider {
+      border-color: var(--border-color);
+      margin: 1.5rem 0;
+    }
+  }
+
+  .policy-section {
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 1rem;
+    
+    &:last-of-type {
+      border-bottom: none;
+    }
+    
+    .section-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+      
+      .section-icon {
+        color: var(--primary-color);
+        font-size: 1.5rem;
+        margin-right: 0.75rem;
+      }
+      
+      .section-title {
+        font-size: 1.4rem;
+        font-weight: 600;
+        margin: 0;
+        color: var(--link-color);
+      }
+    }
+    
+    .section-text {
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+    
+    .policy-list {
+      list-style: none;
+      padding-left: 1rem;
+      margin-bottom: 1rem;
+      
+      li {
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: flex-start;
+        
+        .list-icon {
+          color: var(--success-color);
+          margin-right: 0.75rem;
+          font-size: 1rem;
+          margin-top: 0.25rem;
+        }
+      }
+    }
+    
+    .company-badge {
+      display: inline-block;
+      background-color: var(--primary-color);
+      color: var(--primary-text);
+      padding: 0.3rem 0.8rem;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+      font-weight: bold;
+    }
+  }
+
+  .policy-footer {
+    text-align: center;
+    margin-top: 2rem;
+    
+    .effective-date {
+      display: inline-block;
+      background-color: var(--primary-color);
+      color: var(--primary-text);
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+  }
+}

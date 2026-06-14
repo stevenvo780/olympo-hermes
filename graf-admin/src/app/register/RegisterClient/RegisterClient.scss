@@ -1,0 +1,69 @@
+.register-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  
+  @media (max-width: 576px) {
+    min-height: auto;
+    padding-top: 0;
+    margin-top: 1rem;
+    align-items: flex-start;
+  }
+  
+  @media (min-width: 577px) {
+    min-height: 100vh;
+  }
+}
+
+.register-title {
+  font-family: "Montaga", serif;
+  margin-bottom: 1.5rem;
+  
+  @media (max-width: 576px) {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    margin-top: 0;
+  }
+  
+  @media (min-width: 577px) {
+    font-size: 3rem;
+  }
+  
+  @media (min-width: 992px) {
+    font-size: 4rem;
+  }
+}
+
+.register-card {
+  width: 100%;
+  margin: 0 auto;
+  
+  .card-body {
+    padding: 1.5rem;
+    
+    @media (max-width: 576px) {
+      padding: 1rem;
+    }
+  }
+}
+
+.policy-text {
+  font-size: 0.9rem;
+  
+  @media (max-width: 576px) {
+    font-size: 0.8rem;
+  }
+}
+
+.register-buttons {
+  margin-top: 1rem;
+  
+  button {
+    padding: 0.5rem;
+    
+    @media (max-width: 576px) {
+      font-size: 0.9rem;
+    }
+  }
+}

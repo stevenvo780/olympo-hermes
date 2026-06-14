@@ -1,0 +1,112 @@
+/**
+ * cauce-brand.css — maps the existing Bootstrap theme of graf-admin onto Cauce
+ * design-system tokens (from "@cauce/ui/styles.css"). Imported once, after
+ * bootstrap, in src/app/layout.tsx. The "graf" module accent (green) is applied
+ * via data-module="graf" on <body>; here we wire Bootstrap's vars to Cauce tokens.
+ */
+
+:root {
+  /* Bootstrap core palette -> Cauce tokens */
+  --bs-primary: var(--c-accent-module);
+  --bs-primary-rgb: 34, 164, 90; /* #22A45A — graf accent */
+  --bs-link-color: var(--c-primary);
+  --bs-link-color-rgb: 11, 138, 143; /* #0B8A8F — c-primary-600 */
+  --bs-link-hover-color: var(--c-primary-hover);
+  --bs-body-color: var(--c-fg, #111827);
+  --bs-body-bg: var(--c-bg);
+  --bs-border-color: var(--c-border);
+  --bs-emphasis-color: var(--c-fg);
+}
+
+body {
+  font-family: var(--c-font-sans);
+  background: var(--c-bg);
+  color: var(--c-fg, inherit);
+}
+
+/* Links adopt the Cauce primary */
+a {
+  color: var(--c-primary);
+}
+a:hover {
+  color: var(--c-primary-hover);
+}
+
+/* Primary buttons adopt the "graf" module accent */
+.btn-primary {
+  --bs-btn-bg: var(--c-accent-module);
+  --bs-btn-border-color: var(--c-accent-module);
+  --bs-btn-hover-bg: var(--c-accent-module);
+  --bs-btn-hover-border-color: var(--c-accent-module);
+  --bs-btn-active-bg: var(--c-accent-module);
+  --bs-btn-active-border-color: var(--c-accent-module);
+  --bs-btn-disabled-bg: var(--c-accent-module);
+  --bs-btn-disabled-border-color: var(--c-accent-module);
+  background-color: var(--c-accent-module);
+  border-color: var(--c-accent-module);
+}
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  filter: brightness(0.94);
+}
+
+/* Outline primary follows the accent too */
+.btn-outline-primary {
+  --bs-btn-color: var(--c-accent-module);
+  --bs-btn-border-color: var(--c-accent-module);
+  --bs-btn-hover-bg: var(--c-accent-module);
+  --bs-btn-hover-border-color: var(--c-accent-module);
+  --bs-btn-active-bg: var(--c-accent-module);
+  --bs-btn-active-border-color: var(--c-accent-module);
+}
+
+/* Link-styled buttons */
+.btn-link {
+  --bs-btn-color: var(--c-primary);
+  --bs-btn-hover-color: var(--c-primary-hover);
+  color: var(--c-primary);
+}
+
+/* Text / background accent utilities */
+.text-primary {
+  color: var(--c-primary) !important;
+}
+.bg-primary {
+  background-color: var(--c-accent-module) !important;
+}
+.border-primary {
+  border-color: var(--c-accent-module) !important;
+}
+
+/* Form controls focus ring uses the module accent */
+.form-control:focus,
+.form-select:focus,
+.form-check-input:focus {
+  border-color: var(--c-accent-module);
+  box-shadow: 0 0 0 0.2rem var(--c-accent-module-tint);
+}
+.form-check-input:checked {
+  background-color: var(--c-accent-module);
+  border-color: var(--c-accent-module);
+}
+
+/* Headings adopt the brand font + strong foreground */
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: var(--c-font-sans);
+  color: var(--c-fg, inherit);
+}
+
+/* Nav / active states use the accent */
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+  background-color: var(--c-accent-module);
+}
+.page-item.active .page-link {
+  background-color: var(--c-accent-module);
+  border-color: var(--c-accent-module);
+}
+.page-link {
+  color: var(--c-primary);
+}
