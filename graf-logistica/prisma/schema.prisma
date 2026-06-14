@@ -1,0 +1,82 @@
+// graf-logistica — base de datos PROPIA del software de logística/despacho.
+// Desacoplada de Graf: Graf es la fuente de los pedidos (vía API de solo lectura);
+// aquí vive todo lo de la CAPA DE LOGÍSTICA (camiones, cargue, tracking) que en el
+// flujo actual del cliente se hace a mano en Excel.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// Camión / vehículo de reparto de la bodega (una sola bodega por ahora — I3).
+model Truck {
+  id          Int      @id @default(autoincrement())
+  plate       String   @unique
+  name        String
+  capacityKg  Float    @default(0)
+  capacityUnits Int    @default(0)
+  driverName  String?
+  driverPhone String?
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  dispatchOrders DispatchOrder[]
+}
+
+/// Espejo de un pedido de Graf que ya está ENRUTADO/DESPACHADO y entra a la capa
+/// de logística. Se sincroniza desde la API de Graf (solo lectura) y aquí se le
+/// agrega todo lo de cargue/despacho que Graf no maneja.
+model DispatchOrder {
+  id          Int      @id @default(autoincrement())
+
+  // --- identidad en Graf (clave de upsert) ---
+  grafOrderId Int
+  storeId     String
+
+  // --- snapshot denormalizado traído de Graf ---
+  zone         String?
+  routeGroup   String?
+  isCarrier    Boolean @default(false)
+  customerName String?
+  sellerName   String?
+  address      String?
+  city         String?
+  phone        String?
+  routeDate    String?
+  units        Int     @default(0)
+  weightKg     Float   @default(0)
+  totalAmount  Float   @default(0)
+  grafDistStatus String?  // routed | dispatched (estado en Graf al sincronizar)
+  notes        String?
+
+  // --- capa de logística (propia) ---
+  // pending  -> aún sin asignar a camión
+  // loaded   -> cargado en un camión (o entregado a transportadora)
+  // dispatched -> el camión salió / la transportadora lo despachó
+  // delivered  -> entrega confirmada
+  status      String   @default("pending")
+  truckId     Int?
+  truck       Truck?   @relation(fields: [truckId], references: [id])
+  sequence    Int      @default(0)   // orden de entrega dentro de la ruta del camión
+
+  // --- tracking de transportadora (cuando isCarrier) ---
+  carrierName    String?
+  trackingNumber String?
+
+  syncedAt    DateTime @default(now())
+  loadedAt    DateTime?
+  dispatchedAt DateTime?
+  deliveredAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([grafOrderId, storeId])
+  @@index([status])
+  @@index([isCarrier])
+  @@index([routeDate])
+}

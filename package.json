@@ -1,0 +1,16 @@
+{
+  "name": "graf-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "validate": "bash scripts/validate.sh",
+    "validate:verbose": "bash scripts/validate.sh --verbose",
+    "validate:fast": "bash scripts/validate.sh --fail-fast",
+    "validate:build": "bash scripts/validate.sh --skip-lint --skip-tests",
+    "validate:lint": "bash scripts/validate.sh --skip-build --skip-tests",
+    "validate:test": "bash scripts/validate.sh --skip-build --skip-lint"
+  },
+  "dependencies": {
+    "pg": "^8.16.3"
+  }
+}

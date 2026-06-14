@@ -1,0 +1,69 @@
+# Archivos de logs y temporales
+logs_detallados/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Backups de base de datos
+*.sql
+*.dump
+
+# Archivos de entorno locales
+.env.local
+.env.development
+.env.test
+
+# Env files for utility scripts
+utils/.env
+utils/.env.local
+
+# Archivos Docker temporales
+.dockerignore
+
+# Node modules en logs
+logs_detallados/node_modules/
+
+PLAN_DE_TRABAJO
+
+# Archivos de build temporales en logs
+logs_detallados/build/
+logs_detallados/dist/
+graf-admin
+graf-backend
+graf-client
+backups
+node_modules
+.playwright-mcp
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+webhook-reports-totalpedidos
+*.xlsx
+
+# --- olympo push safety (secrets & build artifacts) ---
+node_modules/
+dist/
+.next/
+build/
+out/
+coverage/
+.turbo/
+.vercel/
+.expo/
+.env
+.env.*
+!.env.example
+!.env.template
+!.env.sample
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+*_rsa
+*serviceAccount*.json
+*service-account*.json
+*credentials*.json

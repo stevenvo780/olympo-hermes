@@ -1,0 +1,98 @@
+/* ---------------------------------------------------------------------------
+ * Olympo brand bridge — graf-logistica
+ *
+ * Self-contained: re-points this app's local design tokens onto the Olympo
+ * palette (BRAND.md) WITHOUT requiring @olympo/ui to be installed. Each Olympo
+ * value is provided as a literal with a `var(--c-*, <literal>)` fallback, so:
+ *   - if @olympo/ui ever loads its tokens, they take over automatically;
+ *   - if it doesn't (the current setup), the literals keep the app working.
+ *
+ * "Graf" stays its own product (módulo verde #22A45A); the umbrella chrome
+ * (links, focus, typography, gradient) is Olympo Corriente teal #0B8A8F.
+ * Loaded after globals.css so it overrides the local defaults.
+ * --------------------------------------------------------------------------- */
+
+:root {
+  /* Olympo palette literals (mirror @olympo/ui tokens; used as fallbacks). */
+  --cauce-primary: #0b8a8f;        /* Corriente · teal de marca */
+  --cauce-primary-hover: #0e6e73;
+  --cauce-accent: #ff5a2b;         /* Caudal · coral (CTAs/energía) */
+  --cauce-graf: #22a45a;           /* acento del módulo Graf (verde) */
+  --cauce-graf-hover: #1c8c4c;
+  --cauce-ink: #111e21;
+  --cauce-muted: #51666a;
+  --cauce-line: #e5ebec;
+  --cauce-success: #1fb57a;
+  --cauce-warning: #f5a524;
+  --cauce-danger: #f04438;
+  --cauce-ring: rgba(11, 138, 143, 0.45);
+  --cauce-gradient: linear-gradient(120deg, #0a1622 0%, #0b8a8f 58%, #2dcbd1 100%);
+  --cauce-font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --cauce-font-display: "Sora", var(--cauce-font-sans);
+
+  /* Re-point the app's local brand variables to Olympo (prefer @olympo/ui if present). */
+  --brand: var(--c-accent-module, var(--cauce-graf));
+  --brand-d: var(--c-accent-module-hover, var(--cauce-graf-hover));
+  --green: var(--c-success, var(--cauce-success));
+  --amber: var(--c-warning, var(--cauce-warning));
+  --red: var(--c-danger, var(--cauce-danger));
+  --violet: var(--c-accent, #7c3aed);
+
+  --ink: var(--c-text, var(--cauce-ink));
+  --muted: var(--c-text-muted, var(--cauce-muted));
+  --line: var(--c-border, var(--cauce-line));
+}
+
+body {
+  font-family: var(--c-font-sans, var(--cauce-font-sans));
+}
+
+/* Titles take the Olympo display font (Sora). */
+.brand-name,
+.page-title,
+h1,
+h2,
+h3 {
+  font-family: var(--c-font-display, var(--cauce-font-display));
+}
+
+/* Links adopt the Olympo Corriente teal. */
+a {
+  color: var(--c-primary, var(--cauce-primary));
+}
+
+/* Sidebar mark sits on the signature Corriente gradient. */
+.brand-logo {
+  background: var(--c-gradient-corriente, var(--cauce-gradient));
+}
+
+/* Primary action button = Graf module accent (verde), Olympo chrome. */
+.btn-primary {
+  background: var(--c-accent-module, var(--cauce-graf));
+  border-color: var(--c-accent-module, var(--cauce-graf));
+  color: var(--c-on-accent, #fff);
+}
+.btn-primary:hover {
+  background: var(--c-accent-module-hover, var(--cauce-graf-hover));
+  border-color: var(--c-accent-module-hover, var(--cauce-graf-hover));
+}
+
+/* Ghost links/buttons follow the module accent. */
+.btn-ghost {
+  color: var(--c-accent-module, var(--cauce-graf));
+}
+
+/* Focus ring + accented borders. */
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid var(--c-ring, var(--cauce-ring));
+  border-color: var(--c-primary, var(--cauce-primary));
+}
+
+.capbar > span {
+  background: var(--c-accent-module, var(--cauce-graf));
+}
+.spinner {
+  border-top-color: var(--c-accent-module, var(--cauce-graf));
+}

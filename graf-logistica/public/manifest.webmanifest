@@ -1,0 +1,17 @@
+{
+  "name": "Graf Logística · Cauce",
+  "short_name": "Graf Logística",
+  "description": "Cargue a camiones, tablero de despacho y tracking de transportadora. Parte del ecosistema Cauce.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0b8a8f",
+  "icons": [
+    {
+      "src": "/brand/cauce-symbol.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any maskable"
+    }
+  ]
+}
