@@ -7,9 +7,9 @@ import {
   Logger,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Between, In } from 'typeorm';
+import { Repository, Between, In, DataSource } from 'typeorm';
 import * as XLSX from 'xlsx';
-import { Order, OrderStatus, DiscountType } from './entities/order.entity';
+import { Order, OrderStatus, DiscountType, PaymentMethod } from './entities/order.entity';
 import { OrderItem, ProductSnapshot } from './entities/order-item.entity';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
@@ -25,7 +25,7 @@ import { PluginService } from '../plugins/plugin.service';
 import { ConfigService as AppConfigService } from '../config/config.service';
 import { CustomerService } from '../customer/customer.service';
 import { Customer } from '../customer/entities/customer.entity';
-import { CauceHubService } from '../cauce/hub.service';
+import { PrizmaHubService } from '../prizma/prizma-hub.service';
 import { SortOrder } from '../user/dto/find-users.dto';
 import { PaymentFrequency } from '../wompi/entities/payment-source.entity';
 
@@ -70,11 +70,12 @@ export class OrderService {
     private readonly pluginService: PluginService,
     private readonly appConfigService: AppConfigService,
     private readonly customerService: CustomerService,
-    private readonly cauceHub: CauceHubService,
+    private readonly prizmaHub: PrizmaHubService,
+    private readonly dataSource: DataSource,
   ) {}
 
-  /** Map a Graf Order entity to the @cauce/contracts ORDER_PAID payload. */
-  private toCaucePaidPayload(order: Order) {
+  /** Map a Hermes Order entity to the @prizma/contracts ORDER_PAID payload. */
+  private toPrizmaPaidPayload(order: Order) {
     const customer = order.customer;
     const items = (order.items || []).map((it) => {
       const product = it.product as unknown as {
@@ -109,6 +110,8 @@ export class OrderService {
     dto: CreateOrderDto,
   ): Promise<Order> {
     const { store, deliveryZoneId, userId } = dto;
+
+    // Fase 1: Verificar entidades y calcular precios (SIN transacción).
     const storeSearch = await this.storeRepository.findOne({
       where: { id: store.id },
       relations: ['owner'],
@@ -135,13 +138,6 @@ export class OrderService {
     }
 
     await this.checkOrderLimit(storeSearch.owner.id);
-
-    const productsWithUpdatedStock = await this.verifyAndUpdateProductStock(
-      dto.items as unknown as Array<{
-        product: { id: number };
-        quantity: number;
-      }>,
-    );
 
     const productIds = dto.items.map((item) => item.product.id);
     const productsToCalculate = await this.productRepository.find({
@@ -271,7 +267,7 @@ export class OrderService {
           `Customer con ID ${dto.customerId} no encontrado`,
         );
       }
-      if (customer.store.id !== storeSearch.id) {
+      if (!customer.store || customer.store.id !== storeSearch.id) {
         throw new BadRequestException('El customer no pertenece a esta tienda');
       }
     } else {
@@ -295,29 +291,72 @@ export class OrderService {
       );
     }
 
-    const newOrder = this.orderRepository.create({
-      ...dto,
-      items: orderItems,
-      amount: {
-        taxTotal: totalTaxes,
-        discountTotal: totalDiscounts,
-        delivery: deliveryPrice,
-        total: finalTotal,
-      },
-      user: targetUser || null,
-      customer: customer,
-      store: storeSearch,
-      shippingAddress,
-      buyerName: dto.buyerName || targetUser?.name || null,
-      buyerPhone: dto.buyerPhone || targetUser?.profile?.additionalPhone || null,
-      documents: dto.documents || [],
-      discountType: dto.discountType || null,
-      discountValue: dto.discountValue || null,
-      taxes: orderTaxes,
+    // Fase 2: Transacción ACID para verificar stock + guardar orden + actualizar stock.
+    // Esto evita race conditions de sobreventa en createOrder concurrentes.
+    const savedOrder = await this.dataSource.transaction(async (manager) => {
+      const productIds = orderItems.map((item) => (item.product as any).id);
+
+      // SELECT FOR UPDATE: bloquear filas de productos hasta fin de transacción.
+      const lockedProducts = await manager
+        .createQueryBuilder(Product, 'product')
+        .setLock('pessimistic_write')
+        .whereInIds(productIds)
+        .getMany();
+
+      const lockedProductMap = new Map(lockedProducts.map((p) => [p.id, p]));
+
+      // Validación final de stock (dentro de la transacción, con bloqueo).
+      for (const item of orderItems) {
+        const product = lockedProductMap.get((item.product as any).id);
+        if (!product) {
+          throw new NotFoundException(
+            `Producto con ID ${(item.product as any).id} no encontrado`,
+          );
+        }
+
+        if (product.stock !== null && product.stock - item.quantity < 0) {
+          throw new BadRequestException(
+            `Stock insuficiente para el producto "${product.title}". Stock disponible: ${product.stock}`,
+          );
+        }
+
+        // Decrementar stock
+        if (product.stock !== null) {
+          product.stock -= item.quantity;
+        }
+      }
+
+      // Guardar orden dentro de la transacción.
+      const newOrder = this.orderRepository.create({
+        ...dto,
+        items: orderItems,
+        amount: {
+          taxTotal: totalTaxes,
+          discountTotal: totalDiscounts,
+          delivery: deliveryPrice,
+          total: finalTotal,
+        },
+        user: targetUser || null,
+        customer: customer,
+        store: storeSearch,
+        shippingAddress,
+        buyerName: dto.buyerName || targetUser?.name || null,
+        buyerPhone: dto.buyerPhone || targetUser?.profile?.additionalPhone || null,
+        documents: dto.documents || [],
+        discountType: dto.discountType || null,
+        discountValue: dto.discountValue || null,
+        taxes: orderTaxes,
+      });
+
+      const savedOrderTx = await manager.save(newOrder);
+
+      // Guardar productos con stock actualizado dentro de la transacción.
+      await manager.save(lockedProducts);
+
+      return savedOrderTx;
     });
 
-    const savedOrder = await this.orderRepository.save(newOrder);
-
+    // Fase 3: Operaciones post-transacción (actualizar stats, notificar hub, etc).
     if (customer?.id) {
       try {
         await this.customerService.updateCustomerOrderStats(
@@ -328,13 +367,6 @@ export class OrderService {
         console.error('Error actualizando estadísticas del cliente:', err);
       }
     }
-
-    await Promise.all(
-      productsWithUpdatedStock.map(({ product, newStock }) => {
-        product.stock = newStock;
-        return this.productRepository.save(product);
-      }),
-    );
 
     const completeOrder = await this.orderRepository.findOne({
       where: { id: savedOrder.id },
@@ -519,7 +551,7 @@ export class OrderService {
     }
   }
 
-  async findOne(id: number): Promise<Order> {
+  async findOne(id: number, user?: User): Promise<Order> {
     const order = await this.orderRepository.findOne({
       where: { id },
       relations: [
@@ -533,6 +565,17 @@ export class OrderService {
       ],
     });
     if (!order) throw new NotFoundException('Order not found');
+
+    // Verificar pertenencia: el usuario debe ser owner/empleado de la tienda o el cliente
+    if (user) {
+      const isOwnerOrEmployee = canAccessStore(order.store, user);
+      const isOrderCustomer =
+        order.user?.id === user.id ||
+        (order.customer?.id && String(order.customer.id) === String(user.id));
+      if (!isOwnerOrEmployee && !isOrderCustomer) {
+        throw new ForbiddenException('No tienes permiso para acceder a este pedido');
+      }
+    }
 
     const rawItems: Array<Record<string, unknown>> =
       await this.orderItemRepository.query(
@@ -589,6 +632,8 @@ export class OrderService {
         discountType,
         discountValue,
         documents,
+        invoiceId,
+        invoicePdfUrl,
       } = dto;
       if (typeof status !== 'undefined') order.status = status;
       if (typeof notes !== 'undefined') order.notes = notes;
@@ -600,6 +645,9 @@ export class OrderService {
       if (typeof discountValue !== 'undefined')
         order.discountValue = discountValue;
       if (typeof documents !== 'undefined') order.documents = documents;
+      if (typeof invoiceId !== 'undefined') order.invoiceId = invoiceId;
+      if (typeof invoicePdfUrl !== 'undefined')
+        order.invoicePdfUrl = invoicePdfUrl;
 
       if (
         status === OrderStatus.CANCELED &&
@@ -1087,9 +1135,9 @@ export class OrderService {
             updated as unknown as Record<string, unknown>,
             updated.store,
           );
-          // Cauce: Graf owns the online order (flow 1, pedido.pagado).
+          // Prizma: Hermes owns the online order (flow 1, pedido.pagado).
           // Fault-tolerant: never breaks the order transaction.
-          await this.cauceHub.orderPaid(this.toCaucePaidPayload(updated));
+          await this.prizmaHub.orderPaid(this.toPrizmaPaidPayload(updated));
         }
 
         if (
@@ -1121,22 +1169,161 @@ export class OrderService {
     }
   }
 
+  /**
+   * Marca una orden como pagada por una pasarela externa (MercadoPago, Wompi, etc.).
+   * Llamado por `PaymentsInboundService` cuando el Hub aprueba un pago.
+   * Idempotente: no re-emite `order.paid` si ya estaba PAID.
+   */
+  async markPaidByGateway(orderId: number, method: PaymentMethod): Promise<Order> {
+    const order = await this.findOne(orderId);
+    const previousStatus = order.status;
+
+    // Si ya está pagado, no mutar ni emitir evento, solo retornar sin cambios
+    if (previousStatus === OrderStatus.PAID) {
+      return order;
+    }
+
+    order.paymentMethod = method;
+    order.status = OrderStatus.PAID;
+    await this.orderRepository.save(order);
+    const updated = await this.findOne(orderId);
+    try {
+      await this.pluginService.emit(
+        'order.paid',
+        updated as unknown as Record<string, unknown>,
+        updated.store,
+      );
+      await this.prizmaHub.orderPaid(this.toPrizmaPaidPayload(updated));
+    } catch (err) {
+      this.logger.error(
+        `Error notificando pago por pasarela de orden ${orderId}:`,
+        err,
+      );
+    }
+    return updated;
+  }
+
+  /**
+   * Nous connector: actualiza campos de delivery de una orden sin validación
+   * de usuario. Acepta { distStatus?, routeDate?, deliveryZoneId?, deliveryAddress? }.
+   * No rompe si el campo no existe — solo aplica los que vienen.
+   */
+  async updateDelivery(
+    id: number,
+    dto: Record<string, unknown>,
+  ): Promise<Order> {
+    // Bypass user check para webhooks de Nous (ya autenticados por HMAC)
+    const order = await this.orderRepository.findOne({
+      where: { id },
+      relations: [
+        'user',
+        'customer',
+        'store',
+        'store.owner',
+        'store.employees',
+        'deliveryZone',
+        'taxes',
+      ],
+    });
+    if (!order) throw new NotFoundException('Order not found');
+
+    const prevStatus = order.status;
+    const prevDistStatus = order.distStatus;
+
+    if (typeof dto.distStatus === 'string') {
+      (order as any).distStatus = dto.distStatus;
+    }
+    if (typeof dto.routeDate === 'string') {
+      (order as any).routeDate = dto.routeDate;
+    }
+    if (typeof dto.deliveryZoneId === 'number') {
+      const zone = await this.deliveryZoneRepository.findOne({
+        where: { id: dto.deliveryZoneId as number },
+      });
+      if (zone) order.deliveryZone = zone;
+    }
+    if (typeof dto.deliveryAddress === 'string') {
+      (order as any).shippingAddress = dto.deliveryAddress;
+    }
+    if (typeof dto.deliveryZone === 'object') {
+      // Soporta actualización inline de zona (compatibilidad con Nos)
+      const zoneData = dto.deliveryZone as { zone?: string; price?: number };
+      if (zoneData.zone) order.deliveryZone = order.deliveryZone || {} as any;
+    }
+    if (typeof dto.notes === 'string') {
+      order.notes = dto.notes as string;
+    }
+
+    await this.orderRepository.save(order);
+
+    // Re-fetch sin validación de usuario (ya autenticado por HMAC en el controller)
+    const updated = await this.findOne(id);
+
+    this.logger.log(
+      `[nous] delivery update order=${id} distStatus=${prevDistStatus}→${(order as any).distStatus} routeDate=${(order as any).routeDate}`,
+    );
+
+    try {
+      await this.pluginService.emit(
+        'order.delivery_updated',
+        updated as unknown as Record<string, unknown>,
+        updated.store,
+      );
+    } catch (err) {
+      this.logger.warn(`[nous] event emit failed for order ${id}: ${(err as Error).message}`);
+    }
+
+    return updated;
+  }
+
   private async restoreProductStock(order: Order): Promise<void> {
     if (!order.items || order.items.length === 0) {
       return;
     }
 
+    // Fase 1: Extraer IDs únicos de productos (type-safe)
+    const productIds = Array.from(
+      new Set(
+        order.items
+          .map((item) =>
+            typeof item.product === 'object' ? item.product.id : item.product,
+          )
+          .filter((id) => id != null),
+      ),
+    );
+
+    if (productIds.length === 0) {
+      return;
+    }
+
+    // Fase 2: Batch load todos los productos en UNA query (O(1) batch en lugar de O(N) findOne)
+    const products = await this.productRepository.find({
+      where: { id: In(productIds) },
+    });
+
+    const productMap = new Map(products.map((p) => [p.id, p]));
+
+    // Fase 3: Calcular deltas en memoria (no tocar BD)
     for (const item of order.items) {
       const productId =
         typeof item.product === 'object' ? item.product.id : item.product;
-      const product = await this.productRepository.findOne({
-        where: { id: productId },
-      });
+      const product = productMap.get(productId);
 
       if (product && product.stock !== null) {
         product.stock += item.quantity;
-        await this.productRepository.save(product);
       }
+    }
+
+    // Fase 4: Guardar todos los productos modificados en UNA query de batch save
+    const productsToSave = Array.from(productMap.values()).filter(
+      (p) => p.stock !== null,
+    );
+
+    if (productsToSave.length > 0) {
+      await this.productRepository.save(productsToSave);
+      this.logger.log(
+        `Restaurado stock de ${productsToSave.length} producto(s) por cancelación de orden ${order.id}`,
+      );
     }
   }
 

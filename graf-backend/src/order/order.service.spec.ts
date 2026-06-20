@@ -5,6 +5,7 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { DataSource } from 'typeorm';
 import { OrderService } from './order.service';
 import { Order, OrderStatus, DiscountType } from './entities/order.entity';
 import { OrderItem } from './entities/order-item.entity';
@@ -16,6 +17,7 @@ import { ProductCoreService } from '../product/modules/core/product-core.service
 import { PluginService } from '../plugins/plugin.service';
 import { ConfigService as AppConfigService } from '../config/config.service';
 import { CustomerService } from '../customer/customer.service';
+import { PrizmaHubService } from '../prizma/prizma-hub.service';
 import { Tax } from '../tax/entities/tax.entity';
 import {
   createMockRepository,
@@ -45,6 +47,7 @@ describe('OrderService', () => {
   let pluginService: any;
   let orderItemRepository: any;
   let customerService: any;
+  let prizmaHub: any;
 
   beforeEach(async () => {
     const mockOrderRepository = createMockRepository();
@@ -101,6 +104,21 @@ describe('OrderService', () => {
       updateCustomerOrderStats: jest.fn(),
     };
 
+    const mockPrizmaHub = {
+      orderPaid: jest.fn().mockResolvedValue(true),
+      orderPendingApproval: jest.fn().mockResolvedValue(true),
+      orderApproved: jest.fn().mockResolvedValue(true),
+      customerCreated: jest.fn().mockResolvedValue(true),
+    };
+
+    const mockDataSource = {
+      transaction: jest.fn((callback) => callback({
+        createQueryBuilder: jest.fn().mockReturnThis(),
+        save: jest.fn().mockResolvedValue({}),
+        getMany: jest.fn().mockResolvedValue([]),
+      })),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         OrderService,
@@ -148,6 +166,14 @@ describe('OrderService', () => {
           provide: CustomerService,
           useValue: mockCustomerService,
         },
+        {
+          provide: PrizmaHubService,
+          useValue: mockPrizmaHub,
+        },
+        {
+          provide: DataSource,
+          useValue: mockDataSource,
+        },
       ],
     }).compile();
 
@@ -161,6 +187,7 @@ describe('OrderService', () => {
     pluginService = module.get<PluginService>(PluginService);
     orderItemRepository = module.get(getRepositoryToken(OrderItem));
     customerService = module.get(CustomerService);
+    prizmaHub = module.get(PrizmaHubService);
   });
 
   describe('createOrder', () => {
@@ -700,6 +727,26 @@ describe('OrderService', () => {
       );
     });
 
+    it('should persist invoiceId and invoicePdfUrl fields', async () => {
+      orderRepository.findOne.mockResolvedValue(order);
+      orderRepository.save.mockImplementation((o) => Promise.resolve(o));
+
+      await service.updateOrder(
+        1,
+        {
+          invoiceId: 'INV-001',
+          invoicePdfUrl: 'https://storage.example.com/invoice-001.pdf',
+        } as any,
+        user,
+      );
+
+      const savedCall = orderRepository.save.mock.calls[0][0];
+      expect(savedCall.invoiceId).toBe('INV-001');
+      expect(savedCall.invoicePdfUrl).toBe(
+        'https://storage.example.com/invoice-001.pdf',
+      );
+    });
+
     it('should reduce stock when uncancelling', async () => {
       const cancelledOrder = { ...order, status: OrderStatus.CANCELED };
       orderRepository.findOne.mockResolvedValue(cancelledOrder);
@@ -954,32 +1001,90 @@ describe('OrderService', () => {
   });
 
   describe('restoreProductStock', () => {
-    it('should restore stock for order items', async () => {
+    it('should restore stock for order items using batch load', async () => {
       const product = createTestProduct({ id: 1, stock: 5 });
-      productRepository.findOne.mockResolvedValue(product);
-      productRepository.save.mockResolvedValue(product);
+      productRepository.find.mockResolvedValue([product]);
+      productRepository.save.mockResolvedValue([{ ...product, stock: 7 }]);
 
       await (service as any).restoreProductStock({
         items: [{ product: { id: 1 }, quantity: 2 }],
       });
 
+      expect(productRepository.find).toHaveBeenCalledWith({
+        where: { id: expect.anything() },
+      });
       expect(productRepository.save).toHaveBeenCalledWith(
-        expect.objectContaining({ stock: 7 }),
+        expect.arrayContaining([
+          expect.objectContaining({ stock: 7 }),
+        ]),
       );
     });
 
     it('should restore stock when item product is a number', async () => {
       const product = createTestProduct({ id: 2, stock: 4 });
-      productRepository.findOne.mockResolvedValue(product);
-      productRepository.save.mockResolvedValue(product);
+      productRepository.find.mockResolvedValue([product]);
+      productRepository.save.mockResolvedValue([{ ...product, stock: 7 }]);
 
       await (service as any).restoreProductStock({
         items: [{ product: 2, quantity: 3 }],
       });
 
+      expect(productRepository.find).toHaveBeenCalledWith({
+        where: { id: expect.anything() },
+      });
       expect(productRepository.save).toHaveBeenCalledWith(
-        expect.objectContaining({ stock: 7 }),
+        expect.arrayContaining([
+          expect.objectContaining({ stock: 7 }),
+        ]),
       );
+    });
+
+    it('should batch load multiple products and restore stock in single save', async () => {
+      const product1 = createTestProduct({ id: 1, stock: 10 });
+      const product2 = createTestProduct({ id: 2, stock: 5 });
+      productRepository.find.mockResolvedValue([product1, product2]);
+      productRepository.save.mockResolvedValue([
+        { ...product1, stock: 12 },
+        { ...product2, stock: 8 },
+      ]);
+
+      await (service as any).restoreProductStock({
+        items: [
+          { product: { id: 1 }, quantity: 2 },
+          { product: { id: 2 }, quantity: 3 },
+        ],
+      });
+
+      expect(productRepository.find).toHaveBeenCalledWith({
+        where: { id: expect.anything() },
+      });
+      expect(productRepository.save).toHaveBeenCalledTimes(1);
+      const saveCall = productRepository.save.mock.calls[0][0];
+      expect(saveCall).toHaveLength(2);
+      expect(saveCall).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ id: 1, stock: 12 }),
+          expect.objectContaining({ id: 2, stock: 8 }),
+        ]),
+      );
+    });
+
+    it('should handle empty order items gracefully', async () => {
+      await (service as any).restoreProductStock({ items: [] });
+
+      expect(productRepository.find).not.toHaveBeenCalled();
+      expect(productRepository.save).not.toHaveBeenCalled();
+    });
+
+    it('should skip products with null stock', async () => {
+      const product = createTestProduct({ id: 1, stock: null });
+      productRepository.find.mockResolvedValue([product]);
+
+      await (service as any).restoreProductStock({
+        items: [{ product: { id: 1 }, quantity: 2 }],
+      });
+
+      expect(productRepository.save).not.toHaveBeenCalled();
     });
   });
 
