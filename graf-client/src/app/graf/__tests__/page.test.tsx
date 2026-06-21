@@ -10,17 +10,17 @@ vi.mock('../home/ClientHome', () => ({
 
 import HomePage, { metadata, dynamic } from '../page';
 
-describe('graf/page', () => {
+describe('hermes/page', () => {
   it('exports dynamic as force-dynamic', () => {
     expect(dynamic).toBe('force-dynamic');
   });
 
   it('exports metadata with correct title', () => {
-    expect(metadata.title).toBe('Graf');
+    expect(metadata.title).toBe('Hermes');
   });
 
   it('exports metadata with description', () => {
-    expect(metadata.description).toContain('Graf');
+    expect(metadata.description).toContain('Hermes');
   });
 
   it('exports metadata with keywords', () => {
@@ -29,7 +29,7 @@ describe('graf/page', () => {
 
   it('exports openGraph metadata', () => {
     expect(metadata.openGraph).toBeDefined();
-    expect(metadata.openGraph?.title).toBe('Graf');
+    expect(metadata.openGraph?.title).toBe('Hermes');
   });
 
   it('exports twitter metadata', () => {

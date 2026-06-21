@@ -325,7 +325,7 @@ export class CreateConfigDto {
   @ApiProperty({
     description: 'Plugin configurations (enabled flag + API key)',
     example: {
-      sinergia: { enabled: true, apiKey: 'KEY123' },
+      talanton: { enabled: true, apiKey: 'KEY123' },
       meraVuelta: { enabled: false, apiKey: '' },
     },
   })

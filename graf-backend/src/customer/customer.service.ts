@@ -12,7 +12,7 @@ import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
 import { ImportCustomerExcelDto } from './dto/import-customer-excel.dto';
 import { PluginService } from '../plugins/plugin.service';
-import { CauceHubService } from '../cauce/hub.service';
+import { PrizmaHubService } from '../prizma/prizma-hub.service';
 import { SortOrder } from '../user/dto/find-users.dto';
 
 export interface CustomerForOrderDto {
@@ -38,11 +38,11 @@ export class CustomerService {
     @InjectDataSource()
     private readonly dataSource: DataSource,
     private readonly pluginService: PluginService,
-    private readonly cauceHub: CauceHubService,
+    private readonly prizmaHub: PrizmaHubService,
   ) {}
 
-  /** Map a Graf Customer entity to the @cauce/contracts CUSTOMER_CREATED payload. */
-  private toCauceCustomerPayload(customer: Customer) {
+  /** Map a Hermes Customer entity to the @prizma/contracts CUSTOMER_CREATED payload. */
+  private toPrizmaCustomerPayload(customer: Customer) {
     return {
       customer: {
         id: customer?.id != null ? String(customer.id) : undefined,
@@ -107,10 +107,10 @@ export class CustomerService {
       console.error('Error emitiendo evento customer.created:', err);
     }
 
-    // Cauce: Graf owns the online customer (flow 5, cliente.creado).
+    // Prizma: Hermes owns the online customer (flow 5, cliente.creado).
     // Fault-tolerant: never breaks the create transaction.
-    await this.cauceHub.customerCreated(
-      this.toCauceCustomerPayload(savedCustomer),
+    await this.prizmaHub.customerCreated(
+      this.toPrizmaCustomerPayload(savedCustomer),
     );
 
     return savedCustomer;
@@ -328,10 +328,10 @@ export class CustomerService {
       console.error('Error emitiendo evento customer.created:', err);
     }
 
-    // Cauce: Graf owns the online customer (flow 5, cliente.creado).
+    // Prizma: Hermes owns the online customer (flow 5, cliente.creado).
     // Fault-tolerant: never breaks the order/customer creation flow.
-    await this.cauceHub.customerCreated(
-      this.toCauceCustomerPayload(savedCustomer),
+    await this.prizmaHub.customerCreated(
+      this.toPrizmaCustomerPayload(savedCustomer),
     );
 
     return savedCustomer;
@@ -587,10 +587,10 @@ export class CustomerService {
                 console.error('Error emitiendo evento customer.created:', err);
               }
 
-              // Cauce: Graf owns the online customer (flow 5, cliente.creado).
+              // Prizma: Hermes owns the online customer (flow 5, cliente.creado).
               // Fault-tolerant: never breaks the Excel import transaction.
-              await this.cauceHub.customerCreated(
-                this.toCauceCustomerPayload(newCustomer as Customer),
+              await this.prizmaHub.customerCreated(
+                this.toPrizmaCustomerPayload(newCustomer as Customer),
               );
             } else {
               results.push({

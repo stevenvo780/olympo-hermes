@@ -4,46 +4,46 @@ import ClientLayout from './components/ClientLayout';
 
 export const metadata = {
   title: {
-    default: 'Graf',
-    template: '%s | Graf'
+    default: 'Hermes',
+    template: '%s | Hermes'
   },
   description:
-    'Graf es una aplicación e-commerce minimalista y altamente funcional para gestionar pedidos de forma rápida y sencilla.',
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://www.graf.com.co/'),
+    'Hermes es una aplicación e-commerce minimalista y altamente funcional para gestionar pedidos de forma rápida y sencilla.',
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://www.hermes.com.co/'),
   openGraph: {
-    title: 'Graf',
+    title: 'Hermes',
     description:
       'Aplicación e-commerce minimalista y altamente funcional para gestionar tus pedidos online.',
-    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://www.graf.com.co/',
-    siteName: 'Graf',
+    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://www.hermes.com.co/',
+    siteName: 'Hermes',
     locale: 'es_ES',
     type: 'website'
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Graf',
+    title: 'Hermes',
     description:
       'App e-commerce minimalista y funcional para gestionar tus pedidos online.',
-    images: [{ url: '/images/logo.svg', alt: 'Logo de Graf' }]
+    images: [{ url: '/images/logo.svg', alt: 'Logo de Hermes' }]
   }
 };
 
 const defaultStructuredData = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'Graf',
-  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://www.graf.com.co/',
+  name: 'Hermes',
+  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://www.hermes.com.co/',
   logo: '/images/logo.svg',
   description:
     'E-commerce minimalista y altamente funcional para gestionar pedidos de manera rápida y sencilla.',
   sameAs: [
     'https://www.facebook.com/Grafminimalista',
     'https://instagram.com/Grafminimalista',
-    'https://twitter.com/Graf'
+    'https://twitter.com/Hermes'
   ],
   potentialAction: {
     '@type': 'SearchAction',
-    target: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://www.graf.com.co/'}/search?q={search_term_string}`,
+    target: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://www.hermes.com.co/'}/search?q={search_term_string}`,
     'query-input': 'required name=search_term_string'
   }
 };

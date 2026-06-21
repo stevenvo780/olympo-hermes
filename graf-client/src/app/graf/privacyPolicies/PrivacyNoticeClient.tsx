@@ -31,7 +31,7 @@ const PrivacyPolicyView: React.FC = () => {
             <h2 className="section-title">1. Introducción</h2>
           </div>
           <p className="section-text">
-            Esta política de privacidad establece los términos en que <strong>Cauce</strong> utiliza y protege la
+            Esta política de privacidad establece los términos en que <strong>Prizma</strong> utiliza y protege la
             información proporcionada por sus clientes al realizar un pedido en nuestro eCommerce, en cumplimiento de la
             Ley 1581 de 2012, el Decreto 1377 de 2013 y las directrices de la Superintendencia de Industria y Comercio (SIC).
           </p>
@@ -43,7 +43,7 @@ const PrivacyPolicyView: React.FC = () => {
             <h2 className="section-title">2. Identificación del Responsable</h2>
           </div>
           <div className="section-text">
-            <span className="company-badge">Cauce</span>
+            <span className="company-badge">Prizma</span>
             <p>
               <strong>Dirección:</strong> Calle 44 #50-135 <br />
               <strong>Correo electrónico:</strong> stevenvallejo780@gmail.com <br />
@@ -152,7 +152,7 @@ const PrivacyPolicyView: React.FC = () => {
             los documentos que desee hacer valer. 
           </p>
           <p className="section-text">
-            Recibida su petición, Cauce dará respuesta en un plazo máximo de quince (15) días hábiles. En caso de
+            Recibida su petición, Prizma dará respuesta en un plazo máximo de quince (15) días hábiles. En caso de
             que no sea posible dar respuesta en dicho término, se le informará al titular antes del vencimiento del plazo, 
             expresando los motivos de la demora y señalando la fecha en que se atenderá su solicitud.
           </p>
@@ -164,7 +164,7 @@ const PrivacyPolicyView: React.FC = () => {
             <h2 className="section-title">11. Conservación de los Datos y Procedimiento de Quejas</h2>
           </div>
           <p className="section-text">
-            Cauce conservará los datos personales únicamente por el tiempo que sea necesario para cumplir con las
+            Prizma conservará los datos personales únicamente por el tiempo que sea necesario para cumplir con las
             finalidades establecidas en esta política o mientras exista una relación contractual o una obligación legal 
             de conservarlos. Una vez cumplidas las finalidades o finalizada la relación, se procederá a la supresión de 
             la información de acuerdo con la normatividad vigente.

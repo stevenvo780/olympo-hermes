@@ -27,9 +27,9 @@ describe('typeOrmConfig', () => {
 
     expect(config.host).toBe('localhost');
     expect(config.port).toBe(5432);
-    expect(config.username).toBe('postgres');
-    expect(config.password).toBe('postgres');
-    expect(config.database).toBe('totalpedidosv2');
+    expect(config.username).toBe('prizma');
+    expect(config.password).toBe('prizma');
+    expect(config.database).toBe('prizma-hermes-prod');
     expect(config.synchronize).toBe(false);
     expect(config.ssl).toBe(false);
   });

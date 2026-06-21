@@ -14,7 +14,7 @@ for env_file in "${SCRIPT_DIR}/.env" "${SCRIPT_DIR}/.env.local"; do
 done
 
 WEBHOOK_SECRET="${WEBHOOK_SECRET:-}"
-GRAF_WEBHOOK_URL="${GRAF_WEBHOOK_URL:-http://localhost:3007/api/v1/webhooks/graf}"
+GRAF_WEBHOOK_URL="${GRAF_WEBHOOK_URL:-http://localhost:3007/api/v1/webhooks/hermes}"
 
 : "${WEBHOOK_SECRET:?Set WEBHOOK_SECRET in utils/.env}"
 
@@ -31,7 +31,7 @@ PAYLOAD='{
     "items": [
       {
         "product_id": 1,
-        "product_name": "Producto desde Graf REAL con firma",
+        "product_name": "Producto desde Hermes REAL con firma",
         "quantity": 1,
         "unit_price": 95000,
         "total": 95000
@@ -53,7 +53,7 @@ echo ""
 # Enviar el webhook
 curl -X POST "${GRAF_WEBHOOK_URL}" \
   -H "Content-Type: application/json" \
-  -H "x-graf-signature: sha256=$SIGNATURE" \
+  -H "x-hermes-signature: sha256=$SIGNATURE" \
   -d "$PAYLOAD"
 
 echo ""

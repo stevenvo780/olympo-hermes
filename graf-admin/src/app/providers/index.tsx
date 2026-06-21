@@ -1,6 +1,6 @@
 'use client';
 
-import { ThemeProvider } from '@cauce/ui';
+import { ThemeProvider } from 'prizma-ui';
 import { ReduxProvider } from './ReduxProvider';
 import { AuthProvider } from './AuthProvider';
 

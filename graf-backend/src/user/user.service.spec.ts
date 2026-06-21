@@ -405,7 +405,7 @@ describe('UserService', () => {
       const result = await service.findUserForCredentialsSync('x@test.com');
 
       expect(result).toEqual({
-        grafUserId: '1',
+        hermesUserId: '1',
         sigo: { apiKey: 'k' },
       });
     });
@@ -420,7 +420,7 @@ describe('UserService', () => {
       const result = await service.findUserForCredentialsSync('x@test.com');
 
       expect(result).toEqual({
-        grafUserId: '2',
+        hermesUserId: '2',
         sigo: undefined,
       });
     });
@@ -662,7 +662,7 @@ describe('UserService', () => {
       userRepository.findOne.mockResolvedValue(user);
 
       const result = await service.findUserForCredentialsSync('test@test.com');
-      expect(result).toEqual({ grafUserId: '1', sigo: { apiKey: 'key' } });
+      expect(result).toEqual({ hermesUserId: '1', sigo: { apiKey: 'key' } });
     });
 
     it('should return null if user not found', async () => {

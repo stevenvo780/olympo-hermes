@@ -404,6 +404,14 @@ export default function OrderDetail({ order, onUpdateStatus, onDeleteOrder, onCl
         return;
       }
 
+      // Validar que todos los items tengan productId válido
+      const invalidItems = editedItems.filter(item => !item.productId);
+      if (invalidItems.length > 0) {
+        setProductsError('Todos los productos deben tener ID válido');
+        setSavingProducts(false);
+        return;
+      }
+
       const itemsPayload = editedItems.map(item => ({
         id: item.id,
         quantity: item.quantity,

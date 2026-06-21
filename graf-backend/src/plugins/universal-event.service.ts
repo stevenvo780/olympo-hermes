@@ -5,9 +5,9 @@ import { Store } from 'src/store/entities/store.entity';
 import * as crypto from 'crypto';
 
 /**
- * 🌐 Servicio Universal de Eventos para Graf Backend
+ * 🌐 Servicio Universal de Eventos para Hermes Backend
  *
- * Este servicio permite a Graf enviar TODOS los eventos al Hub Central
+ * Este servicio permite a Hermes enviar TODOS los eventos al Hub Central
  * sin conocer qué plugins están habilitados. Hub Central maneja la
  * lógica de enrutamiento de plugins de forma inteligente.
  */
@@ -34,8 +34,8 @@ export class UniversalEventService {
       baseDelayMs?: number;
     },
   ): Promise<void> {
-    const hubCentralUrl = this.configService.get<string>('HUB_CENTRAL_URL');
-    if (!hubCentralUrl) {
+    const nousUrl = this.configService.get<string>('HUB_CENTRAL_URL');
+    if (!nousUrl) {
       this.logger.warn('⚠️ HUB_CENTRAL_URL no configurada');
       return;
     }
@@ -54,7 +54,7 @@ export class UniversalEventService {
     const tenantId = this.generateTenantId(store);
     const apiKey =
       this.configService.get<string>('HUB_CENTRAL_SECRET') ||
-      'hub_central_secure_key_2024';
+      'nous_secure_key_2024';
 
     const signature = crypto
       .createHmac('sha256', apiKey)
@@ -65,8 +65,8 @@ export class UniversalEventService {
       'Content-Type': 'application/json',
       'X-Api-Key': apiKey,
       'X-Tenant-Id': tenantId,
-      'X-Source': 'graf-backend',
-      'X-Graf-Signature': `sha256=${signature}`,
+      'X-Source': 'hermes-backend',
+      'X-Hermes-Signature': `sha256=${signature}`,
     };
     if (userEmail) headers['X-User-Email'] = userEmail;
 
@@ -76,7 +76,7 @@ export class UniversalEventService {
       attempt++;
       try {
         await this.httpService.axiosRef.post(
-          `${hubCentralUrl}/api/v1/webhooks/graf`,
+          `${nousUrl}/api/v1/webhooks/hermes`,
           payload,
           { headers, timeout: 8000 },
         );
@@ -138,7 +138,7 @@ export class UniversalEventService {
       },
       metadata: {
         timestamp: new Date().toISOString(),
-        source: 'graf-backend',
+        source: 'hermes-backend',
         version: '2.0.0',
       },
     };
@@ -148,7 +148,7 @@ export class UniversalEventService {
    * 🏷️ Genera ID de tenant basado en la tienda
    */
   private generateTenantId(store: Store): string {
-    return `graf-store-${store.id}`;
+    return `hermes-store-${store.id}`;
   }
 
   private sleep(ms: number) {

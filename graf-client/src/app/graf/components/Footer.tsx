@@ -15,13 +15,13 @@ const DefaultFooter: React.FC = () => {
   const sectionTitleStyle = { borderBottom: '2px solid var(--accent-color)', paddingBottom: '8px', marginBottom: '15px', fontWeight: 600 };
   const socialLinkStyle = { color: 'var(--link-color)', textDecoration: 'none', transition: 'color 0.3s ease', display: 'flex', alignItems: 'center', marginBottom: '10px' };
   const iconStyle = { marginRight: '10px', fontSize: '18px' };
-  const defaultName = 'Cauce';
+  const defaultName = 'Prizma';
   const defaultLocation = 'Colombia';
   const defaultPhone = '57 3246780067';
   const defaultEmail = 'stevenvallejo780@gmail.com';
-  const defaultSlogan = 'Cauce: el cauce de tu negocio. Tecnología al servicio de tu crecimiento';
+  const defaultSlogan = 'Prizma: el prizma de tu negocio. Tecnología al servicio de tu crecimiento';
   const defaultDescription = 'Enfócate hacer lo que te gusta, que los sistemas se encarguen del resto';
-  const defaultSocialNetworks = [{ name: 'Website', url: 'https://www.humanizar.co/' }];
+  const defaultSocialNetworks = [{ name: 'Website', url: 'https://www.prizma.co/' }];
   const CustomToggle = ({ children, eventKey }: { children: React.ReactNode; eventKey: string }) => {
     const [isOpen, setIsOpen] = useState(false);
     const decoratedOnClick = useAccordionButton(eventKey, () => setIsOpen(!isOpen));

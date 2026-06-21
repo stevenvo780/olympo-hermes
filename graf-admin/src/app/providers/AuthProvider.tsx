@@ -22,7 +22,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       dispatch(
         login({
           id: 'demo-owner-uid',
-          email: 'demo@graf.local',
+          email: 'demo@hermes.local',
           name: 'Demo Owner',
           role: UserRole.BUSINESS_OWNER,
           stores: [],

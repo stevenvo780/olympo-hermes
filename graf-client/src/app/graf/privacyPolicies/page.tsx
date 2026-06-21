@@ -4,18 +4,18 @@ import PrivacyNoticeClient from './PrivacyNoticeClient';
 
 export const metadata: Metadata = {
   title: 'Aviso de Privacidad',
-  description: 'Aviso de privacidad de Graf',
+  description: 'Aviso de privacidad de Hermes',
   openGraph: {
-    title: 'Aviso de Privacidad - Graf',
-    description: 'Información sobre cómo manejamos tus datos en Graf',
+    title: 'Aviso de Privacidad - Hermes',
+    description: 'Información sobre cómo manejamos tus datos en Hermes',
     images: [],
   },
   twitter: {
     images: [],
   },
-  keywords: ['privacidad', 'datos personales', 'aviso legal', 'Graf'],
+  keywords: ['privacidad', 'datos personales', 'aviso legal', 'Hermes'],
   alternates: {
-    canonical: 'https://graf.com.co/privacy-notice',
+    canonical: 'https://hermes.com.co/privacy-notice',
   }
 };
 

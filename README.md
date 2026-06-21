@@ -1,4 +1,4 @@
-# 🚀 Graf - Sistema de E-commerce
+# 🚀 Hermes - Sistema de E-commerce
 
 Sistema completo de e-commerce con administración de productos, categorías, órdenes y múltiples tiendas.
 
@@ -18,15 +18,15 @@ Sistema completo de e-commerce con administración de productos, categorías, ó
 
 El sistema está compuesto por:
 
-- **graf-client**: Frontend Next.js 15 con TypeScript y Redux
-- **graf-backend**: Backend NestJS con TypeScript y PostgreSQL
-- **graf-admin**: Panel de administración (Next.js)
+- **hermes-client**: Frontend Next.js 15 con TypeScript y Redux
+- **hermes-backend**: Backend NestJS con TypeScript y PostgreSQL
+- **hermes-admin**: Panel de administración (Next.js)
 - **PostgreSQL**: Base de datos principal
 - **Firebase**: Autenticación y almacenamiento de archivos
 
 ### Tecnologías Principales
 
-#### Frontend (graf-client)
+#### Frontend (hermes-client)
 - Next.js 15.4.5
 - TypeScript
 - Redux Toolkit
@@ -34,7 +34,7 @@ El sistema está compuesto por:
 - React Bootstrap
 - Axios
 
-#### Backend (graf-backend)
+#### Backend (hermes-backend)
 - NestJS
 - TypeScript
 - PostgreSQL
@@ -59,7 +59,7 @@ El sistema está compuesto por:
 ### 1. Clonar el Repositorio
 ```bash
 git clone [repository-url]
-cd Graf
+cd Hermes
 ```
 
 ### 2. Instalación Automática
@@ -68,8 +68,8 @@ cd Graf
 ./scripts/check-deployment-readiness.sh
 
 # O instalación manual:
-cd graf-client && npm install
-cd ../graf-backend && npm install
+cd hermes-client && npm install
+cd ../hermes-backend && npm install
 ```
 
 ### 3. Configuración de Variables de Entorno
@@ -85,10 +85,10 @@ cp .env.example .env
 
 # O manual:
 # Terminal 1: Backend
-cd graf-backend && npm run start:dev
+cd hermes-backend && npm run start:dev
 
 # Terminal 2: Frontend  
-cd graf-client && npm run start:dev
+cd hermes-client && npm run start:dev
 ```
 
 ## ⚙️ Configuración
@@ -101,11 +101,11 @@ NODE_ENV=development
 PORT=3000
 
 # Database
-DB_HOST=postgres
+DB_HOST=prizma-postgres
 DB_PORT=5432
-DB_USERNAME=postgres
-DB_PASSWORD=postgres
-DB_NAME=totalpedidosv2
+DB_USERNAME=prizma
+DB_PASSWORD=prizma
+DB_NAME=prizma-hermes-prod
 DB_SYNCHRONIZE=false
 
 # Security
@@ -129,7 +129,7 @@ FIREBASE_DATABASE_URL=https://your-project.firebaseio.com/
 
 ### Comandos Principales
 
-#### Frontend (graf-client)
+#### Frontend (hermes-client)
 ```bash
 npm run start:dev    # Desarrollo con hot-reload
 npm run build        # Build para producción
@@ -137,7 +137,7 @@ npm run start        # Servidor de producción
 npm run lint         # Linting
 ```
 
-#### Backend (graf-backend)
+#### Backend (hermes-backend)
 ```bash
 npm run start:dev    # Desarrollo con hot-reload
 npm run build        # Build para producción
@@ -150,8 +150,8 @@ npm run test:e2e     # Tests E2E
 ### Estructura del Proyecto
 
 ```
-Graf/
-├── graf-client/          # Frontend Next.js
+Hermes/
+├── hermes-client/          # Frontend Next.js
 │   ├── src/
 │   │   ├── app/         # App Router pages
 │   │   ├── components/  # Componentes reutilizables
@@ -160,7 +160,7 @@ Graf/
 │   │   └── utils/       # Utilidades
 │   ├── public/          # Archivos estáticos
 │   └── package.json
-├── graf-backend/         # Backend NestJS
+├── hermes-backend/         # Backend NestJS
 │   ├── src/
 │   │   ├── auth/        # Autenticación
 │   │   ├── category/    # Gestión de categorías
@@ -195,8 +195,8 @@ Graf/
 
 #### 1. Build
 ```bash
-cd graf-client && npm run build
-cd ../graf-backend && npm run build
+cd hermes-client && npm run build
+cd ../hermes-backend && npm run build
 ```
 
 #### 2. Docker Compose
@@ -233,14 +233,14 @@ docker-compose up --build -d
 
 ### Frontend
 ```bash
-cd graf-client
+cd hermes-client
 npm run lint          # Linting
 # Tests no configurados actualmente
 ```
 
 ### Backend
 ```bash
-cd graf-backend
+cd hermes-backend
 npm run lint          # Linting
 npm run test          # Tests unitarios
 npm run test:e2e      # Tests E2E
@@ -306,8 +306,8 @@ docker-compose up --build
 docker-compose logs -f
 
 # Servicio específico
-docker-compose logs -f graf-backend
-docker-compose logs -f graf-client
+docker-compose logs -f hermes-backend
+docker-compose logs -f hermes-client
 ```
 
 #### Logs de aplicación

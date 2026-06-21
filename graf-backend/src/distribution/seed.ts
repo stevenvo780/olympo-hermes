@@ -6,8 +6,8 @@
  * It creates:
  *   - a demo BUSINESS_OWNER user with a known API key (used by the demo
  *     frontends via the x-api-key auth path — no Firebase creds needed),
- *   - store "graf-dist"   -> distribution feature ON  (sellers/zones/orders),
- *   - store "graf-market" -> normal marketplace, feature OFF (regression).
+ *   - store "hermes-dist"   -> distribution feature ON  (sellers/zones/orders),
+ *   - store "hermes-market" -> normal marketplace, feature OFF (regression).
  *
  * Safe for the LOCAL disposable DB only. NEVER point at production.
  */
@@ -28,11 +28,11 @@ import { DistCustomerService } from './dist-customer.service';
 import { DistOrderService } from './dist-order.service';
 import { DistOrderStatus } from '../order/entities/order.entity';
 
-const DIST_STORE = process.env.DIST_STORE_ID || 'graf-dist';
-const MARKET_STORE = process.env.MARKET_STORE_ID || 'graf-market';
+const DIST_STORE = process.env.DIST_STORE_ID || 'hermes-dist';
+const MARKET_STORE = process.env.MARKET_STORE_ID || 'hermes-market';
 const DEMO_OWNER_ID = 'demo-owner-uid';
-const DEMO_OWNER_EMAIL = 'demo@graf.local';
-const DEMO_API_KEY = process.env.DEMO_API_KEY || 'graf-dist-demo-key-2026';
+const DEMO_OWNER_EMAIL = 'demo@hermes.local';
+const DEMO_API_KEY = process.env.DEMO_API_KEY || 'hermes-dist-demo-key-2026';
 
 async function run() {
   const app = await NestFactory.createApplicationContext(AppModule, {
@@ -73,7 +73,7 @@ async function run() {
   );
 
   // ---------------------------------------------------------------------------
-  // Store graf-dist: distribution feature ON
+  // Store hermes-dist: distribution feature ON
   // ---------------------------------------------------------------------------
   console.log(`Creating store ${DIST_STORE} (distribution ON)...`);
   const distStore = await storeRepo.save(
@@ -287,7 +287,7 @@ async function run() {
   const distCount = await orders.findAll(DIST_STORE, owner, {});
 
   // ---------------------------------------------------------------------------
-  // Store graf-market: normal marketplace, distribution feature OFF
+  // Store hermes-market: normal marketplace, distribution feature OFF
   // (regression: behaves exactly like any other tenant).
   // ---------------------------------------------------------------------------
   console.log(`Creating store ${MARKET_STORE} (marketplace, feature OFF)...`);

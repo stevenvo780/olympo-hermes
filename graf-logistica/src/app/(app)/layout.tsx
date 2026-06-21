@@ -18,15 +18,15 @@ export default function AppLayout({
         <div className="brand">
           <span className="brand-logo">
             <Image
-              src="/brand/cauce-symbol.svg"
-              alt="Olympo"
+              src="/brand/prizma-symbol.svg"
+              alt="Prizma"
               width={28}
               height={28}
               priority
             />
           </span>
           <div>
-            <div className="brand-name">Graf Logística</div>
+            <div className="brand-name">Hermes Logística</div>
             <div className="brand-sub">Despacho &amp; Cargue</div>
           </div>
         </div>
@@ -39,18 +39,18 @@ export default function AppLayout({
           ))}
         </nav>
         <div className="sidebar-foot">
-          Lee pedidos <b>enrutados</b> de Graf.<br />
+          Lee pedidos <b>enrutados</b> de Hermes.<br />
           Base de datos propia.
           <div className="brand-by">
             <Image
-              src="/brand/cauce-symbol.svg"
+              src="/brand/prizma-symbol.svg"
               alt=""
               width={14}
               height={14}
               aria-hidden
             />
             <span>
-              Un producto <b>Olympo</b>
+              Un producto <b>Prizma</b>
             </span>
           </div>
         </div>

@@ -5,6 +5,7 @@ import StatusBadge from './StatusBadge';
 import { formatDistanceToNow, format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { formatNumberWithCommas, parseEsNumber } from '@/utils/formatters';
+import styles from './OrdersList.module.scss';
 
 interface OrdersListProps {
   orders: Order[];
@@ -148,11 +149,10 @@ export default function OrdersList({
                   <StatusBadge status={order.status} />
                 </td>
                 <td>
-                  <Badge style={{
-                    backgroundColor: 'var(--secondary-color)',
-                    color: 'var(--secondary-text)'
+                  <Badge className={styles.itemsBadge} style={{
+                    backgroundColor: 'var(--secondary-color)'
                   }}>
-                    <span style={{ color: 'var(--white-color) !important' }}>{getTotalItems(order)} items</span>
+                    {getTotalItems(order)} items
                   </Badge>
                 </td>
                 <td>

@@ -1,9 +1,9 @@
-const webpack = require('webpack');
 const path = require('path');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 
-module.exports = {
+module.exports = (options, webpack) => ({
+  ...options,
   entry: ['./src/main.ts'],
   target: 'node',
   externals: [nodeExternals()],
@@ -43,6 +43,7 @@ module.exports = {
     ]
   },
   plugins: [
+    ...(options.plugins || []),
     new webpack.IgnorePlugin({
       checkResource(resource) {
         const lazyImports = [
@@ -64,4 +65,4 @@ module.exports = {
       }
     })
   ]
-};
+});

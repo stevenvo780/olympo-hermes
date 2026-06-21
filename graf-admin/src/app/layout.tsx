@@ -1,21 +1,20 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import '@cauce/ui/styles.css';
+import 'prizma-ui/styles.css';
 import { Providers } from './providers';
 import ClientLayout from '@/components/ClientLayout';
 import { Analytics } from "@vercel/analytics/react"
 import '@/styles/bootstrap.css';
-import '@/styles/cauce-brand.css';
-import Head from 'next/head';
+import '@/styles/prizma-brand.css';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://admin.graf.com.co';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://admin.hermes.com.co';
 
 export const metadata = {
   title: {
-    default: 'Graf Admin',
-    template: '%s | Graf Admin'
+    default: 'Hermes Admin',
+    template: '%s | Hermes Admin'
   },
-  description: 'Graf Admin es una aplicación e-commerce minimalista y altamente funcional para gestionar pedidos de forma rápida y sencilla.',
+  description: 'Hermes Admin es una aplicación e-commerce minimalista y altamente funcional para gestionar pedidos de forma rápida y sencilla.',
   keywords: [
     'ecommerce',
     'pedidos online',
@@ -25,27 +24,27 @@ export const metadata = {
     'tienda online'
   ],
   authors: [
-    { name: 'Cauce', email: 'soporte@cauce.app' },
+    { name: 'Prizma', email: 'soporte@prizma.app' },
   ],
-  creator: 'Graf Admin',
-  publisher: 'Graf Admin',
+  creator: 'Hermes Admin',
+  publisher: 'Hermes Admin',
   metadataBase: new URL(siteUrl),
   openGraph: {
-    title: 'Graf Admin',
+    title: 'Hermes Admin',
     description: 'Aplicación e-commerce minimalista y altamente funcional para gestionar tus pedidos online.',
     url: siteUrl,
-    siteName: 'Graf Admin',
+    siteName: 'Hermes Admin',
     locale: 'es_ES',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Graf Admin',
+    title: 'Hermes Admin',
     description: 'App e-commerce minimalista y funcional para gestionar tus pedidos online.',
-    creator: '@Graf',
+    creator: '@Hermes',
     images: [{
       url: '/images/logo.svg',
-      alt: 'Logo de Graf Admin',
+      alt: 'Logo de Hermes Admin',
     }],
   },
   robots: {
@@ -62,14 +61,14 @@ export const metadata = {
 export const structuredData = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'Graf Admin',
+  name: 'Hermes Admin',
   url: siteUrl,
   logo: '/images/logo.svg',
   description: 'E-commerce minimalista y altamente funcional para gestionar pedidos de manera rápida y sencilla.',
   sameAs: [
-    'https://www.facebook.com/graf',
-    'https://instagram.com/graf',
-    'https://twitter.com/Graf'
+    'https://www.facebook.com/hermes',
+    'https://instagram.com/hermes',
+    'https://twitter.com/Hermes'
   ],
   potentialAction: {
     '@type': 'SearchAction',
@@ -85,13 +84,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" data-theme="light">
-      <Head>
+      <body suppressHydrationWarning={true} data-module="hermes">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
-      </Head>
-      <body suppressHydrationWarning={true} data-module="graf">
         <Analytics />
         <Providers>
           <ClientLayout>

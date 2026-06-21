@@ -103,12 +103,12 @@ afterEach(() => {
   mocks.isLoggedIn = false;
 });
 
-describe('Graf Header', () => {
+describe('Hermes Header', () => {
   it('renders navigation links and redirects to login when logged out', async () => {
     mocks.isLoggedIn = false;
     await renderHeader();
 
-    expect(container.textContent).toContain('Graf');
+    expect(container.textContent).toContain('Hermes');
     expect(container.textContent).toContain('Inicio');
     expect(container.textContent).toContain('Nosotros');
 
@@ -172,6 +172,6 @@ describe('Graf Header', () => {
     act(() => {
       nosotrosBtn?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     });
-    expect(mocks.push).toHaveBeenCalledWith('/graf/about');
+    expect(mocks.push).toHaveBeenCalledWith('/hermes/about');
   });
 });

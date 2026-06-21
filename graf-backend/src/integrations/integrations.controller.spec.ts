@@ -44,14 +44,14 @@ describe('IntegrationsController', () => {
     configService = module.get(ConfigService);
   });
 
-  describe('getApiSigoConfig', () => {
+  describe('getLogosConfig', () => {
     it('should fetch config from hub central', async () => {
       configService.get.mockReturnValue('http://hub-url');
       const mockResponse = { data: { config: { triggerEvent: 'test' } } };
       httpService.axiosRef.get.mockResolvedValue(mockResponse);
 
       const req = { user: { email: 'test@test.com' } } as any;
-      const result = await controller.getApiSigoConfig('store-1', req);
+      const result = await controller.getLogosConfig('store-1', req);
 
       expect(httpService.axiosRef.get).toHaveBeenCalledWith(
         expect.stringContaining('hub-url'),
@@ -68,7 +68,7 @@ describe('IntegrationsController', () => {
       httpService.axiosRef.get.mockResolvedValue(mockResponse);
 
       const req = { user: undefined } as any;
-      const result = await controller.getApiSigoConfig('store-1', req);
+      const result = await controller.getLogosConfig('store-1', req);
 
       expect(httpService.axiosRef.get).toHaveBeenCalledWith(
         expect.stringContaining('hub-url'),
@@ -85,7 +85,7 @@ describe('IntegrationsController', () => {
       httpService.axiosRef.get.mockResolvedValue(mockResponse);
 
       const req = { user: { email: 'test@test.com' } } as any;
-      const result = await controller.getApiSigoConfig('store-3', req);
+      const result = await controller.getLogosConfig('store-3', req);
 
       expect(result).toEqual(mockResponse.data);
     });
@@ -98,13 +98,13 @@ describe('IntegrationsController', () => {
       httpService.axiosRef.get.mockResolvedValue(mockResponse);
 
       const req = { user: { email: 'pay@test.com' } } as any;
-      const result = await controller.getApiSigoConfig('store-2', req);
+      const result = await controller.getLogosConfig('store-2', req);
 
       expect(result).toEqual(mockResponse.data);
     });
   });
 
-  describe('updateApiSigoConfig', () => {
+  describe('updateLogosConfig', () => {
     it('should update config in hub central', async () => {
       configService.get.mockReturnValue('http://hub-url');
       const mockResponse = { data: { config: { triggerEvent: 'saved' } } };
@@ -112,7 +112,7 @@ describe('IntegrationsController', () => {
 
       const req = { user: { email: 'test@test.com' } } as any;
       const body = { some: 'config' };
-      const result = await controller.updateApiSigoConfig(
+      const result = await controller.updateLogosConfig(
         'store-1',
         req,
         'true',
@@ -133,7 +133,7 @@ describe('IntegrationsController', () => {
       httpService.axiosRef.put.mockResolvedValue(mockResponse);
 
       const req = { user: { email: 'test@test.com' } } as any;
-      const result = await controller.updateApiSigoConfig(
+      const result = await controller.updateLogosConfig(
         'store-1',
         req,
         'false',
@@ -159,7 +159,7 @@ describe('IntegrationsController', () => {
         payments: { types: { cash: true, card: true } },
       };
 
-      const result = await controller.updateApiSigoConfig(
+      const result = await controller.updateLogosConfig(
         'store-1',
         req,
         'maybe',
@@ -180,7 +180,7 @@ describe('IntegrationsController', () => {
       httpService.axiosRef.put.mockResolvedValue(mockResponse);
 
       const req = { user: { email: 'test@test.com' } } as any;
-      const result = await controller.updateApiSigoConfig(
+      const result = await controller.updateLogosConfig(
         'store-1',
         req,
         undefined,
@@ -201,7 +201,7 @@ describe('IntegrationsController', () => {
       httpService.axiosRef.put.mockResolvedValue(mockResponse);
 
       const req = { user: { email: 'test@test.com' } } as any;
-      const result = await controller.updateApiSigoConfig(
+      const result = await controller.updateLogosConfig(
         'store-1',
         req,
         'true',

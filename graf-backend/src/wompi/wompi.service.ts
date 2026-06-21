@@ -22,6 +22,7 @@ import {
 import { UserService } from '../user/user.service';
 import { v4 as uuidv4 } from 'uuid';
 import { PaymentLinkMapping } from './entities/payment-link.entity';
+import { PendingWompiSubscription } from './entities/pending-wompi-subscription.entity';
 import axiosWompi from '@/utils/axiosWompiInstance';
 import { encrypt, decrypt } from '@/utils/encrypt';
 import { StoreService } from '../store/store.service';
@@ -42,12 +43,24 @@ import { OrderStatus } from '../order/entities/order.entity';
 @Injectable()
 export class WompiService {
   private readonly logger = new Logger(WompiService.name);
-  private pendingSubscriptions: Map<string, PendingSubscription> = new Map();
+  /**
+   * MECANISMO DE PERSISTENCIA (FIXED):
+   * pendingSubscriptions se persistió en tabla PendingWompiSubscription.
+   * Transactionnes pendientes sobreviven reinicio/multi-instancia.
+   *
+   * Flujo:
+   * 1. processSubscription guarda un registro en PendingWompiSubscription.
+   * 2. await Promise espera 60s (WEBHOOK_TIMEOUT).
+   * 3. Si webhook llega a otra instancia → busca por transactionId en DB.
+   * 4. Si timeout → cron limpia registros expirados.
+   */
   private readonly WEBHOOK_TIMEOUT = 60000;
 
   constructor(
     @InjectRepository(PaymentSource)
     private paymentSourceRepository: Repository<PaymentSource>,
+    @InjectRepository(PendingWompiSubscription)
+    private pendingWompiRepository: Repository<PendingWompiSubscription>,
     @Inject(forwardRef(() => UserService))
     private userService: UserService,
     @InjectRepository(PaymentLinkMapping)
@@ -175,10 +188,26 @@ export class WompiService {
 
       const transaction = transactionResult.transaction;
 
+      // Persistir suscripción pendiente en DB (para multi-instancia/reinicio).
+      const expiresAt = new Date(Date.now() + this.WEBHOOK_TIMEOUT);
+      await this.pendingWompiRepository.save({
+        transactionId: transaction.id,
+        userId: data.userId,
+        subscriptionData: {
+          planType: data.planType,
+          frequency: data.frequency,
+          sourceId: sourceId,
+        },
+        expiresAt,
+      });
+
       const subscriptionPromise = await new Promise<Subscription>(
         (resolve, reject) => {
-          const timer = setTimeout(() => {
-            this.pendingSubscriptions.delete(transaction.id);
+          const timer = setTimeout(async () => {
+            // Limpiar registro expirado.
+            await this.pendingWompiRepository.delete({
+              transactionId: transaction.id,
+            });
             reject(
               new RequestTimeoutException(
                 'Tiempo de espera excedido para la confirmación del pago',
@@ -186,7 +215,10 @@ export class WompiService {
             );
           }, this.WEBHOOK_TIMEOUT);
 
-          this.pendingSubscriptions.set(transaction.id, {
+          // Guardar en Map local SOLO para este request (para resolver la Promise).
+          // La DB es la fuente de verdad para multi-instancia.
+          (this as any).__localPendingSubscriptions = (this as any).__localPendingSubscriptions || new Map();
+          (this as any).__localPendingSubscriptions.set(transaction.id, {
             resolve,
             reject,
             timer,
@@ -276,9 +308,25 @@ export class WompiService {
 
         const transaction = transactionResult.transaction;
 
+        // Persistir renovación pendiente en DB.
+        const expiresAt = new Date(Date.now() + this.WEBHOOK_TIMEOUT);
+        await this.pendingWompiRepository.save({
+          transactionId: transaction.id,
+          userId: source.user.id,
+          subscriptionData: {
+            planType: source.planType,
+            frequency: source.frequency,
+            sourceId: sourceId,
+          },
+          expiresAt,
+        });
+
         await new Promise<Subscription>((resolve, reject) => {
-          const timer = setTimeout(() => {
-            this.pendingSubscriptions.delete(transaction.id);
+          const timer = setTimeout(async () => {
+            // Limpiar registro expirado.
+            await this.pendingWompiRepository.delete({
+              transactionId: transaction.id,
+            });
             reject(
               new RequestTimeoutException(
                 'Tiempo de espera excedido para la confirmación del pago',
@@ -286,7 +334,9 @@ export class WompiService {
             );
           }, this.WEBHOOK_TIMEOUT);
 
-          this.pendingSubscriptions.set(transaction.id, {
+          // Map local solo para este request.
+          (this as any).__localPendingSubscriptions = (this as any).__localPendingSubscriptions || new Map();
+          (this as any).__localPendingSubscriptions.set(transaction.id, {
             resolve,
             reject,
             timer,
@@ -345,30 +395,40 @@ export class WompiService {
             summary.storePurchases++;
           } else if (mapping.sku?.startsWith('order_')) {
             const orderId = parseInt(mapping.sku.split('_')[1], 10);
-            const updateDto: UpdateOrderDto = { status: OrderStatus.PAID };
             try {
-              await this.orderService.updateOrder(
+              // Use markPaidByGateway sin validación de permisos de usuario
+              // (el webhook de Wompi ya está autenticado)
+              await this.orderService.markPaidByGateway(
                 orderId,
-                updateDto,
-                mapping.user,
+                'wompi' as any,
               );
             } catch (err) {
-              this.logger.error(`Error updating order ${orderId}:`, err);
+              this.logger.error(`Error marking order ${orderId} as paid:`, err);
             }
           }
         }
       }
 
       if (transaction && !transaction.payment_link_id) {
-        const pendingSubscription = this.pendingSubscriptions.get(
-          transaction.id,
-        );
-        if (!pendingSubscription) {
+        // Buscar en DB (fuente de verdad multi-instancia).
+        const pendingWompi = await this.pendingWompiRepository.findOne({
+          where: { transactionId: transaction.id },
+        });
+
+        if (!pendingWompi || new Date() > pendingWompi.expiresAt) {
+          // Registr expirado o no existe.
           throw new NotFoundException(
-            'No se encontró la suscripción pendiente',
+            'No se encontró la suscripción pendiente o la transacción expiró',
           );
         }
-        clearTimeout(pendingSubscription.timer);
+
+        // Buscar en Map local (resolver la Promise).
+        const localMapObj = (this as any).__localPendingSubscriptions || new Map();
+        const pendingSubscription = localMapObj.get(transaction.id);
+
+        if (pendingSubscription) {
+          clearTimeout(pendingSubscription.timer);
+        }
         if (transaction.status === 'APPROVED') {
           const dataTransaction = JSON.parse(
             transaction.payment_method.payment_description,
@@ -408,10 +468,12 @@ export class WompiService {
               dataTransaction.userId,
               paymentSource,
             );
-            pendingSubscription.resolve(subscription);
+            if (pendingSubscription) {
+              pendingSubscription.resolve(subscription);
+            }
             summary.subscriptionsProcessed++;
           } catch (error) {
-            pendingSubscription.reject(error);
+            if (pendingSubscription) pendingSubscription.reject(error);
             summary.rejectedSubscriptions++;
           }
         } else if (
@@ -419,17 +481,24 @@ export class WompiService {
           transaction.status === 'ERROR' ||
           transaction.status === 'VOIDED'
         ) {
-          pendingSubscription.reject(
-            new BadRequestException({
-              message: 'Pago rechazado',
-              details:
-                transaction.status_message || 'La transacción fue rechazada',
-              code: transaction.status,
-            }),
-          );
+          if (pendingSubscription) {
+            pendingSubscription.reject(
+              new BadRequestException({
+                message: 'Pago rechazado',
+                details:
+                  transaction.status_message || 'La transacción fue rechazada',
+                code: transaction.status,
+              }),
+            );
+          }
           summary.rejectedSubscriptions++;
         }
-        this.pendingSubscriptions.delete(transaction.id);
+
+        // Limpiar registros de DB y Map local.
+        await this.pendingWompiRepository.delete({
+          transactionId: transaction.id,
+        });
+        localMapObj.delete(transaction.id);
       }
     }
     console.info('Resumen del procesamiento del webhook:', summary);

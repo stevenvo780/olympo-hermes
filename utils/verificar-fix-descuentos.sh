@@ -49,7 +49,7 @@ check_not_contains() {
 echo "📁 Backend (order.service.ts):"
 echo "────────────────────────────────"
 
-BACKEND_FILE="graf-backend/src/order/order.service.ts"
+BACKEND_FILE="hermes-backend/src/order/order.service.ts"
 
 # Verificar que NO tenga relations: ['product']
 check_not_contains "$BACKEND_FILE" "relations.*\['product'\]" \
@@ -97,7 +97,7 @@ echo ""
 echo "📁 Frontend (OrderDetail.tsx):"
 echo "────────────────────────────────"
 
-FRONTEND_FILE="graf-admin/src/app/[storeId]/orders/OrderDetail.tsx"
+FRONTEND_FILE="hermes-admin/src/app/[storeId]/orders/OrderDetail.tsx"
 
 # Verificar validaciones frontend
 check_file "$FRONTEND_FILE" "if (discountType === 'percentage' && discountValue > 100)" \

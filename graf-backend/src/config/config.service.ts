@@ -151,9 +151,9 @@ export class ConfigService {
     defaultConfig.coordinates = { lat: 0, lng: 0 };
     defaultConfig.customMessage = '';
     defaultConfig.plugins = {
-      hubcentral: { enabled: false, apiKey: '' },
+      nous: { enabled: false, apiKey: '' },
       sigo: { enabled: false, apiKey: '' },
-      sinergia: { enabled: false, apiKey: '' },
+      talanton: { enabled: false, apiKey: '' },
       meraVuelta: { enabled: false, apiKey: '' },
     };
     defaultConfig.productViewConfig = {
@@ -176,9 +176,9 @@ export class ConfigService {
 
   private getDefaultPlugins() {
     return {
-      hubcentral: { enabled: false, apiKey: '' },
+      nous: { enabled: false, apiKey: '' },
       sigo: { enabled: false, apiKey: '' },
-      sinergia: { enabled: false, apiKey: '' },
+      talanton: { enabled: false, apiKey: '' },
       meraVuelta: { enabled: false, apiKey: '' },
     };
   }

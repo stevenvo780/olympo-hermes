@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { Store } from '@/types';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://graf.com.co';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hermes.com.co';
 
   let stores: Store[] = [];
   try {
@@ -17,13 +17,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const staticPaths = [
     '/',
-    '/graf',
-    '/graf/home',
-    '/graf/login',
-    '/graf/orders',
-    '/graf/privacyPolicies',
-    '/graf/profile',
-    '/graf/register'
+    '/hermes',
+    '/hermes/home',
+    '/hermes/login',
+    '/hermes/orders',
+    '/hermes/privacyPolicies',
+    '/hermes/profile',
+    '/hermes/register'
   ];
 
   const staticRoutes = staticPaths.map(path => ({

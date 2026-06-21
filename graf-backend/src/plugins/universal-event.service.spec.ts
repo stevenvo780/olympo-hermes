@@ -62,7 +62,7 @@ describe('UniversalEventService', () => {
     await service.sendEvent('product.updated', data, store);
 
     expect(http.axiosRef.post).toHaveBeenCalledWith(
-      'https://hub.example.com/api/v1/webhooks/graf',
+      'https://hub.example.com/api/v1/webhooks/hermes',
       expect.any(Object),
       expect.any(Object),
     );
@@ -71,7 +71,7 @@ describe('UniversalEventService', () => {
       event_type: 'product.updated',
       data: expect.objectContaining({ store_id: 'store-1', any: 'data' }),
       tenant_context: expect.objectContaining({
-        tenant_id: 'graf-store-store-1',
+        tenant_id: 'hermes-store-store-1',
       }),
     });
 
@@ -79,10 +79,10 @@ describe('UniversalEventService', () => {
       .createHmac('sha256', 's3cr3t')
       .update(JSON.stringify(capturedPayload))
       .digest('hex');
-    expect(capturedHeaders['X-Graf-Signature']).toBe(
+    expect(capturedHeaders['X-Hermes-Signature']).toBe(
       `sha256=${expectedSignature}`,
     );
-    expect(capturedHeaders['X-Tenant-Id']).toBe('graf-store-store-1');
+    expect(capturedHeaders['X-Tenant-Id']).toBe('hermes-store-store-1');
     expect(capturedHeaders['Content-Type']).toBe('application/json');
   });
 
@@ -139,7 +139,7 @@ describe('UniversalEventService', () => {
 
     await service.sendEvent('x', {}, store);
 
-    expect(capturedHeaders['X-Api-Key']).toBe('hub_central_secure_key_2024');
+    expect(capturedHeaders['X-Api-Key']).toBe('nous_secure_key_2024');
   });
 
   it('propaga el error si la llamada HTTP falla', async () => {

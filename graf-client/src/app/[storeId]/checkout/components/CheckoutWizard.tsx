@@ -184,9 +184,13 @@ const CheckoutWizard: React.FC = () => {
           dispatch(addNotification({ message: result.message, color: 'danger' }));
         }
       }
-    } catch {
+    } catch (error) {
+      console.error('Checkout error:', error);
+      const errorMessage = error instanceof Error && error.message
+        ? error.message
+        : (error as any)?.response?.data?.message || 'Error al procesar el pedido. Intenta nuevamente.';
       dispatch(addNotification({
-        message: 'Error al procesar el pedido. Intenta nuevamente.',
+        message: errorMessage,
         color: 'danger',
       }));
     } finally {

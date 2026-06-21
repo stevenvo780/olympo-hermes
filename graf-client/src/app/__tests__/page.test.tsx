@@ -7,8 +7,8 @@ vi.mock('next/navigation', () => ({
 }));
 
 describe('HomePage', () => {
-  it('redirects to /graf', async () => {
+  it('redirects to /hermes', async () => {
     await HomePage(); // It is async function
-    expect(redirect).toHaveBeenCalledWith('/graf');
+    expect(redirect).toHaveBeenCalledWith('/hermes');
   });
 });

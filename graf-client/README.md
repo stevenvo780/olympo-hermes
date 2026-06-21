@@ -1,28 +1,28 @@
-# 🛍️ Graf Client
+# 🛍️ Hermes Client
 ## E-commerce Customer Store Frontend
 
 <div align="center">
 
-![Graf Client](https://img.shields.io/badge/Graf-Client-green?style=for-the-badge&logo=react)
+![Hermes Client](https://img.shields.io/badge/Hermes-Client-green?style=for-the-badge&logo=react)
 ![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![Redux](https://img.shields.io/badge/Redux-593D88?style=for-the-badge&logo=redux&logoColor=white)
 ![SCSS](https://img.shields.io/badge/SCSS-CC6699?style=for-the-badge&logo=sass&logoColor=white)
 
 **Tienda en línea moderna y responsiva para clientes finales**  
-*Parte del Ecosistema Humanizar*
+*Parte del Ecosistema Prizma*
 
 </div>
 
 ## 🌟 Descripción General
 
-Graf Client es la tienda en línea orientada al cliente final del **Ecosistema Humanizar**. Esta aplicación web moderna, construida con Next.js 14+ y TypeScript, proporciona una experiencia de compra excepcional con diseño responsivo, múltiples layouts de productos, carrito persistente y checkout optimizado.
+Hermes Client es la tienda en línea orientada al cliente final del **Ecosistema Prizma**. Esta aplicación web moderna, construida con Next.js 14+ y TypeScript, proporciona una experiencia de compra excepcional con diseño responsivo, múltiples layouts de productos, carrito persistente y checkout optimizado.
 
 ### 🎯 Propósito en el Ecosistema
 - **Tienda principal**: Experiencia de compra para clientes finales
 - **Multi-tienda**: Soporte para múltiples tiendas con diseños únicos
 - **E-commerce completo**: Desde catálogo hasta checkout y seguimiento
-- **Integración total**: Conecta con Graf Backend y servicios del ecosistema
+- **Integración total**: Conecta con Hermes Backend y servicios del ecosistema
 
 ## ✨ Características Principales
 
@@ -89,7 +89,7 @@ Graf Client es la tienda en línea orientada al cliente final del **Ecosistema H
 
 ### Estructura de Directorios
 ```
-📁 graf-client/
+📁 hermes-client/
 ├── 📁 src/
 │   ├── 📁 app/                           # App Router (Next.js 14+)
 │   │   ├── 📄 layout.tsx                 # Layout global
@@ -142,7 +142,7 @@ Graf Client es la tienda en línea orientada al cliente final del **Ecosistema H
 │   │   │       ├── 📄 ProductSchema.tsx  # Schema de producto (SEO)
 │   │   │       ├── 📄 StoreNotFound.tsx  # Página de tienda no encontrada
 │   │   │       └── 📄 StoreNotConfigured.tsx # Tienda no configurada
-│   │   └── 📁 graf/                      # Página estática de Graf
+│   │   └── 📁 hermes/                      # Página estática de Hermes
 │   │       ├── 📄 layout.tsx
 │   │       ├── 📄 page.tsx
 │   │       ├── 📁 about/
@@ -200,7 +200,7 @@ Graf Client es la tienda en línea orientada al cliente final del **Ecosistema H
 │   └── 📁 images/                        # Imágenes y recursos
 │       ├── 📄 default-category.png       # Categoría por defecto
 │       ├── 📄 no-image.png               # Imagen placeholder
-│       ├── 📄 humanizar-logo.png         # Logo Humanizar
+│       ├── 📄 prizma-logo.png         # Logo Prizma
 │       ├── 📄 login.png                  # Imagen de login
 │       └── 📄 logo.svg                   # Logo SVG
 ├── 📄 next.config.ts                     # Configuración Next.js
@@ -215,13 +215,13 @@ Graf Client es la tienda en línea orientada al cliente final del **Ecosistema H
 ### Prerrequisitos
 - **Node.js** >= 16.x
 - **npm** >= 8.x o **yarn** >= 1.x
-- **Graf Backend** ejecutándose
+- **Hermes Backend** ejecutándose
 - **Firebase project** configurado
 
 ### 1️⃣ Instalación
 ```bash
 # Navegar al directorio
-cd Graf/graf-client
+cd Hermes/hermes-client
 
 # Instalar dependencias
 npm install
@@ -253,7 +253,7 @@ NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=123456789
 NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
 
 # App Configuration
-NEXT_PUBLIC_APP_NAME=Graf Store
+NEXT_PUBLIC_APP_NAME=Hermes Store
 NEXT_PUBLIC_APP_VERSION=1.0.0
 NEXT_PUBLIC_ENVIRONMENT=development
 
@@ -273,7 +273,7 @@ NEXT_PUBLIC_IMAGE_QUALITY=80
 NEXT_PUBLIC_ENABLE_WEBP=true
 
 # SEO Configuration
-NEXT_PUBLIC_SITE_NAME=Graf Store
+NEXT_PUBLIC_SITE_NAME=Hermes Store
 NEXT_PUBLIC_SITE_DESCRIPTION=Tu tienda en línea favorita
 NEXT_PUBLIC_DEFAULT_OG_IMAGE=/images/og-default.jpg
 
@@ -319,10 +319,10 @@ yarn start
 ### Con Docker
 ```bash
 # Construir imagen Docker
-docker build -t graf-client .
+docker build -t hermes-client .
 
 # Ejecutar contenedor
-docker run -p 3002:3000 graf-client
+docker run -p 3002:3000 hermes-client
 ```
 
 ## 🎨 Características de la Interfaz
@@ -370,7 +370,7 @@ docker run -p 3002:3000 graf-client
 - **Checkout de una página**: Proceso simplificado
 - **Guest checkout**: Compra sin registro
 - **Múltiples direcciones**: Selección de dirección de envío
-- **Métodos de pago**: Wompi, transferencias, crédito FIAR
+- **Métodos de pago**: Wompi, transferencias, crédito PISTIS
 - **Resumen de pedido**: Desglose completo de costos
 - **Confirmación**: Página de éxito con tracking
 
@@ -384,7 +384,7 @@ docker run -p 3002:3000 graf-client
 
 ## 🔌 Integración con el Ecosistema
 
-### Graf Backend API
+### Hermes Backend API
 ```typescript
 
 const apiClient = axios.create({
@@ -526,10 +526,10 @@ vercel --prod
 ### Docker Production
 ```bash
 # Multi-stage build para producción
-docker build -f Dockerfile.prod -t graf-client:prod .
+docker build -f Dockerfile.prod -t hermes-client:prod .
 
 # Run con nginx
-docker run -p 80:80 graf-client:prod
+docker run -p 80:80 hermes-client:prod
 ```
 
 ### CDN y Performance
@@ -590,9 +590,9 @@ const productLayouts = {
 ## 📞 Soporte
 
 ### Enlaces Útiles
-- [Graf Backend Documentation](../graf-backend/README.md)
-- [Graf Admin Documentation](../graf-admin/README.md)
-- [Ecosistema Humanizar](../../README.md)
+- [Hermes Backend Documentation](../hermes-backend/README.md)
+- [Hermes Admin Documentation](../hermes-admin/README.md)
+- [Ecosistema Prizma](../../README.md)
 - [Next.js Documentation](https://nextjs.org/docs)
 
 ### Contacto
@@ -627,9 +627,9 @@ localStorage.clear()
 
 <div align="center">
 
-**Graf Client v1.0.0**  
-*Tienda E-commerce para Clientes - Ecosistema Humanizar*
+**Hermes Client v1.0.0**  
+*Tienda E-commerce para Clientes - Ecosistema Prizma*
 
-![Humanizar](https://img.shields.io/badge/Humanizar-Ecosystem-orange?style=for-the-badge)
+![Prizma](https://img.shields.io/badge/Prizma-Ecosystem-orange?style=for-the-badge)
 
 </div>

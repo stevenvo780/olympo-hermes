@@ -19,20 +19,20 @@ const AboutPage: React.FC = () => {
         <Container>
           <div className="d-flex justify-content-center mb-4">
             <Image
-              src="/images/cauce-symbol.svg"
-              alt="Cauce Logo"
+              src="/images/prizma-symbol.svg"
+              alt="Prizma Logo"
               width={180}
               height={180}
               style={{ objectFit: 'contain' }}
             />
           </div>
-          <h1 className="display-4 fw-bold">Cauce</h1>
+          <h1 className="display-4 fw-bold">Prizma</h1>
           <p className="lead mb-4">Tecnología al servicio de tu crecimiento</p>
           <p className="mb-5 w-75 mx-auto">Enfócate en hacer lo que te gusta, que los sistemas se encarguen del resto</p>
           <Button
             variant="light"
             size="lg"
-            href="https://wa.me/573246780067?text=Hola,%20estoy%20interesado%20en%20los%20servicios%20de%20Cauce"
+            href="https://wa.me/573246780067?text=Hola,%20estoy%20interesado%20en%20los%20servicios%20de%20Prizma"
             target="_blank"
             rel="noreferrer"
             className="px-4 py-2"
@@ -83,7 +83,7 @@ const AboutPage: React.FC = () => {
           <div className="text-center mt-4">
             <Button 
               variant="primary"
-              href="https://cauce.app/"
+              href="https://prizma.app/"
               target="_blank"
               style={{ padding: '10px 20px', fontSize: '1.1rem', color: 'white' }}
             >
@@ -97,9 +97,9 @@ const AboutPage: React.FC = () => {
         <Container>
           <Row className="align-items-center">
             <Col lg={6}>
-              <h2 className="mb-4">Sobre Cauce</h2>
+              <h2 className="mb-4">Sobre Prizma</h2>
               <p>
-                En Cauce estamos comprometidos con la transformación digital de las empresas,
+                En Prizma estamos comprometidos con la transformación digital de las empresas,
                 ofreciendo soluciones tecnológicas que simplifican procesos y maximizan resultados.
               </p>
               <p>
@@ -183,7 +183,7 @@ const AboutPage: React.FC = () => {
                   </div>
                   <div>
                     <h5 className="mb-0">Email</h5>
-                    <p className="mb-0">ventas@cauce.app</p>
+                    <p className="mb-0">ventas@prizma.app</p>
                   </div>
                 </div>
 
@@ -203,7 +203,7 @@ const AboutPage: React.FC = () => {
                   </div>
                   <div>
                     <h5 className="mb-0">Sitio Web</h5>
-                    <p className="mb-0">www.cauce.app</p>
+                    <p className="mb-0">www.prizma.app</p>
                   </div>
                 </div>
 
@@ -211,9 +211,9 @@ const AboutPage: React.FC = () => {
                   <h5 className="mb-3">Síguenos en redes</h5>
                   <div className="d-flex">
                     {[
-                      { icon: <CgGlobe size={24} />, url: 'https://www.cauce.app', label: 'Web' },
+                      { icon: <CgGlobe size={24} />, url: 'https://www.prizma.app', label: 'Web' },
                       { icon: <CgFacebook size={24} />, url: 'https://www.facebook.com/profile.php?id=100093808513344', label: 'Facebook' },
-                      { icon: <CgInstagram size={24} />, url: 'https://www.instagram.com/cauceapp/', label: 'Instagram' },
+                      { icon: <CgInstagram size={24} />, url: 'https://www.instagram.com/prizmaapp/', label: 'Instagram' },
                     ].map((social, index) => (
                       <a
                         key={index}
@@ -308,12 +308,12 @@ const AboutPage: React.FC = () => {
         }}
       >
         <Container>
-          <p className="mb-0">&copy; {new Date().getFullYear()} Cauce. Todos los derechos reservados.</p>
+          <p className="mb-0">&copy; {new Date().getFullYear()} Prizma. Todos los derechos reservados.</p>
         </Container>
       </footer>
 
       <a
-        href="https://wa.me/573246780067?text=Necesito%20soporte%20de%20Cauce"
+        href="https://wa.me/573246780067?text=Necesito%20soporte%20de%20Prizma"
         target="_blank"
         rel="noreferrer"
         style={{

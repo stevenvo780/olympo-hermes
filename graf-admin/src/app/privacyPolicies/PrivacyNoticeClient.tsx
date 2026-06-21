@@ -32,7 +32,7 @@ const PrivacyPolicyView: React.FC = () => {
             <h2 className="section-title">1. Introducción</h2>
           </div>
           <p className="section-text">
-            Esta política de privacidad describe cómo <strong>Cauce</strong> recopila, utiliza, almacena y protege
+            Esta política de privacidad describe cómo <strong>Prizma</strong> recopila, utiliza, almacena y protege
             los datos personales de: (i) los clientes que realizan pedidos en nuestro eCommerce; y (ii) los usuarios
             administradores (propietarios o socios) que crean y gestionan tiendas dentro de la plataforma. Nos regimos
             por la Ley 1581 de 2012, el Decreto 1377 de 2013 y las directrices de la Superintendencia de Industria y
@@ -46,15 +46,15 @@ const PrivacyPolicyView: React.FC = () => {
             <h2 className="section-title">2. Identificación del Responsable del Tratamiento</h2>
           </div>
           <div className="section-text">
-            <span className="company-badge">Cauce</span>
+            <span className="company-badge">Prizma</span>
             <p>
               <strong>Dirección:</strong> Calle 44 #50-135<br />
-              <strong>Correo electrónico:</strong> soporte@cauce.app<br />
+              <strong>Correo electrónico:</strong> soporte@prizma.app<br />
               <strong>Teléfono:</strong> 3046374368
             </p>
             <p>
               <strong>Ámbito de Aplicación:</strong> Esta política aplica a todos los datos personales recolectados,
-              procesados y almacenados por Cauce en su eCommerce y plataforma de administración de tiendas.
+              procesados y almacenados por Prizma en su eCommerce y plataforma de administración de tiendas.
             </p>
           </div>
         </section>
@@ -189,7 +189,7 @@ const PrivacyPolicyView: React.FC = () => {
           </div>
           <p className="section-text">
             Para ejercer sus derechos o realizar consultas sobre el tratamiento de sus datos personales, puede
-            escribirnos a <strong>soporte@cauce.app</strong> o llamar al número <strong>3046374368</strong>.
+            escribirnos a <strong>soporte@prizma.app</strong> o llamar al número <strong>3046374368</strong>.
           </p>
         </section>
 

@@ -29,6 +29,7 @@ import { Roles } from '@/auth/roles.decorator';
 import { UserRole, User } from '@/user/entities/user.entity';
 import { RequestWithUser } from '@/auth/types';
 import { OptionalFirebaseAuthGuard } from '@/auth/optional-firebase-auth.guard';
+import { HmacSignatureGuard } from '@/auth/hmac-signature.guard';
 
 @ApiTags('orders')
 @Controller('orders')
@@ -206,10 +207,15 @@ export class OrderController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Obtener una orden por ID' })
+  @UseGuards(FirebaseAuthGuard, RolesGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Obtener una orden por ID (requiere autenticación)' })
   @ApiOkResponse({ type: Order })
-  findOne(@Param('id') id: string): Promise<Order> {
-    return this.orderService.findOne(+id);
+  findOne(
+    @Param('id') id: string,
+    @Request() req: RequestWithUser,
+  ): Promise<Order> {
+    return this.orderService.findOne(+id, req.user as User);
   }
 
   @Patch(':id')
@@ -224,6 +230,22 @@ export class OrderController {
     @Body() dto: UpdateOrderDto,
   ): Promise<Order> {
     return this.orderService.updateOrder(+id, dto, req.user as User);
+  }
+
+  /**
+   * PATCH /api/orders/:id/delivery — Nous connector.
+   * Actualiza campos de entrega (distStatus, routeDate, deliveryZoneId).
+   * Requiere autenticación por firma HMAC-SHA256 en header x-prizma-signature.
+   */
+  @Patch(':id/delivery')
+  @UseGuards(HmacSignatureGuard)
+  @ApiOperation({ summary: 'Actualizar datos de entrega de una orden (conector Nous, requiere HMAC)' })
+  @ApiOkResponse({ type: Order })
+  updateDelivery(
+    @Param('id') id: string,
+    @Body() dto: Record<string, unknown>,
+  ): Promise<Order> {
+    return this.orderService.updateDelivery(+id, dto);
   }
 
   @Delete(':id')

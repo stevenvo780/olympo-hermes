@@ -31,13 +31,16 @@ import { InventoryModule } from './inventory/inventory.module';
 import { UserModule } from './user/user.module';
 import { IntegrationsModule } from './integrations/integrations.module';
 import { DistributionModule } from './distribution/distribution.module';
-import { CauceModule } from './cauce/cauce.module';
+import { PrizmaModule } from './prizma/prizma.module';
+import { TtlCleanupModule } from './ttl-cleanup/ttl-cleanup.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    ...(process.env.DB_HOST ? [TypeOrmModule.forRoot(typeOrmConfig)] : []),
-    CauceModule,
+    ...(process.env.DB_HOST
+      ? [TypeOrmModule.forRoot(typeOrmConfig), TtlCleanupModule]
+      : []),
+    PrizmaModule,
     AuthModule,
     ProfileModule,
     CategoryModule,

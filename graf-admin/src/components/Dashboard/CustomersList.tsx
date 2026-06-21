@@ -23,7 +23,8 @@ import {
   FiShoppingBag,
   FiUsers,
   FiEdit,
-  FiTrash2
+  FiTrash2,
+  FiUserPlus
 } from 'react-icons/fi';
 
 interface CustomersListProps {
@@ -32,6 +33,7 @@ interface CustomersListProps {
   storeId: string;
   onUpdateCustomer?: (id: number, data: Partial<Customer>) => Promise<Customer>;
   onDeleteCustomer?: (id: number) => Promise<void>;
+  onCreate?: () => void;
 }
 
 export function CustomersList({
@@ -39,6 +41,7 @@ export function CustomersList({
   isLoading,
   onUpdateCustomer,
   onDeleteCustomer,
+  onCreate,
 }: CustomersListProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [showDetail, setShowDetail] = useState(false);
@@ -151,9 +154,19 @@ export function CustomersList({
           <div className="text-center py-5">
             <FiShoppingBag size={32} style={{ color: 'var(--text-muted, #767676)' }} className="mb-3" />
             <h5 className="mt-3 mb-2">No hay clientes</h5>
-            <p className="text-muted">
+            <p className="text-muted mb-4">
               {searchTerm ? 'No se encontraron clientes que coincidan con tu búsqueda.' : 'Aún no tienes clientes registrados.'}
             </p>
+            {!searchTerm && onCreate && (
+              <Button
+                variant="primary"
+                onClick={onCreate}
+                className="d-inline-flex align-items-center"
+              >
+                <FiUserPlus className="me-2" size={16} />
+                Crear Primer Cliente
+              </Button>
+            )}
           </div>
         ) : (
           <div className="table-responsive">
@@ -232,7 +245,11 @@ export function CustomersList({
 
                     <td>
                       <Badge
-                        bg="info"
+                        style={{
+                          backgroundColor: 'var(--badge-info-bg)',
+                          color: 'var(--badge-info-text)'
+                        }}
+                        data-test-contrast="badge-info"
                         className="d-flex align-items-center"
                       >
                         {customer.loyaltyPoints} pts

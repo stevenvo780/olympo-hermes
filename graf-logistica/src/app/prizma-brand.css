@@ -1,0 +1,98 @@
+/* ---------------------------------------------------------------------------
+ * Prizma brand bridge — prizma-hermes-logistica
+ *
+ * Self-contained: re-points this app's local design tokens onto the Prizma
+ * palette (BRAND.md) WITHOUT requiring prizma-ui to be installed. Each Prizma
+ * value is provided as a literal with a `var(--c-*, <literal>)` fallback, so:
+ *   - if prizma-ui ever loads its tokens, they take over automatically;
+ *   - if it doesn't (the current setup), the literals keep the app working.
+ *
+ * "Hermes" stays its own product (módulo verde #22A45A); the umbrella chrome
+ * (links, focus, typography, gradient) is Prizma Corriente teal #0B8A8F.
+ * Loaded after globals.css so it overrides the local defaults.
+ * --------------------------------------------------------------------------- */
+
+:root {
+  /* Prizma palette literals (mirror prizma-ui tokens; used as fallbacks). */
+  --prizma-primary: #0b8a8f;        /* Corriente · teal de marca */
+  --prizma-primary-hover: #0e6e73;
+  --prizma-accent: #ff5a2b;         /* Caudal · coral (CTAs/energía) */
+  --prizma-hermes: #22a45a;           /* acento del módulo Hermes (verde) */
+  --prizma-hermes-hover: #1c8c4c;
+  --prizma-ink: #111e21;
+  --prizma-muted: #51666a;
+  --prizma-line: #e5ebec;
+  --prizma-success: #1fb57a;
+  --prizma-warning: #f5a524;
+  --prizma-danger: #f04438;
+  --prizma-ring: rgba(11, 138, 143, 0.45);
+  --prizma-gradient: linear-gradient(120deg, #0a1622 0%, #0b8a8f 58%, #2dcbd1 100%);
+  --prizma-font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --prizma-font-display: "Sora", var(--prizma-font-sans);
+
+  /* Re-point the app's local brand variables to Prizma (prefer prizma-ui if present). */
+  --brand: var(--c-accent-module, var(--prizma-hermes));
+  --brand-d: var(--c-accent-module-hover, var(--prizma-hermes-hover));
+  --green: var(--c-success, var(--prizma-success));
+  --amber: var(--c-warning, var(--prizma-warning));
+  --red: var(--c-danger, var(--prizma-danger));
+  --violet: var(--c-accent, #7c3aed);
+
+  --ink: var(--c-text, var(--prizma-ink));
+  --muted: var(--c-text-muted, var(--prizma-muted));
+  --line: var(--c-border, var(--prizma-line));
+}
+
+body {
+  font-family: var(--c-font-sans, var(--prizma-font-sans));
+}
+
+/* Titles take the Prizma display font (Sora). */
+.brand-name,
+.page-title,
+h1,
+h2,
+h3 {
+  font-family: var(--c-font-display, var(--prizma-font-display));
+}
+
+/* Links adopt the Prizma Corriente teal. */
+a {
+  color: var(--c-primary, var(--prizma-primary));
+}
+
+/* Sidebar mark sits on the signature Corriente gradient. */
+.brand-logo {
+  background: var(--c-gradient-corriente, var(--prizma-gradient));
+}
+
+/* Primary action button = Hermes module accent (verde), Prizma chrome. */
+.btn-primary {
+  background: var(--c-accent-module, var(--prizma-hermes));
+  border-color: var(--c-accent-module, var(--prizma-hermes));
+  color: var(--c-on-accent, #fff);
+}
+.btn-primary:hover {
+  background: var(--c-accent-module-hover, var(--prizma-hermes-hover));
+  border-color: var(--c-accent-module-hover, var(--prizma-hermes-hover));
+}
+
+/* Ghost links/buttons follow the module accent. */
+.btn-ghost {
+  color: var(--c-accent-module, var(--prizma-hermes));
+}
+
+/* Focus ring + accented borders. */
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid var(--c-ring, var(--prizma-ring));
+  border-color: var(--c-primary, var(--prizma-primary));
+}
+
+.capbar > span {
+  background: var(--c-accent-module, var(--prizma-hermes));
+}
+.spinner {
+  border-top-color: var(--c-accent-module, var(--prizma-hermes));
+}

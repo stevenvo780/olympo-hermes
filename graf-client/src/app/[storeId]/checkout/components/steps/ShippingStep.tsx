@@ -39,7 +39,7 @@ const ShippingStep: React.FC<ShippingStepProps> = ({
   };
 
   const isValid =
-    shippingAddress.address.trim() !== '' &&
+    shippingAddress.address.trim().length >= 5 && /[a-zA-Z0-9]/.test(shippingAddress.address) &&
     shippingAddress.city.trim() !== '' &&
     shippingAddress.department.trim() !== '';
 

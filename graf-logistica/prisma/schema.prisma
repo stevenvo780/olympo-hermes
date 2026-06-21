@@ -1,5 +1,5 @@
-// graf-logistica — base de datos PROPIA del software de logística/despacho.
-// Desacoplada de Graf: Graf es la fuente de los pedidos (vía API de solo lectura);
+// prizma-talaria — base de datos PROPIA del software de logística/despacho.
+// Desacoplada de Hermes: Hermes es la fuente de los pedidos (vía API de solo lectura);
 // aquí vive todo lo de la CAPA DE LOGÍSTICA (camiones, cargue, tracking) que en el
 // flujo actual del cliente se hace a mano en Excel.
 
@@ -28,17 +28,17 @@ model Truck {
   dispatchOrders DispatchOrder[]
 }
 
-/// Espejo de un pedido de Graf que ya está ENRUTADO/DESPACHADO y entra a la capa
-/// de logística. Se sincroniza desde la API de Graf (solo lectura) y aquí se le
-/// agrega todo lo de cargue/despacho que Graf no maneja.
+/// Espejo de un pedido de Hermes que ya está ENRUTADO/DESPACHADO y entra a la capa
+/// de logística. Se sincroniza desde la API de Hermes (solo lectura) y aquí se le
+/// agrega todo lo de cargue/despacho que Hermes no maneja.
 model DispatchOrder {
   id          Int      @id @default(autoincrement())
 
-  // --- identidad en Graf (clave de upsert) ---
-  grafOrderId Int
+  // --- identidad en Hermes (clave de upsert) ---
+  hermesOrderId Int
   storeId     String
 
-  // --- snapshot denormalizado traído de Graf ---
+  // --- snapshot denormalizado traído de Hermes ---
   zone         String?
   routeGroup   String?
   isCarrier    Boolean @default(false)
@@ -51,7 +51,7 @@ model DispatchOrder {
   units        Int     @default(0)
   weightKg     Float   @default(0)
   totalAmount  Float   @default(0)
-  grafDistStatus String?  // routed | dispatched (estado en Graf al sincronizar)
+  hermesDistStatus String?  // routed | dispatched (estado en Hermes al sincronizar)
   notes        String?
 
   // --- capa de logística (propia) ---
@@ -75,7 +75,7 @@ model DispatchOrder {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  @@unique([grafOrderId, storeId])
+  @@unique([hermesOrderId, storeId])
   @@index([status])
   @@index([isCarrier])
   @@index([routeDate])

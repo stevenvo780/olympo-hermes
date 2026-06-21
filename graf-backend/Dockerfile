@@ -14,6 +14,8 @@ COPY tsconfig*.json ./
 COPY jest.config.js ./
 COPY nest-cli.json ./
 COPY .eslintrc.js ./
+# Vendor local de prizma-contracts (self-contained: permite build sin contexto de monorepo / sin Cloud Build)
+COPY vendor-contracts ./vendor-contracts
 RUN npm ci --silent
 
 # Copiar código y construir
@@ -40,6 +42,7 @@ ENV PORT=8080
 
 # Copiar sólo lo necesario
 COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/vendor-contracts ./vendor-contracts
 COPY --from=builder /app/dist ./dist
 COPY package*.json ./
 COPY bootstrap.js ./

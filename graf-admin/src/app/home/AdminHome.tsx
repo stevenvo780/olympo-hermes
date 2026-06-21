@@ -9,7 +9,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { RootState } from '@/redux/store';
 import { PlanType, Store, StoreFormData } from '@/types';
 import { Button, Modal, Card, Form, Container, Row, Col, Alert } from 'react-bootstrap';
-import { Badge } from '@cauce/ui';
+import { Badge } from 'prizma-ui';
 import { setCommerces, removeCommerce } from '@/redux/commerces';
 import StoreModal from './StoreModal';
 import StorePaymentModal from './StorePaymentModal';
@@ -41,6 +41,18 @@ export default function AdminHome() {
   const [showStoreNameModal, setShowStoreNameModal] = useState(false);
   const [newStoreName, setNewStoreName] = useState('');
 
+  // Pagination
+  const itemsPerPage = 10;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const [hasTotalCountHeader, setHasTotalCountHeader] = useState(false);
+  // Fallback pagination: if backend did not paginate and returned all commerces (> itemsPerPage),
+  // we slice client-side. Otherwise, we use the server-paginated data as-is.
+  const paginatedCommerces = (commerces && commerces.length > itemsPerPage)
+    ? commerces.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+    : (commerces || []);
+  const totalPages = Math.ceil(totalCount / itemsPerPage);
+
   useEffect(() => {
     if (searchParams) {
       const paymentSuccess = searchParams.get('paymentSuccessStore');
@@ -57,15 +69,41 @@ export default function AdminHome() {
     }
 
     if (config) {
-      axios.get<Store[]>('/store/get/my')
-        .then(res => dispatch(setCommerces(res.data)))
-        .catch(() => dispatch(setCommerces([])));
+      axios.get<Store[]>('/store/get/my', {
+        params: {
+          page: currentPage,
+          limit: itemsPerPage
+        }
+      })
+        .then(res => {
+          dispatch(setCommerces(res.data));
+          const totalHeader = res.headers['x-total-count'] || res.headers['X-Total-Count'] || res.headers['total-count'];
+          if (res.data.length > itemsPerPage) {
+            setTotalCount(res.data.length);
+            setHasTotalCountHeader(true);
+          } else if (totalHeader) {
+            setTotalCount(parseInt(totalHeader as string, 10));
+            setHasTotalCountHeader(true);
+          } else {
+            setHasTotalCountHeader(false);
+            if (res.data.length < itemsPerPage) {
+              setTotalCount((currentPage - 1) * itemsPerPage + res.data.length);
+            } else {
+              setTotalCount(currentPage * itemsPerPage + 1);
+            }
+          }
+        })
+        .catch(() => {
+          dispatch(setCommerces([]));
+          setTotalCount(0);
+          setHasTotalCountHeader(false);
+        });
 
       if (config.subscription && config.subscription.planType) {
         setCurrentPlan(config.subscription.planType as PlanType);
       }
     }
-  }, [config, dispatch, searchParams, router]);
+  }, [config, dispatch, searchParams, router, currentPage]);
 
   const openDeleteModal = (commerceId: string) => {
     setSelectedCommerceId(commerceId);
@@ -104,6 +142,39 @@ export default function AdminHome() {
       await axios.delete(`/store/${selectedCommerceId}`);
       dispatch(removeCommerce(selectedCommerceId));
       dispatch(addNotification({ message: 'Comercio eliminado exitosamente', color: 'success' }));
+
+      // Re-fetch current page to fill empty slot and sync count
+      if (config) {
+        axios.get<Store[]>('/store/get/my', {
+          params: {
+            page: currentPage,
+            limit: itemsPerPage
+          }
+        })
+          .then(res => {
+            dispatch(setCommerces(res.data));
+            const totalHeader = res.headers['x-total-count'] || res.headers['X-Total-Count'] || res.headers['total-count'];
+            if (res.data.length > itemsPerPage) {
+              setTotalCount(res.data.length);
+              setHasTotalCountHeader(true);
+            } else if (totalHeader) {
+              setTotalCount(parseInt(totalHeader as string, 10));
+              setHasTotalCountHeader(true);
+            } else {
+              setHasTotalCountHeader(false);
+              if (res.data.length < itemsPerPage) {
+                setTotalCount((currentPage - 1) * itemsPerPage + res.data.length);
+              } else {
+                setTotalCount(currentPage * itemsPerPage + 1);
+              }
+            }
+          })
+          .catch(() => {
+            dispatch(setCommerces([]));
+            setTotalCount(0);
+            setHasTotalCountHeader(false);
+          });
+      }
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Error al eliminar el comercio';
       dispatch(addNotification({ message: errorMessage, color: 'danger' }));
@@ -158,7 +229,7 @@ export default function AdminHome() {
                 <div className={styles.decoBottomLeft}></div>
 
                 <div className="d-flex justify-content-center mb-2">
-                  <Badge tone="primary">Cauce</Badge>
+                  <Badge tone="primary">Prizma</Badge>
                 </div>
                 <div className="d-flex align-items-center justify-content-center mb-4">
                   <Image
@@ -168,7 +239,7 @@ export default function AdminHome() {
                     height={70}
                   />
                   <h1 className="display-4 fw-bold mb-0 ms-2 ">
-                    Graf
+                    Hermes
                   </h1>
                 </div>
 
@@ -214,19 +285,19 @@ export default function AdminHome() {
                 </div>
 
                 <p className="text-muted mt-4 fs-6">
-                  Únete a nuestros socios que ya confían en Graf
+                  Únete a nuestros socios que ya confían en Hermes
                 </p>
 
                 <p className="text-muted mt-4 small d-flex align-items-center justify-content-center gap-1">
                   Powered by
                   <Image
-                    src="/images/cauce-symbol.svg"
-                    alt="Cauce"
+                    src="/images/prizma-symbol.svg"
+                    alt="Prizma"
                     width={16}
                     height={16}
                     style={{ verticalAlign: 'middle' }}
                   />
-                  Cauce
+                  Prizma
                 </p>
               </Card.Body>
             </Card>
@@ -276,8 +347,16 @@ export default function AdminHome() {
           <p className="mb-0">Para comenzar, haz clic en &quot;Comprar Nueva Tienda&quot; y sigue las instrucciones de pago.</p>
         </Alert>
       ) : (
-        <Row>
-          {commerces.map(commerce => (
+        <>
+          <Row>
+            <Col className="mb-3">
+              <p className="text-muted">
+                Mostrando {(currentPage - 1) * itemsPerPage + 1} a {(currentPage - 1) * itemsPerPage + paginatedCommerces.length} de {hasTotalCountHeader ? totalCount : (commerces.length < itemsPerPage ? (currentPage - 1) * itemsPerPage + commerces.length : `${currentPage * itemsPerPage}+`)} tiendas
+              </p>
+            </Col>
+          </Row>
+          <Row>
+            {paginatedCommerces.map(commerce => (
             <Col key={commerce.id} md={4} className="mb-4">
               <Card className="h-100">
                 {commerce.configuration?.logo && (
@@ -317,7 +396,33 @@ export default function AdminHome() {
               </Card>
             </Col>
           ))}
-        </Row>
+          </Row>
+          {totalPages > 1 && (
+            <Row className="mt-4">
+              <Col xs="auto" className="mx-auto">
+                <div className="btn-group">
+                  <Button
+                    variant="outline-secondary"
+                    disabled={currentPage === 1}
+                    onClick={() => setCurrentPage(currentPage - 1)}
+                  >
+                    Anterior
+                  </Button>
+                  <Button variant="outline-secondary" disabled>
+                    Página {currentPage} de {totalPages}
+                  </Button>
+                  <Button
+                    variant="outline-secondary"
+                    disabled={currentPage === totalPages}
+                    onClick={() => setCurrentPage(currentPage + 1)}
+                  >
+                    Siguiente
+                  </Button>
+                </div>
+              </Col>
+            </Row>
+          )}
+        </>
       )}
 
       <Modal show={showModal} onHide={cancelDelete}>

@@ -30,8 +30,15 @@ const auth = createSlice({
       if (typeof window !== 'undefined') {
         const userData = localStorage.getItem('userData');
         if (userData) {
-          state.userData = JSON.parse(userData);
-          state.isLoggedIn = true;
+          try {
+            state.userData = JSON.parse(userData);
+            state.isLoggedIn = true;
+          } catch (e) {
+            console.error('Error parsing userData from localStorage:', e);
+            localStorage.removeItem('userData');
+            state.isLoggedIn = false;
+            state.userData = null;
+          }
         }
       }
     },

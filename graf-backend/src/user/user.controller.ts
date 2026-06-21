@@ -253,11 +253,11 @@ export class UserController {
   @ApiOperation({
     summary: 'Obtener credenciales para sincronización (solo interno)',
     description:
-      'Endpoint interno para que HubCentral obtenga las credenciales del usuario.',
+      'Endpoint interno para que Nous obtenga las credenciales del usuario.',
   })
   @Get('credentials/sync/:email')
   async getCredentialsForSync(@Param('email') email: string): Promise<{
-    grafUserId?: string;
+    hermesUserId?: string;
     sigo?: {
       apiKey?: string;
       username?: string;

@@ -6,6 +6,7 @@ import { CustomerService } from './customer.service';
 import { Customer } from './entities/customer.entity';
 import { Store } from '../store/entities/store.entity';
 import { PluginService } from '../plugins/plugin.service';
+import { PrizmaHubService } from '../prizma/prizma-hub.service';
 import { createMockRepository } from '../test/test-utils';
 
 describe('CustomerService', () => {
@@ -13,12 +14,17 @@ describe('CustomerService', () => {
   let customerRepository: any;
   let storeRepository: any;
   let pluginService: any;
+  let prizmaHub: any;
   let queryRunner: any;
 
   beforeEach(async () => {
     const mockCustomerRepository = createMockRepository();
     const mockStoreRepository = createMockRepository();
     const mockPluginService = { emit: jest.fn() };
+    const mockPrizmaHub = {
+      customerCreated: jest.fn().mockResolvedValue(true),
+      orderPaid: jest.fn().mockResolvedValue(true),
+    };
 
     queryRunner = {
       connect: jest.fn(),
@@ -51,6 +57,7 @@ describe('CustomerService', () => {
       providers: [
         CustomerService,
         { provide: PluginService, useValue: mockPluginService },
+        { provide: PrizmaHubService, useValue: mockPrizmaHub },
         {
           provide: getRepositoryToken(Customer),
           useValue: mockCustomerRepository,
@@ -64,6 +71,7 @@ describe('CustomerService', () => {
     customerRepository = module.get(getRepositoryToken(Customer));
     storeRepository = module.get(getRepositoryToken(Store));
     pluginService = module.get(PluginService);
+    prizmaHub = module.get(PrizmaHubService);
   });
 
   afterEach(() => {

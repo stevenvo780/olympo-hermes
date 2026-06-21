@@ -46,6 +46,7 @@ export enum PaymentMethod {
   WOMPI = 'wompi',
   BOLD = 'bold',
   CREDIT = 'credit',
+  MERCADOPAGO = 'mercadopago',
 }
 
 export enum DiscountType {
@@ -229,4 +230,12 @@ export class Order extends SharedProp {
     description: 'Valor del descuento (porcentaje o cantidad fija)',
   })
   discountValue?: number;
+
+  @Column({ type: 'varchar', nullable: true })
+  @ApiProperty({ required: false, description: 'ID de factura' })
+  invoiceId?: string;
+
+  @Column({ type: 'varchar', nullable: true })
+  @ApiProperty({ required: false, description: 'URL del PDF de factura' })
+  invoicePdfUrl?: string;
 }

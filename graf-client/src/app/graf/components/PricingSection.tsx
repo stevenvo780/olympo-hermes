@@ -127,7 +127,7 @@ const formatPrice = (value: number): string => {
 
 const PricingSection: React.FC = () => {
   const [isAnnual, setIsAnnual] = useState(false);
-  const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL || 'http://localhost:3001';
+  const adminUrl = process.env.NEXT_PUBLIC_API_URL || 'https://prizma-hermes-kjopuery2a-uc.a.run.app';
 
   return (
     <section className="pricing-section">

@@ -470,14 +470,14 @@ const Footer: React.FC = () => {
                 <div className="d-flex justify-content-center align-items-center">
                   <Image
                     src="/images/logo.svg"
-                    alt="Graf"
+                    alt="Hermes"
                     height={30}
                     width={30}
                     className="me-2"
                   />
-                  <span className="graf-text">Graf</span>
+                  <span className="hermes-text">Hermes</span>
                 </div>
-                <small className="d-block mt-1">Powered by Cauce</small>
+                <small className="d-block mt-1">Powered by Prizma</small>
               </div>
             )}
             {storeName && (
@@ -487,7 +487,7 @@ const Footer: React.FC = () => {
             )}
           </Col>
           <Col className="text-center border-top mt-4 pt-3" style={{ borderTop: '1px solid var(--border-color-light)' }}>
-            <small>&copy; Powered by <a href="https://www.humanizar.co/" style={{ color: 'var(--link-color)', textDecoration: 'none' }} target="_blank" rel="noreferrer">Cauce</a></small>
+            <small>&copy; Powered by <a href="https://www.prizma.co/" style={{ color: 'var(--link-color)', textDecoration: 'none' }} target="_blank" rel="noreferrer">Prizma</a></small>
           </Col>
         </Row>
       </Container>

@@ -66,9 +66,9 @@ const IntegrationsSection: React.FC = () => {
   const presetEvents = PRESET_TRIGGER_EVENTS as unknown as string[];
   const [triggerEvent, setTriggerEvent] = useState<string>('order.paid');
 
-  const loadApiSigoConfig = useCallback(async () => {
+  const loadLogosConfig = useCallback(async () => {
     try {
-      const res = await api.get(`/integrations/apisigo/${storeId}`);
+      const res = await api.get(`/integrations/logos/${storeId}`);
       const cfg = res.data?.config as SigoConfig | undefined;
 
       if (!cfg) return;
@@ -132,9 +132,9 @@ const IntegrationsSection: React.FC = () => {
   useEffect(() => {
     loadIntegrationStatus();
     if (storeId) {
-      loadApiSigoConfig().catch(() => void 0);
+      loadLogosConfig().catch(() => void 0);
     }
-  }, [storeId, loadApiSigoConfig, loadIntegrationStatus]);
+  }, [storeId, loadLogosConfig, loadIntegrationStatus]);
 
   const handleSaveSigo = async () => {
     setSavingIntegration('sigo');
@@ -227,8 +227,8 @@ const IntegrationsSection: React.FC = () => {
         triggerEvent: selectedTrigger,
       };
 
-      await api.put(`/integrations/apisigo/${storeId}?enabled=true`, configBody);
-      await loadApiSigoConfig();
+      await api.put(`/integrations/logos/${storeId}?enabled=true`, configBody);
+      await loadLogosConfig();
       dispatch(
         addNotification({
           message: 'Configuración de SIGO guardada',
@@ -459,13 +459,13 @@ const IntegrationsSection: React.FC = () => {
                   <Button
                     type="button"
                     variant="outline-secondary"
-                    onClick={() => loadApiSigoConfig()}
+                    onClick={() => loadLogosConfig()}
                   >
                     Recargar
                   </Button>
                 </div>
                 <small className="text-muted d-block mt-2">
-                  Tip: Obtén los IDs en ApiSigo → GET /api/invoices/payment-types y pégalos aquí.
+                  Tip: Obtén los IDs en Logos → GET /api/invoices/payment-types y pégalos aquí.
                 </small>
               </div>
             </Card.Body>
@@ -477,7 +477,7 @@ const IntegrationsSection: React.FC = () => {
         <Col md={8} lg={6} className="mb-4">
           <Card className="h-100 border-info">
             <Card.Header className="bg-info text-white">
-              <h6 className="mb-0">Cuándo generar factura en HubCentral (un solo evento)</h6>
+              <h6 className="mb-0">Cuándo generar factura en Nous (un solo evento)</h6>
             </Card.Header>
             <Card.Body>
               <div>
@@ -524,7 +524,7 @@ const IntegrationsSection: React.FC = () => {
                   </Button>
                   <small className="text-muted">Debes guardar para aplicar el cambio.</small>
                 </div>
-                <small className="text-muted d-block mt-2">Este ajuste controla cuándo HubCentral enviará la factura a SIGO.</small>
+                <small className="text-muted d-block mt-2">Este ajuste controla cuándo Nous enviará la factura a SIGO.</small>
               </div>
             </Card.Body>
           </Card>

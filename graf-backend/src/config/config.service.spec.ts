@@ -71,7 +71,7 @@ describe('ConfigService', () => {
       const existingConfig = {
         id: 1,
         store,
-        plugins: { hubcentral: { enabled: true } },
+        plugins: { nous: { enabled: true } },
       };
       const { checkStoreAccess } = require('../utils/permissions');
       checkStoreAccess.mockResolvedValue(store);
@@ -138,9 +138,9 @@ describe('ConfigService', () => {
         id: 5,
         store,
         plugins: {
-          hubcentral: { enabled: false, apiKey: '' },
+          nous: { enabled: false, apiKey: '' },
           sigo: { enabled: false, apiKey: '' },
-          sinergia: { enabled: false, apiKey: '' },
+          talanton: { enabled: false, apiKey: '' },
           meraVuelta: { enabled: false, apiKey: '' },
         },
         showNavbarLogo: false,
@@ -273,9 +273,9 @@ describe('ConfigService', () => {
         id: 6,
         store,
         plugins: {
-          hubcentral: { enabled: false, apiKey: '' },
+          nous: { enabled: false, apiKey: '' },
           sigo: { enabled: false, apiKey: '' },
-          sinergia: { enabled: false, apiKey: '' },
+          talanton: { enabled: false, apiKey: '' },
           meraVuelta: { enabled: false, apiKey: '' },
         },
         showNavbarLogo: true,

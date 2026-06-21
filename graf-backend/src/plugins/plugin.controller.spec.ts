@@ -13,7 +13,7 @@ describe('PluginController', () => {
   const mockPluginService = {
     getStorePluginConfig: jest.fn(),
     getAvailablePlugins: jest.fn(),
-    checkHubCentralConnection: jest.fn(),
+    checkNousConnection: jest.fn(),
   } as Partial<PluginService>;
 
   beforeEach(async () => {
@@ -23,7 +23,14 @@ describe('PluginController', () => {
         { provide: ConfigService, useValue: mockConfigService },
         { provide: PluginService, useValue: mockPluginService },
       ],
-    }).compile();
+    })
+      .overrideGuard(
+        require('../auth/firebase-auth.guard').FirebaseAuthGuard,
+      )
+      .useValue({ canActivate: () => true })
+      .overrideGuard(require('../auth/roles.guard').RolesGuard)
+      .useValue({ canActivate: () => true })
+      .compile();
 
     controller = module.get<PluginController>(PluginController);
     jest.clearAllMocks();
@@ -71,15 +78,15 @@ describe('PluginController', () => {
     });
   });
 
-  describe('getHubCentralPlugins', () => {
+  describe('getNousPlugins', () => {
     it('returns hub central plugin config', async () => {
       (mockPluginService.getStorePluginConfig as jest.Mock).mockResolvedValue({
-        hubcentral: { enabled: true },
+        nous: { enabled: true },
       });
 
-      const res = await controller.getHubCentralPlugins('12');
+      const res = await controller.getNousPlugins('12');
 
-      expect(res).toEqual({ hubcentral: { enabled: true } });
+      expect(res).toEqual({ nous: { enabled: true } });
       expect(mockPluginService.getStorePluginConfig).toHaveBeenCalledWith(12);
     });
   });
@@ -98,18 +105,18 @@ describe('PluginController', () => {
     });
   });
 
-  describe('checkHubCentralConnection', () => {
+  describe('checkNousConnection', () => {
     it('returns connection status', async () => {
       (
-        mockPluginService.checkHubCentralConnection as jest.Mock
+        mockPluginService.checkNousConnection as jest.Mock
       ).mockResolvedValue({
         connected: true,
       });
 
-      const res = await controller.checkHubCentralConnection();
+      const res = await controller.checkNousConnection();
 
       expect(res).toEqual({ connected: true });
-      expect(mockPluginService.checkHubCentralConnection).toHaveBeenCalled();
+      expect(mockPluginService.checkNousConnection).toHaveBeenCalled();
     });
   });
 });

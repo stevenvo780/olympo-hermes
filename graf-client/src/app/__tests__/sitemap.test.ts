@@ -64,7 +64,7 @@ describe('sitemap', () => {
 
     const result = await sitemap();
 
-    const homeRoute = result.find(r => r.url === 'https://graf.com.co/');
+    const homeRoute = result.find(r => r.url === 'https://hermes.com.co/');
     expect(homeRoute).toBeDefined();
   });
 
@@ -89,9 +89,9 @@ describe('sitemap', () => {
     const result = await sitemap();
     const urls = result.map(r => r.url);
 
-    expect(urls.some(u => u.includes('/graf'))).toBe(true);
-    expect(urls.some(u => u.includes('/graf/home'))).toBe(true);
-    expect(urls.some(u => u.includes('/graf/privacyPolicies'))).toBe(true);
+    expect(urls.some(u => u.includes('/hermes'))).toBe(true);
+    expect(urls.some(u => u.includes('/hermes/home'))).toBe(true);
+    expect(urls.some(u => u.includes('/hermes/privacyPolicies'))).toBe(true);
   });
 
   it('creates routes for store subpaths', async () => {

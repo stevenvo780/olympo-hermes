@@ -38,6 +38,14 @@ lerna-debug.log*
 .env
 .env.*
 !.env.example
+
+# Secrets (real production) - explicit entries (covered by .env.* above, listed for visibility)
+.env.prod
+.env.prod-backup
+.env.local
+.env.development
+.env.test
+
 scripts/.env
 .qodo
 backups*

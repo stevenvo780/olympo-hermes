@@ -1,15 +1,15 @@
 services:
   # Backend API (NestJS) — conecta a pgram via VPN
-  graf-backend:
+  hermes-backend:
     build:
-      context: ./graf-backend
+      context: ./hermes-backend
       dockerfile: Dockerfile
       target: production
-    container_name: graf-backend
+    container_name: hermes-backend
     restart: unless-stopped
     env_file:
       - .env
-      - ./graf-backend/.env
+      - ./hermes-backend/.env
     environment:
       - PORT=3000
     ports:
@@ -17,7 +17,7 @@ services:
     volumes:
       - ./logs_detallados:/app/logs
     networks:
-      - graf-network
+      - hermes-network
     command: ["node", "dist/main.js"]
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:3000/health || exit 1"]
@@ -26,49 +26,49 @@ services:
       retries: 3
 
   # Panel Administrativo (Next.js)
-  graf-admin:
+  hermes-admin:
     build:
-      context: ./graf-admin
+      context: ./hermes-admin
       dockerfile: Dockerfile
       target: development
-    container_name: graf-admin
+    container_name: hermes-admin
     restart: unless-stopped
     env_file:
       - .env
-      - ./graf-admin/.env
+      - ./hermes-admin/.env
     ports:
       - "4444:3000"
     volumes:
-      - ./graf-admin:/app
+      - ./hermes-admin:/app
       - /app/node_modules
       - /app/.next
     networks:
-      - graf-network
+      - hermes-network
     depends_on:
-      - graf-backend
+      - hermes-backend
 
   # Cliente Público (Next.js)
-  graf-client:
+  hermes-client:
     build:
-      context: ./graf-client
+      context: ./hermes-client
       dockerfile: Dockerfile
       target: development
-    container_name: graf-client
+    container_name: hermes-client
     restart: unless-stopped
     env_file:
       - .env
-      - ./graf-client/.env
+      - ./hermes-client/.env
     ports:
       - "5555:3000"
     volumes:
-      - ./graf-client:/app
+      - ./hermes-client:/app
       - /app/node_modules
       - /app/.next
     networks:
-      - graf-network
+      - hermes-network
     depends_on:
-      - graf-backend
+      - hermes-backend
 
 networks:
-  graf-network:
+  hermes-network:
     driver: bridge

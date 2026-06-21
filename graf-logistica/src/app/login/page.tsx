@@ -48,14 +48,14 @@ function LoginForm() {
       <form onSubmit={submit} className="card" style={{ width: 340, padding: 28 }}>
         <div style={{ textAlign: "center", marginBottom: 18 }}>
           <Image
-            src="/brand/cauce-symbol.svg"
-            alt="Olympo"
+            src="/brand/prizma-symbol.svg"
+            alt="Prizma"
             width={48}
             height={48}
             priority
             style={{ borderRadius: 12 }}
           />
-          <h2 style={{ margin: "8px 0 2px" }}>Graf Logística</h2>
+          <h2 style={{ margin: "8px 0 2px" }}>Hermes Logística</h2>
           <div className="muted" style={{ fontSize: 13 }}>Despacho &amp; Cargue</div>
         </div>
         {err && <div className="banner banner-err">{err}</div>}
@@ -71,7 +71,7 @@ function LoginForm() {
           className="muted"
           style={{ textAlign: "center", fontSize: 11, marginTop: 16 }}
         >
-          Un producto <b>Olympo</b>
+          Un producto <b>Prizma</b>
         </div>
       </form>
     </div>

@@ -1,11 +1,11 @@
-# PHASE2_REPORT — Distribución multivendedor (Palomino) integrada en el monorepo Graf
+# PHASE2_REPORT — Distribución multivendedor (Palomino) integrada en el monorepo Hermes
 
-Fase 2: la distribución se integró como **feature multi-tenant de primera clase DENTRO del Graf real**
-(`/workspace/Graf`), no como app aparte. Se usó `/workspace/Graf-dist` (Fase 1) solo como referencia.
+Fase 2: la distribución se integró como **feature multi-tenant de primera clase DENTRO del Hermes real**
+(`/workspace/Hermes`), no como app aparte. Se usó `/workspace/Hermes-dist` (Fase 1) solo como referencia.
 Probado end-to-end en navegador (Playwright) y por API (curl) contra un **PostgreSQL local desechable**.
 
 > **Línea roja respetada:** nunca se tocó la DB de PROD. Todo corre contra Postgres local
-> `127.0.0.1:55432`, DB **`graf_palomino`** (desechable). **Sin** deploy a Vercel, **sin** push a
+> `127.0.0.1:55432`, DB **`hermes_palomino`** (desechable). **Sin** deploy a Vercel, **sin** push a
 > `dev`/`master`, **sin** push a origin. Commits SOLO en la rama local `feat/distribucion-multivendedor`.
 
 ---
@@ -15,7 +15,7 @@ Probado end-to-end en navegador (Playwright) y por API (curl) contra un **Postgr
 La feature ya existía en la rama local `feat/distribucion-multivendedor` de las 3 subrepos (módulo limpio
 `src/distribution/`, equivalente a la referencia). Se adoptó esa rama, se completó y se probó:
 
-- **Backend (`graf-backend/src/distribution/`)** — módulo NestJS propio que **extiende** el dominio
+- **Backend (`hermes-backend/src/distribution/`)** — módulo NestJS propio que **extiende** el dominio
   existente sin duplicarlo:
   - Entidades nuevas: `Seller`, `CustomerAddress`. Columnas **aditivas y nullables** sobre `Order`
     (`sellerId`, `customerAddressId`, `distStatus`, `routeDate`), `Customer` (`addresses`, `zone`) y
@@ -27,18 +27,18 @@ La feature ya existía en la rama local `feat/distribucion-multivendedor` de las
     BUSINESS_OWNER)`. `storeId` por query, sin `DEFAULT_STORE_ID` en el camino de request.
   - Servicios: `DistOrderService` (máquina de estados, inventario, enrutamiento), `DistCustomerService`
     (clientes + sedes), `SellerService`, `ZoneService`, `ExportService` (xlsx), `seed.ts`.
-- **Admin (`graf-admin`)** — vista oficina `/[storeId]/distribucion`: cola con filtros
+- **Admin (`hermes-admin`)** — vista oficina `/[storeId]/distribucion`: cola con filtros
   (vendedor/zona/estado/fecha/ruta), acciones por estado, columna "Día de ruta" editable, panel de
   enrutamiento por zona, botón "Exportar consolidado". Ítem **"Distribución"** en el nav, gateado por el
   flag. Toggle del flag en *Configuración → ActivationsSection*.
-- **Client (`graf-client`)** — vista vendedor `/[storeId]/vendedor`: carrito tipo marketplace, selección
+- **Client (`hermes-client`)** — vista vendedor `/[storeId]/vendedor`: carrito tipo marketplace, selección
   de vendedor y cliente, **zona heredada del cliente**, **desplegable de sede**, validación de
   transportadora (dirección + teléfono obligatorios), notas. **(Fase 2)** se restauró el formulario
   **"+ Nuevo cliente"** (G2/G3) y se añadió **"+ Agregar sede"** (G1/G4).
 
 ### Flag / activación (multi-tenant)
 - Flag: **`Config.activations.distributionEnabled`** (campo JSON ya existente → **migración cero** para
-  activar). Por tienda. `graf-dist` ON · `graf-market` OFF.
+  activar). Por tienda. `hermes-dist` ON · `hermes-market` OFF.
 - Con la feature **OFF** el comportamiento marketplace es **idéntico** (ver §3).
 
 ---
@@ -46,32 +46,32 @@ La feature ya existía en la rama local `feat/distribucion-multivendedor` de las
 ## 2. Cómo levantarlo localmente (Postgres desechable)
 
 ```bash
-# 0) Postgres local desechable ya corre en 127.0.0.1:55432 (DB graf_palomino).
-#    backend/.env apunta SOLO ahí (el .env de prod está en graf-backend/.env.prod-backup).
+# 0) Postgres local desechable ya corre en 127.0.0.1:55432 (DB hermes_palomino).
+#    backend/.env apunta SOLO ahí (el .env de prod está en hermes-backend/.env.prod-backup).
 
 # 1) Backend (NestJS) :3004  — siembra demo + arranca
-cd /workspace/Graf/graf-backend
-npm run seed:dist          # crea owner (x-api-key), store graf-dist (ON) y graf-market (OFF)
+cd /workspace/Hermes/hermes-backend
+npm run seed:dist          # crea owner (x-api-key), store hermes-dist (ON) y hermes-market (OFF)
 npm run start              # http://localhost:3004  (Swagger en /api)
 
 # 2) Admin (Next) :3001
-cd /workspace/Graf/graf-admin && PORT=3001 npm run start:dev
-#   Oficina:    http://localhost:3001/graf-dist/distribucion
-#   Regresión:  http://localhost:3001/graf-market/distribucion  (debe decir "no activada")
+cd /workspace/Hermes/hermes-admin && PORT=3001 npm run start:dev
+#   Oficina:    http://localhost:3001/hermes-dist/distribucion
+#   Regresión:  http://localhost:3001/hermes-market/distribucion  (debe decir "no activada")
 
 # 3) Client (Next) :3000
-cd /workspace/Graf/graf-client && PORT=3000 npm run start:dev
-#   Vendedor:   http://localhost:3000/graf-dist/vendedor
-#   Regresión:  http://localhost:3000/graf-market      (storefront marketplace normal)
+cd /workspace/Hermes/hermes-client && PORT=3000 npm run start:dev
+#   Vendedor:   http://localhost:3000/hermes-dist/vendedor
+#   Regresión:  http://localhost:3000/hermes-market      (storefront marketplace normal)
 ```
 
-Credenciales demo (solo DB desechable): owner `demo@graf.local` (BUSINESS_OWNER), **x-api-key**
-`graf-dist-demo-key-2026`. Los frontends usan `NEXT_PUBLIC_DEMO_API_KEY` (en `.env.local`) para
+Credenciales demo (solo DB desechable): owner `demo@hermes.local` (BUSINESS_OWNER), **x-api-key**
+`hermes-dist-demo-key-2026`. Los frontends usan `NEXT_PUBLIC_DEMO_API_KEY` (en `.env.local`) para
 autenticar por el camino x-api-key del `FirebaseAuthGuard`. **En producción** (sin esa var) se usa el
 Bearer de Firebase de siempre.
 
-> Env locales: `graf-backend/.env` (repuntado a local; original en `.env.prod-backup`),
-> `graf-{admin,client}/.env.local` (repuntados; originales en `*.cloud-backup`). Están gitignored
+> Env locales: `hermes-backend/.env` (repuntado a local; original en `.env.prod-backup`),
+> `hermes-{admin,client}/.env.local` (repuntados; originales en `*.cloud-backup`). Están gitignored
 > (`.env*`). **Restaurar los backups antes de cualquier build/deploy a prod.**
 
 ---
@@ -81,11 +81,11 @@ Bearer de Firebase de siempre.
 | Verificación | Resultado |
 |---|---|
 | Core `OrderService`/`OrderController`/`create-order.dto` modificados por la feature | **NO** (git: solo columnas aditivas+nullables en `order.entity.ts`) |
-| Admin `graf-market`: ítem "Distribución" en nav | **Ausente** |
-| Admin `graf-market/distribucion` (acceso directo) | "La distribución no está activada para esta tienda." (sin cola) |
-| Client `graf-market` storefront | Marketplace normal (categoría Despensa + productos + carrito), sin "vendedor" |
-| Client `graf-market/vendedor` (acceso directo) | Bloqueado: "La distribución no está activada…", **sin datos** |
-| Backend distribution endpoints sobre `graf-market` | **403** (DistAccessService) |
+| Admin `hermes-market`: ítem "Distribución" en nav | **Ausente** |
+| Admin `hermes-market/distribucion` (acceso directo) | "La distribución no está activada para esta tienda." (sin cola) |
+| Client `hermes-market` storefront | Marketplace normal (categoría Despensa + productos + carrito), sin "vendedor" |
+| Client `hermes-market/vendedor` (acceso directo) | Bloqueado: "La distribución no está activada…", **sin datos** |
+| Backend distribution endpoints sobre `hermes-market` | **403** (DistAccessService) |
 | Backend store inexistente | **404** |
 | Backend sin auth | **401** |
 
@@ -99,7 +99,7 @@ Evidencia: `curl` = API · `browser` = Playwright (capturas en `phase2-evidence/
 
 | # | Estado | Evidencia |
 |---|---|---|
-| A1 Vendedor arma pedido tipo carrito | PASS | browser: `/graf-dist/vendedor`, carrito + cliente; pedido #15 creado |
+| A1 Vendedor arma pedido tipo carrito | PASS | browser: `/hermes-dist/vendedor`, carrito + cliente; pedido #15 creado |
 | A2 Al enviar → observaciones+cliente, llega a oficina/consolidado | PASS | browser: pedido aparece en oficina y en export |
 | A3 Observaciones se conservan | PASS | browser: campo Notas; `Order.notes`; pedido #15 con nota |
 | B1 Cada pedido atribuido a su vendedor | PASS | browser: columna Vendedor; `Order.sellerId` |
@@ -134,7 +134,7 @@ Evidencia: `curl` = API · `browser` = Playwright (capturas en `phase2-evidence/
 | I1 Facturación = Oro Office | N/A | fuera de alcance |
 | I2 Asignación a camiones = otro software | N/A | fuera de alcance (la app entrega consolidado + clasificación) |
 | I3 Una sola bodega | N/A | fuera de alcance |
-| J1 Feature activable por tenant; OFF idéntico | PASS | browser: `graf-market` sin distribución, storefront idéntico (ver §3) |
+| J1 Feature activable por tenant; OFF idéntico | PASS | browser: `hermes-market` sin distribución, storefront idéntico (ver §3) |
 | J2 Scopeado por storeId real, no hardcodeado | PASS | curl: 403 sin flag, 404 inexistente; `DistAccessService` |
 | J3 Endpoints protegidos con auth Firebase existente; vendedor = usuario con rol | PASS* | curl: 401 sin auth; guards `FirebaseAuthGuard`+`RolesGuard`+`@Roles` (ver nota) |
 | J4 UI integrada al menú, visible solo si feature activa | PASS | browser: ítem "Distribución" (admin) y flujo vendedor gateados por el flag |
@@ -169,15 +169,15 @@ J1 [x]  J2 [x]  J3 [x]  J4 [x]
 ## 6. Cambios de código de Fase 2 (sobre la rama)
 
 Rama `feat/distribucion-multivendedor` en las 3 subrepos (commits locales, **sin push**):
-- `graf-backend` `b6f5f10` — export: hoja **Rutas** excluye anulados y ordena transportadora al final
+- `hermes-backend` `b6f5f10` — export: hoja **Rutas** excluye anulados y ordena transportadora al final
   (consistente con la vista de enrutamiento; el Consolidado mantiene el registro completo). Además se
   trajo (cherry-pick) el commit faltante de la referencia: "crear cliente exige dirección (G3) / seed
   legado sin dirección (G1)".
-- `graf-client` `5c990c3` — vista vendedor: formulario **"+ Nuevo cliente"** (G2/G3) y **"+ Agregar
+- `hermes-client` `5c990c3` — vista vendedor: formulario **"+ Nuevo cliente"** (G2/G3) y **"+ Agregar
   sede"** (G1/G4), usando `createCustomer`/`addAddress`/`getZones` del `distributionService`.
-- `graf-admin` `ddabf76` — ignorar `.env*` locales.
+- `hermes-admin` `ddabf76` — ignorar `.env*` locales.
 
-Builds: `graf-backend` `tsc --noEmit` verde. `graf-client` `tsc --noEmit` limpio en el código de la
+Builds: `hermes-backend` `tsc --noEmit` verde. `hermes-client` `tsc --noEmit` limpio en el código de la
 feature (único error preexistente y ajeno: `checkout/__tests__/CheckoutPage.test.tsx` importa
 `beforeEach` sin usar).
 
@@ -199,9 +199,9 @@ feature (único error preexistente y ajeno: `checkout/__tests__/CheckoutPage.tes
 5. **Deploy (lo coordina Steven).** No se desplegó. Para un preview Vercel con el demo: setear
    `NEXT_PUBLIC_API_URL`/`API_URL` al backend expuesto y `NEXT_PUBLIC_DEMO_API_KEY`, y redeploy.
    **Regla dura:** NUNCA setear `NEXT_PUBLIC_DEMO_API_KEY` en un build que apunte al backend de prod.
-6. **Restaurar env de prod.** Antes de cualquier build/deploy real, restaurar `graf-backend/.env`
-   (desde `.env.prod-backup`) y `graf-{admin,client}/.env.local` (desde `*.cloud-backup`).
-7. **Limpieza de entorno.** Quedó stash en `graf-backend` (`fase2-divergent-order-zone-attempt`): un
+6. **Restaurar env de prod.** Antes de cualquier build/deploy real, restaurar `hermes-backend/.env`
+   (desde `.env.prod-backup`) y `hermes-{admin,client}/.env.local` (desde `*.cloud-backup`).
+7. **Limpieza de entorno.** Quedó stash en `hermes-backend` (`fase2-divergent-order-zone-attempt`): un
    intento previo divergente que metía la distribución en el `OrderService` core; se descartó por ser
    más invasivo (riesgo de regresión) en favor del módulo `src/distribution/`. Borrable con
    `git stash drop`.

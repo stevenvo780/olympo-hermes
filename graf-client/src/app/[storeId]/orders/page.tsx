@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   twitter: { images: [] },
   keywords: ['pedidos', 'ordenes', 'gestión', 'comercio', 'tienda'],
   alternates: {
-    canonical: 'https://graf.com.co/orders',
+    canonical: 'https://hermes.com.co/orders',
   },
 };
 

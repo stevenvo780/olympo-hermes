@@ -6,16 +6,16 @@ export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Registro',
-  description: 'Regístrate en Graf y comienza a comprar nuestros productos',
+  description: 'Regístrate en Hermes y comienza a comprar nuestros productos',
   robots: { index: false, follow: false },
   openGraph: {
-    title: 'Registro - Graf',
-    description: 'Crea tu cuenta y comienza a comprar en Graf',
+    title: 'Registro - Hermes',
+    description: 'Crea tu cuenta y comienza a comprar en Hermes',
     images: [],
   },
   twitter: { images: [] },
-  keywords: ['registro', 'crear cuenta', 'ecommerce', 'Graf'],
-  alternates: { canonical: 'https://graf.com.co/register' },
+  keywords: ['registro', 'crear cuenta', 'ecommerce', 'Hermes'],
+  alternates: { canonical: 'https://hermes.com.co/register' },
 };
 
 interface StoreParams {

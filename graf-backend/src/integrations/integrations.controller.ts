@@ -39,28 +39,28 @@ export class IntegrationsController {
   }
 
   /**
-   * Lee la configuración del plugin apisigo para una tienda (subconfig graf-store-<storeId>)
+   * Lee la configuración del plugin logos para una tienda (subconfig hermes-store-<storeId>)
    */
   @ApiBearerAuth()
   @Roles(UserRole.SUPER_ADMIN, UserRole.BUSINESS_OWNER)
-  @Get('apisigo/:storeId')
-  async getApiSigoConfig(
+  @Get('logos/:storeId')
+  async getLogosConfig(
     @Param('storeId') storeId: string,
     @Req() req: RequestWithUser,
   ) {
     const hubUrl = this.config.get<string>('HUB_CENTRAL_URL');
     if (!hubUrl) {
       this.logger.warn(
-        `HUB_CENTRAL_URL not configured; returning empty ApiSigo config for store=${storeId}`,
+        `HUB_CENTRAL_URL not configured; returning empty Logos config for store=${storeId}`,
       );
       return { config: {} };
     }
-    const subconfigId = `graf-store-${storeId}`;
-    const url = `${hubUrl}/api/v1/plugins/plugins/apisigo?service=hubcentral&subconfigId=${encodeURIComponent(
+    const subconfigId = `hermes-store-${storeId}`;
+    const url = `${hubUrl}/api/v1/plugins/plugins/logos?service=nous&subconfigId=${encodeURIComponent(
       subconfigId,
     )}`;
     this.logger.log(
-      `GET ApiSigo config store=${storeId} as ${req.user?.email}`,
+      `GET Logos config store=${storeId} as ${req.user?.email}`,
     );
     try {
       const res = await this.http.axiosRef.get(url, {
@@ -72,7 +72,7 @@ export class IntegrationsController {
         typeof cfg?.triggerEvent === 'string' && cfg.triggerEvent.length > 0;
       const hasPayments = !!(cfg?.payments || cfg?.paymentMapping);
       this.logger.log(
-        `Loaded ApiSigo config store=${storeId}: triggerEvent=${
+        `Loaded Logos config store=${storeId}: triggerEvent=${
           hasTriggerEvent ? cfg.triggerEvent : '<none>'
         }, hasPayments=${hasPayments}`,
       );
@@ -83,7 +83,7 @@ export class IntegrationsController {
         return { config: {} };
       }
       this.logger.warn(
-        `ApiSigo GET failed store=${storeId} status=${status ?? 'n/a'} msg=${
+        `Logos GET failed store=${storeId} status=${status ?? 'n/a'} msg=${
           err?.message ?? 'unknown'
         }`,
       );
@@ -92,12 +92,12 @@ export class IntegrationsController {
   }
 
   /**
-   * Actualiza la configuración del plugin apisigo para una tienda (mapea payments, taxes, etc.)
+   * Actualiza la configuración del plugin logos para una tienda (mapea payments, taxes, etc.)
    */
   @ApiBearerAuth()
   @Roles(UserRole.SUPER_ADMIN, UserRole.BUSINESS_OWNER)
-  @Put('apisigo/:storeId')
-  async updateApiSigoConfig(
+  @Put('logos/:storeId')
+  async updateLogosConfig(
     @Param('storeId') storeId: string,
     @Req() req: RequestWithUser,
     @Query('enabled') enabled?: string,
@@ -109,8 +109,8 @@ export class IntegrationsController {
         'Hub Central no está configurado. No se puede guardar el mapeo de pagos.',
       );
     }
-    const subconfigId = `graf-store-${storeId}`;
-    const url = `${hubUrl}/api/v1/plugins/plugins/apisigo/credentials?service=hubcentral&subconfigId=${encodeURIComponent(
+    const subconfigId = `hermes-store-${storeId}`;
+    const url = `${hubUrl}/api/v1/plugins/plugins/logos/credentials?service=nous&subconfigId=${encodeURIComponent(
       subconfigId,
     )}`;
     const dto = {
@@ -125,7 +125,7 @@ export class IntegrationsController {
       (configBody?.payments as unknown as { types: object })?.types || {},
     );
     this.logger.log(
-      `PUT ApiSigo config store=${storeId} enabled=${
+      `PUT Logos config store=${storeId} enabled=${
         dto.enabled
       } triggerEvent=${
         hasTriggerEvent ? configBody.triggerEvent : '<none>'
@@ -139,7 +139,7 @@ export class IntegrationsController {
     const savedCfg = res.data?.config || {};
     const savedTrigger = savedCfg?.triggerEvent;
     this.logger.log(
-      `Saved ApiSigo config store=${storeId}: triggerEvent=${
+      `Saved Logos config store=${storeId}: triggerEvent=${
         savedTrigger ?? '<none>'
       }`,
     );

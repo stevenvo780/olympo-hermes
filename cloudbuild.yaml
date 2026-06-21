@@ -7,8 +7,8 @@ steps:
       - '-t'
       - 'us-central1-docker.pkg.dev/udea-filosofia/cloud-run-source-deploy/prizma-hermes:$COMMIT_SHA'
       - '-f'
-      - 'graf-backend/Dockerfile'
-      - 'graf-backend'
+      - 'hermes-backend/Dockerfile'
+      - 'hermes-backend'
 
   - name: 'gcr.io/cloud-builders/docker'
     id: Push

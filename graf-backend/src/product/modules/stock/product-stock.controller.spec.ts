@@ -40,7 +40,7 @@ describe('ProductStockController', () => {
       5,
       'store-1',
       7,
-      'hub-central',
+      'nous',
       expect.objectContaining({ stock: 7 }),
     );
   });
@@ -73,7 +73,7 @@ describe('ProductStockController', () => {
       2,
       'store-1',
       4,
-      'hub-central',
+      'nous',
       expect.any(Object),
     );
   });

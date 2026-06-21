@@ -69,7 +69,7 @@ export default function Dashboard() {
       } else {
         setMsg({
           kind: "ok",
-          text: `Sincronizado con Graf: ${created} nuevos, ${updated} actualizados.`,
+          text: `Sincronizado con Hermes: ${created} nuevos, ${updated} actualizados.`,
         });
       }
       await load();
@@ -86,11 +86,11 @@ export default function Dashboard() {
         <div>
           <h1 className="page-title">Tablero de despacho</h1>
           <p className="page-sub">
-            Pedidos <b>enrutados</b> traídos de Graf, listos para cargar y despachar.
+            Pedidos <b>enrutados</b> traídos de Hermes, listos para cargar y despachar.
           </p>
         </div>
         <button className="btn btn-primary" onClick={sync} disabled={syncing}>
-          {syncing ? <span className="spinner" /> : "⟳"} Sincronizar con Graf
+          {syncing ? <span className="spinner" /> : "⟳"} Sincronizar con Hermes
         </button>
       </div>
 

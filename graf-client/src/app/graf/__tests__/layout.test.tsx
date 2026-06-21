@@ -16,19 +16,19 @@ vi.mock('../components/ClientLayout', () => ({
 import React from 'react';
 import RootLayout, { metadata } from '../layout';
 
-describe('graf/layout', () => {
+describe('hermes/layout', () => {
   it('exports metadata with correct title', () => {
     expect(metadata.title).toBeDefined();
-    expect(metadata.title.default).toBe('Graf');
+    expect(metadata.title.default).toBe('Hermes');
   });
 
   it('exports metadata with description', () => {
-    expect(metadata.description).toContain('Graf');
+    expect(metadata.description).toContain('Hermes');
   });
 
   it('exports openGraph metadata', () => {
     expect(metadata.openGraph).toBeDefined();
-    expect(metadata.openGraph.title).toBe('Graf');
+    expect(metadata.openGraph.title).toBe('Hermes');
   });
 
   it('exports twitter metadata', () => {

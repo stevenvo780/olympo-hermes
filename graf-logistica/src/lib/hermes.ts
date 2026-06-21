@@ -1,11 +1,11 @@
-// Read-only client for the Graf backend (NestJS distribution module).
-// graf-logistica NEVER writes to Graf; it only pulls routed/dispatched orders
-// to build the loading/dispatch layer in its OWN database.
+// Read-only client for the Hermes backend (NestJS distribution module).
+// prizma-hermes-logistica NEVER writes to Hermes; it only pulls routed/dispatched
+// orders to build the loading/dispatch layer in its OWN database.
 
-const GRAF_API_URL = process.env.GRAF_API_URL ?? "http://localhost:3004";
-const GRAF_API_KEY = process.env.GRAF_API_KEY ?? "";
+const HERMES_API_URL = process.env.HERMES_API_URL ?? "http://localhost:3000";
+const HERMES_API_KEY = process.env.HERMES_API_KEY ?? "";
 
-export const STORE_IDS = (process.env.GRAF_STORE_IDS ?? "graf-dist")
+export const STORE_IDS = (process.env.HERMES_STORE_IDS ?? "hermes-dist")
   .split(",")
   .map((s) => s.trim())
   .filter(Boolean);
@@ -14,7 +14,7 @@ export const DEFAULT_UNIT_WEIGHT_KG = Number(
   process.env.DEFAULT_UNIT_WEIGHT_KG ?? "1.5",
 );
 
-export interface GrafOrder {
+export interface HermesOrder {
   id: number;
   distStatus?: string;
   routeDate?: string | null;
@@ -42,7 +42,7 @@ export interface GrafOrder {
   items?: Array<{ quantity: number }> | null;
 }
 
-class GrafError extends Error {
+class HermesError extends Error {
   status: number;
   constructor(message: string, status: number) {
     super(message);
@@ -50,16 +50,16 @@ class GrafError extends Error {
   }
 }
 
-async function grafGet(path: string): Promise<unknown> {
-  const url = `${GRAF_API_URL}${path}`;
+async function hermesGet(path: string): Promise<unknown> {
+  const url = `${HERMES_API_URL}${path}`;
   const res = await fetch(url, {
-    headers: { "x-api-key": GRAF_API_KEY, "Content-Type": "application/json" },
+    headers: { "x-api-key": HERMES_API_KEY, "Content-Type": "application/json" },
     cache: "no-store",
   });
   if (!res.ok) {
     const body = await res.text().catch(() => "");
-    throw new GrafError(
-      `Graf ${res.status} en ${path}: ${body.slice(0, 200)}`,
+    throw new HermesError(
+      `Hermes ${res.status} en ${path}: ${body.slice(0, 200)}`,
       res.status,
     );
   }
@@ -70,17 +70,17 @@ async function grafGet(path: string): Promise<unknown> {
 export async function fetchOrders(
   storeId: string,
   status: "routed" | "dispatched" | "accepted" | "queued",
-): Promise<GrafOrder[]> {
-  const data = (await grafGet(
+): Promise<HermesOrder[]> {
+  const data = (await hermesGet(
     `/distribution/orders?storeId=${encodeURIComponent(storeId)}&status=${status}`,
-  )) as GrafOrder[];
+  )) as HermesOrder[];
   return Array.isArray(data) ? data : [];
 }
 
-export function isGrafConfigured(): boolean {
-  return Boolean(GRAF_API_URL && GRAF_API_KEY);
+export function isHermesConfigured(): boolean {
+  return Boolean(HERMES_API_URL && HERMES_API_KEY);
 }
 
-export function grafBaseUrl(): string {
-  return GRAF_API_URL;
+export function hermesBaseUrl(): string {
+  return HERMES_API_URL;
 }

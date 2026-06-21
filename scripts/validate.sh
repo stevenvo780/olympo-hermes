@@ -1,5 +1,5 @@
 #!/bin/bash
-# Validación Paralela para Graf
+# Validación Paralela para Hermes
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -10,7 +10,7 @@ MAGENTA='\033[0;35m'
 NC='\033[0m'
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-TEMP_DIR="/tmp/graf-validate-$$"
+TEMP_DIR="/tmp/hermes-validate-$$"
 mkdir -p "$TEMP_DIR"
 
 SKIP_BUILD=false
@@ -27,11 +27,11 @@ done
 
 echo ""
 echo -e "${BLUE}═══════════════════════════════════════════════════════════════${NC}"
-echo -e "${BLUE}  🚀 VALIDACIÓN PARALELA DE GRAF${NC}"
+echo -e "${BLUE}  🚀 VALIDACIÓN PARALELA DE HERMES${NC}"
 echo -e "${BLUE}═══════════════════════════════════════════════════════════════${NC}"
 echo ""
 
-# Función para extraer cobertura de Vitest (graf-admin, graf-client)
+# Función para extraer cobertura de Vitest (hermes-admin, hermes-client)
 extract_vitest_coverage() {
     local output="$1"
     local project_dir="$2"
@@ -59,7 +59,7 @@ extract_vitest_coverage() {
     fi
 }
 
-# Función para extraer cobertura de Jest (graf-backend)
+# Función para extraer cobertura de Jest (hermes-backend)
 extract_jest_coverage() {
     local output="$1"
     local project_dir="$2"
@@ -184,7 +184,7 @@ count_lint_warnings() {
 }
 
 # Lanzar cada proyecto
-for project in graf-admin graf-backend graf-client; do
+for project in hermes-admin hermes-backend hermes-client; do
     (
         cd "$ROOT_DIR/$project"
         echo "running" > "$TEMP_DIR/${project}.status"
@@ -192,7 +192,7 @@ for project in graf-admin graf-backend graf-client; do
         b="skip"; l="skip"; t="skip"
         lint_warnings=0
         coverage="- - - -"
-        if [ "$project" = "graf-client" ]; then
+        if [ "$project" = "hermes-client" ]; then
             export NEXT_OUTPUT_TRACING_ROOT="$ROOT_DIR"
         fi
 
@@ -213,7 +213,7 @@ for project in graf-admin graf-backend graf-client; do
 
         # Tests con cobertura
         if [ "$SKIP_TESTS" = false ]; then
-            if [ "$project" = "graf-backend" ]; then
+            if [ "$project" = "hermes-backend" ]; then
                 # Jest coverage para backend
                 test_output=$(npm run test:cov 2>&1)
                 test_exit=$?
@@ -278,7 +278,7 @@ while true; do
     done_count=0
     status_line=""
     
-    for project in graf-admin graf-backend graf-client; do
+    for project in hermes-admin hermes-backend hermes-client; do
         if [ -f "$TEMP_DIR/${project}.status" ] && [ "$(cat "$TEMP_DIR/${project}.status")" = "done" ]; then
             status_line="${status_line}${GREEN}●${NC} "
             ((done_count++))
@@ -305,7 +305,7 @@ PASS=0; FAIL=0; SKIP=0
 EXIT_CODE=0
 TOTAL_WARNINGS=0
 
-for project in graf-admin graf-backend graf-client; do
+for project in hermes-admin hermes-backend hermes-client; do
     echo -e "  ${CYAN}📦 $project${NC}"
     
     if [ -f "$TEMP_DIR/$project" ]; then
@@ -408,7 +408,7 @@ echo -e "${BLUE}═════════════════════�
 printf "  ${CYAN}%-15s${NC} %8s %8s %8s %8s\n" "Proyecto" "Stmts" "Branch" "Funcs" "Lines"
 echo -e "  ─────────────────────────────────────────────────────────"
 
-for project in graf-admin graf-backend graf-client; do
+for project in hermes-admin hermes-backend hermes-client; do
     if [ -f "$TEMP_DIR/${project}.coverage" ]; then
         coverage=$(cat "$TEMP_DIR/${project}.coverage")
         read -r stmts branch funcs lines <<< "$coverage"
@@ -447,7 +447,7 @@ TOTAL_ENUMS_ALL=0
 TOTAL_UNUSED_ALL=0
 TOTAL_HARDCODED_ALL=0
 
-for project in graf-admin graf-backend graf-client; do
+for project in hermes-admin hermes-backend hermes-client; do
     if [ -f "$TEMP_DIR/${project}.enums" ]; then
         read -r total_enums unused_enums hardcoded < "$TEMP_DIR/${project}.enums"
 

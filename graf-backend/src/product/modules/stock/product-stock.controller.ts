@@ -50,7 +50,7 @@ export class ProductStockController {
       productId,
       storeId,
       body.stock,
-      body.source || 'hub-central',
+      body.source || 'nous',
       body,
     );
   }
@@ -100,7 +100,7 @@ export class ProductStockController {
       productId,
       storeId,
       body.quantity,
-      'hub-central',
+      'nous',
       body,
     );
   }

@@ -353,7 +353,7 @@ describe('UserController', () => {
 
   describe('getCredentialsForSync', () => {
     it('should return credentials when found', async () => {
-      const credentials = { grafUserId: 'u1', sigo: { apiKey: 'k' } };
+      const credentials = { hermesUserId: 'u1', sigo: { apiKey: 'k' } };
       mockUserService.findUserForCredentialsSync.mockResolvedValue(
         credentials as any,
       );

@@ -30,7 +30,7 @@ const ClientHome: React.FC = () => {
   const searchTimeout = useRef<NodeJS.Timeout | null>(null);
   const abortRef = useRef<AbortController | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL || 'http://localhost:3001';
+  const adminUrl = process.env.NEXT_PUBLIC_API_URL || 'https://prizma-hermes-kjopuery2a-uc.a.run.app';
 
   const isSearchActive = searchTerm.trim().length > 0 || searchFocused;
 
@@ -131,10 +131,10 @@ const ClientHome: React.FC = () => {
   const hasSearchTerm = searchTerm.trim().length > 0;
 
   return (
-    <div className="graf-home">
+    <div className="hermes-home">
       {/* ── Barra de búsqueda STICKY ── */}
       <div
-        className="graf-search-bar"
+        className="hermes-search-bar"
         style={{
           position: 'sticky',
           top: 56,
@@ -247,7 +247,7 @@ const ClientHome: React.FC = () => {
                   </p>
                   <Link href={`${adminUrl}/register`} target="_blank" rel="noopener noreferrer">
                     <button
-                      className="btn btn-lg fw-bold px-4 py-3 graf-hero-btn"
+                      className="btn btn-lg fw-bold px-4 py-3 hermes-hero-btn"
                       style={{
                         borderRadius: '50px',
                         backgroundColor: '#fff',
@@ -275,7 +275,7 @@ const ClientHome: React.FC = () => {
               <Row className="g-3 justify-content-center">
                 {features.map((f, i) => (
                   <Col key={i} xs={6} md={4} lg={2}>
-                    <div className="text-center p-3 graf-feature-card">
+                    <div className="text-center p-3 hermes-feature-card">
                       <div style={{ fontSize: '1.6rem', color: PRIMARY, marginBottom: 8 }}>{f.icon}</div>
                       <h6 className="fw-bold mb-1" style={{ fontSize: '0.85rem' }}>{f.title}</h6>
                       <small className="text-muted" style={{ fontSize: '0.75rem' }}>{f.desc}</small>
@@ -312,7 +312,7 @@ const ClientHome: React.FC = () => {
                         href={`/${r.store.id}/products/${r.product.id}`}
                         className="text-decoration-none"
                       >
-                        <Card className="h-100 border-0 shadow-sm graf-product-card" style={{ borderRadius: '12px', overflow: 'hidden' }}>
+                        <Card className="h-100 border-0 shadow-sm hermes-product-card" style={{ borderRadius: '12px', overflow: 'hidden' }}>
                           {r.product.firstImageUrl ? (
                             <div style={{ position: 'relative', width: '100%', height: '120px', backgroundColor: '#f5f5f5' }}>
                               <Image
@@ -394,7 +394,7 @@ const ClientHome: React.FC = () => {
                   <Col key={store.id} xs={6} sm={4} md={3} lg={2}>
                     <Link href={`/${store.id}`} className="text-decoration-none">
                       <Card
-                        className="h-100 border-0 shadow-sm graf-store-card"
+                        className="h-100 border-0 shadow-sm hermes-store-card"
                         style={{ borderRadius: '12px', overflow: 'hidden', cursor: 'pointer' }}
                       >
                         <div
@@ -442,7 +442,7 @@ const ClientHome: React.FC = () => {
             <div className="text-center mb-4">
               <h2 className="fw-bold mb-2">Explora Nuestras Tiendas</h2>
               <p className="text-muted" style={{ maxWidth: 500, margin: '0 auto' }}>
-                Descubre las tiendas creadas con Graf
+                Descubre las tiendas creadas con Hermes
               </p>
             </div>
 
@@ -451,7 +451,7 @@ const ClientHome: React.FC = () => {
                 <Col key={store.id} xs={12} sm={6} md={4} lg={3}>
                   <Link href={`/${store.id}`} className="text-decoration-none">
                     <Card
-                      className="h-100 border-0 shadow-sm graf-store-card"
+                      className="h-100 border-0 shadow-sm hermes-store-card"
                       style={{ borderRadius: '16px', overflow: 'hidden', cursor: 'pointer' }}
                     >
                       <div
@@ -542,39 +542,39 @@ const ClientHome: React.FC = () => {
       </section>
 
       <style jsx global>{`
-        .graf-home { font-family: inherit; }
+        .hermes-home { font-family: inherit; }
 
-        .graf-search-bar {
+        .hermes-search-bar {
           border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
-        .graf-feature-card {
+        .hermes-feature-card {
           background: white;
           border-radius: 12px;
           transition: transform 0.3s, box-shadow 0.3s;
         }
-        .graf-feature-card:hover {
+        .hermes-feature-card:hover {
           transform: translateY(-4px);
           box-shadow: 0 8px 24px rgba(0,0,0,0.08);
         }
 
-        .graf-store-card {
+        .hermes-store-card {
           transition: transform 0.3s, box-shadow 0.3s;
         }
-        .graf-store-card:hover {
+        .hermes-store-card:hover {
           transform: translateY(-6px);
           box-shadow: 0 12px 32px rgba(0,0,0,0.12) !important;
         }
 
-        .graf-product-card {
+        .hermes-product-card {
           transition: transform 0.25s, box-shadow 0.25s;
         }
-        .graf-product-card:hover {
+        .hermes-product-card:hover {
           transform: translateY(-4px);
           box-shadow: 0 8px 20px rgba(0,0,0,0.1) !important;
         }
 
-        .graf-hero-btn:hover {
+        .hermes-hero-btn:hover {
           transform: translateY(-2px);
           box-shadow: 0 8px 25px rgba(255,255,255,0.3);
         }

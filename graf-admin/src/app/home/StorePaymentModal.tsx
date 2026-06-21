@@ -21,7 +21,7 @@ export default function StorePaymentModal({ storeName, onClose }: StorePaymentMo
     try {
       setIsLoading(true);
       try {
-        if (storeName === 'graf') {
+        if (storeName === 'hermes') {
           dispatch(addNotification({
             message: 'El nombre de la tienda ya está ocupado. Por favor, elige otro.',
             color: 'danger'

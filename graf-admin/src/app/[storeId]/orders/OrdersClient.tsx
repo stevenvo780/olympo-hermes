@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Container, Row, Col, Alert, Button, Modal } from 'react-bootstrap';
 import { useParams, useSearchParams, useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
@@ -34,8 +34,17 @@ export default function OrdersClient() {
   const [showExportModal, setShowExportModal] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [orderToDelete, setOrderToDelete] = useState<number | null>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const fetchOrders = useCallback(async () => {
+    // Cancel previous request if still in flight
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+
+    // Create new abort controller for this request
+    abortControllerRef.current = new AbortController();
+
     setIsLoading(true);
     setError(null);
 
@@ -62,10 +71,17 @@ export default function OrdersClient() {
         params.append('endDate', endDate.toISOString());
       }
 
-      const response = await api.get(`/orders/store/${storeId}?${params.toString()}`);
+      const response = await api.get(`/orders/store/${storeId}?${params.toString()}`, {
+        signal: abortControllerRef.current.signal
+      });
 
       setOrders(response.data);
     } catch (err: unknown) {
+      // Ignore abort errors
+      if ((err as any)?.name === 'AbortError') {
+        return;
+      }
+
       console.error('Error al cargar las órdenes:', err);
       const axiosErr = err as { response?: { status?: number; data?: { message?: string } } };
       if (axiosErr?.response?.status === 403) {
@@ -84,6 +100,12 @@ export default function OrdersClient() {
     if (storeId) {
       fetchOrders();
     }
+
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+    };
   }, [storeId, fetchOrders]);
 
   const updateOrderStatus = async (orderId: number, status: OrderStatus) => {
@@ -158,10 +180,9 @@ export default function OrdersClient() {
   };
 
   const handleFilterChange = (newFilters: OrderFilters) => {
+    setFilters(newFilters);
     if (currentPage !== 1) {
       router.push(`?page=1&limit=${pageSize}`);
-    } else {
-      setFilters(newFilters);
     }
   };
 

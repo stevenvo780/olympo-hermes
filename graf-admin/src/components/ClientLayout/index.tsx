@@ -72,9 +72,15 @@ const ClientContent: React.FC<ClientLayoutProps> = ({ children }) => {
           dispatch(setConfig(response.data));
         } catch (error) {
           console.error("Error fetching client config:", error);
-          if (error instanceof Error && error.message.includes("expirada")) {
+          const axiosError = error as { response?: { status?: number; data?: { message?: string } } };
+          if (axiosError?.response?.status === 401) {
             return;
           }
+          dispatch(addNotification({
+            message: "Error al cargar configuración de tienda",
+            color: "warning"
+          }));
+          applyPalette(defaultPalette);
         }
       };
       fetchConfig();

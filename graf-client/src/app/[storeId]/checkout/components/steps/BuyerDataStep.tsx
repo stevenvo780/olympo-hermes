@@ -35,7 +35,7 @@ const BuyerDataStep: React.FC<BuyerDataStepProps> = ({
     onChange({ ...buyerData, [field]: value });
   };
 
-  const isValid = buyerData.fullName.trim() !== '' && buyerData.phone.trim() !== '';
+  const isValid = buyerData.fullName.trim() !== '' && buyerData.phone.trim() !== '' && (!buyerData.email || /\S+@\S+\.\S+/.test(buyerData.email));
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

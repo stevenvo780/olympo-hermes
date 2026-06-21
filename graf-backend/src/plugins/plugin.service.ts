@@ -56,7 +56,7 @@ export class PluginService {
     );
   }
 
-  async checkHubCentralConnection(): Promise<{
+  async checkNousConnection(): Promise<{
     connected: boolean;
     url?: string;
     error?: string;
@@ -118,7 +118,7 @@ export class PluginService {
       return { plugins: [], error: 'HUB_CENTRAL_URL no configurada' };
     }
 
-    const tenantId = `graf-store-${storeId}`;
+    const tenantId = `hermes-store-${storeId}`;
 
     try {
       const response = await this.httpService

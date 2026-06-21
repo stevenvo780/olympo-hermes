@@ -11,6 +11,7 @@ import CustomerMetrics from './components/CustomerMetrics';
 import PeriodSelector from './components/PeriodSelector';
 import { DashboardStatistics } from '@/types/dashboard';
 import { useParams } from 'next/navigation';
+import { useExponentialBackoff } from '@/hooks/useExponentialBackoff';
 
 export default function Dashboard() {
   const { storeId } = useParams() as { storeId: string | null };
@@ -23,6 +24,8 @@ export default function Dashboard() {
   const user = useSelector((state: RootState) => state.auth.userData);
   const [activeTab, setActiveTab] = useState('sales');
   const [periodDescription, setPeriodDescription] = useState<string>('');
+  const MAX_RETRIES = 3;
+  const { retryCount, countdown, isRetrying, scheduleRetry, reset } = useExponentialBackoff(MAX_RETRIES, 1000);
 
   const setDefaultDateRange = () => {
     const end = new Date();
@@ -89,36 +92,36 @@ export default function Dashboard() {
     }
   };
 
+  const fetchStatistics = useCallback(async () => {
+    setLoading(true);
+    try {
+      let url = `/statistics/dashboard?period=${period}`;
+
+      if (period === 'custom') {
+        const { start, end } = getDateRangeForPeriod('custom');
+        url += `&startDate=${start}&endDate=${end}`;
+      }
+
+      if (storeId) {
+        url = url + `&storeId=${storeId}`;
+      }
+
+      const { data } = await axios.get<DashboardStatistics>(url);
+      setStatistics(data);
+      setError(null);
+      reset();
+    } catch (err) {
+      console.error('Error fetching dashboard statistics', err);
+      setError('Error al cargar las estadísticas del dashboard');
+    } finally {
+      setLoading(false);
+    }
+  }, [period, getDateRangeForPeriod, storeId]);
+
   useEffect(() => {
     if (!user) return;
-
-    const fetchStatistics = async () => {
-      setLoading(true);
-      try {
-        let url = `/statistics/dashboard?period=${period}`;
-
-        if (period === 'custom') {
-          const { start, end } = getDateRangeForPeriod('custom');
-          url += `&startDate=${start}&endDate=${end}`;
-        }
-
-        if (storeId) {
-          url = url + `&storeId=${storeId}`;
-        }
-
-        const { data } = await axios.get<DashboardStatistics>(url);
-        setStatistics(data);
-        setError(null);
-      } catch (err) {
-        console.error('Error fetching dashboard statistics', err);
-        setError('Error al cargar las estadísticas del dashboard');
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchStatistics();
-  }, [user, period, startDate, endDate, getDateRangeForPeriod, storeId]);
+  }, [user, period, startDate, endDate, fetchStatistics]);
 
   const handleDateRangeChange = (start: string | null, end: string | null) => {
     setStartDate(start);
@@ -179,6 +182,23 @@ export default function Dashboard() {
           <Card.Body className="text-danger">
             <Card.Title>Error</Card.Title>
             <Card.Text>{error}</Card.Text>
+            <div className="mt-3">
+              {isRetrying ? (
+                <p className="small mb-0 text-muted">Reintentando automáticamente en {countdown} segundos...</p>
+              ) : retryCount < MAX_RETRIES ? (
+                <button
+                  className="btn btn-outline-danger btn-sm"
+                  onClick={() => {
+                    scheduleRetry(fetchStatistics);
+                  }}
+                  disabled={isRetrying}
+                >
+                  Reintentar ({retryCount}/{MAX_RETRIES})
+                </button>
+              ) : (
+                <p className="text-muted small mb-0">Se reintentó {MAX_RETRIES} veces. Por favor intenta más tarde.</p>
+              )}
+            </div>
           </Card.Body>
         </Card>
       ) : statistics ? (

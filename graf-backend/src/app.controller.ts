@@ -51,10 +51,10 @@ export class AppController {
   @ApiOkResponse({ description: 'Application is healthy' })
   @Get('health')
   getHealth() {
-    // Cauce service registry expects { status, service } at GET /health.
+    // Prizma service registry expects { status, service } at GET /health.
     return {
       status: 'healthy',
-      service: 'graf',
+      service: 'hermes',
       timestamp: new Date().toISOString(),
     };
   }

@@ -64,8 +64,8 @@ describe('robots', () => {
 
     const result = await robots();
 
-    expect(result.sitemap).toBe('https://graf.com.co/sitemap.xml');
-    expect(result.host).toBe('https://graf.com.co');
+    expect(result.sitemap).toBe('https://hermes.com.co/sitemap.xml');
+    expect(result.host).toBe('https://hermes.com.co');
   });
 
   it('includes bot-specific rules', async () => {

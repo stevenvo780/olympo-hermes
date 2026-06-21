@@ -38,7 +38,7 @@ describe('AboutPage', () => {
   it('renders hero content and contact CTA', () => {
     render(<AboutPage />);
 
-    expect(screen.getByRole('heading', { name: 'Cauce' })).toBeTruthy();
+    expect(screen.getByRole('heading', { name: 'Prizma' })).toBeTruthy();
     expect(screen.getByText(/Tecnolog.a al servicio de tu crecimiento/i)).toBeTruthy();
 
     const cta = screen.getByText(/Cont.ctanos hoy/i).closest('a');
@@ -61,7 +61,7 @@ describe('AboutPage', () => {
     });
 
     expect(screen.getByRole('heading', { name: /Cont.ctanos/i })).toBeTruthy();
-    expect(screen.getByText(/ventas@cauce.app/i)).toBeTruthy();
+    expect(screen.getByText(/ventas@prizma.app/i)).toBeTruthy();
   });
 
   it('uses an empty next value when window is missing', () => {

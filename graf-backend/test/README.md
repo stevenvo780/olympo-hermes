@@ -17,7 +17,7 @@ docker-compose -f docker-compose.e2e.yml up -d
 Esto iniciará un contenedor PostgreSQL en el puerto **5433** con:
 - Usuario: `test_user`
 - Contraseña: `test_password`
-- Base de datos: `graf_test_e2e`
+- Base de datos: `hermes_test_e2e`
 
 ### 2. Ejecutar los tests E2E
 
@@ -62,7 +62,7 @@ El setup de tests (`test/setup-e2e.ts`) configura automáticamente:
 | `DB_PORT` | 5433 |
 | `DB_USERNAME` | test_user |
 | `DB_PASSWORD` | test_password |
-| `DB_NAME` | graf_test_e2e |
+| `DB_NAME` | hermes_test_e2e |
 | `DB_SYNCHRONIZE` | true |
 
 ## Agregar Nuevos Tests E2E

@@ -1,7 +1,7 @@
 import { DistOrderStatus } from '../order/entities/order.entity';
 
 /** Single-tenant demo store used by the distribution endpoints by default. */
-export const DEFAULT_STORE_ID = process.env.DIST_STORE_ID || 'graf-dist';
+export const DEFAULT_STORE_ID = process.env.DIST_STORE_ID || 'hermes-dist';
 
 /**
  * Allowed transitions of the distribution order state machine.

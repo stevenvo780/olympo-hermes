@@ -2,7 +2,7 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"label": "graf-client dev",
+			"label": "hermes-client dev",
 			"type": "shell",
 			"command": "npx next dev --turbopack -p 3000",
 			"options": {
@@ -12,7 +12,7 @@
 			"problemMatcher": []
 		},
 		{
-			"label": "graf-client-dev",
+			"label": "hermes-client-dev",
 			"type": "shell",
 			"command": "npx next dev --turbopack -p 3000",
 			"options": {

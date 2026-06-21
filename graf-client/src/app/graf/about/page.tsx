@@ -107,7 +107,7 @@ const AboutPage: React.FC = () => {
           <div className="text-center mt-4">
             <Button
               variant="primary"
-              href="https://prisma-enterprice.cloud"
+              href="https://prisma-enterprise.cloud"
               target="_blank"
               style={{ padding: '10px 20px', fontSize: '1.1rem', color: 'white', backgroundColor: '#FF5A2B', borderColor: '#FF5A2B' }}
             >

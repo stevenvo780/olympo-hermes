@@ -1,12 +1,28 @@
-import { Controller, Get, Put, Param, Body } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  Put,
+  Param,
+  Body,
+  UseGuards,
+} from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { ConfigService } from '../config/config.service';
 import { UpdateConfigDto } from '../config/dto/update-config.dto';
-import { User } from '../user/entities/user.entity';
+import { User, UserRole } from '../user/entities/user.entity';
 import { PluginService } from './plugin.service';
+import { FirebaseAuthGuard } from '../auth/firebase-auth.guard';
+import { RolesGuard } from '../auth/roles.guard';
+import { Roles } from '../auth/roles.decorator';
 
 @ApiTags('integrations')
 @Controller('integrations')
+@UseGuards(FirebaseAuthGuard, RolesGuard)
 export class PluginController {
   constructor(
     private readonly configService: ConfigService,
@@ -14,10 +30,12 @@ export class PluginController {
   ) {}
 
   @Get('stores/:storeId/plugins')
+  @Roles(UserRole.BUSINESS_OWNER)
+  @ApiBearerAuth()
   @ApiOperation({
     summary: 'Listar plugins configurados para una tienda (tenant)',
     description:
-      'Obtiene configuración local de plugins. Para estado actualizado desde Hub Central, usa /hub-central/plugins',
+      'Obtiene configuración local de plugins. Para estado actualizado desde Hub Central, usa /nous/plugins',
   })
   async list(
     @Param('storeId') storeId: string,
@@ -27,6 +45,8 @@ export class PluginController {
   }
 
   @Put('stores/:storeId/plugins')
+  @Roles(UserRole.BUSINESS_OWNER)
+  @ApiBearerAuth()
   @ApiOperation({
     summary: 'Actualizar plugins para una tienda (enabled, apiKey, config)',
     description:
@@ -46,7 +66,9 @@ export class PluginController {
     return cfg.plugins || {};
   }
 
-  @Get('stores/:storeId/hub-central/plugins')
+  @Get('stores/:storeId/nous/plugins')
+  @Roles(UserRole.BUSINESS_OWNER)
+  @ApiBearerAuth()
   @ApiOperation({
     summary: 'Obtener configuración de plugins desde Hub Central',
     description:
@@ -56,13 +78,15 @@ export class PluginController {
     status: 200,
     description: 'Configuración de plugins desde Hub Central',
   })
-  async getHubCentralPlugins(
+  async getNousPlugins(
     @Param('storeId') storeId: string,
   ): Promise<Record<string, unknown>> {
     return this.pluginService.getStorePluginConfig(parseInt(storeId, 10));
   }
 
-  @Get('hub-central/plugins/available')
+  @Get('nous/plugins/available')
+  @Roles(UserRole.BUSINESS_OWNER)
+  @ApiBearerAuth()
   @ApiOperation({
     summary: 'Listar todos los plugins disponibles en Hub Central',
     description:
@@ -73,7 +97,9 @@ export class PluginController {
     return this.pluginService.getAvailablePlugins();
   }
 
-  @Get('hub-central/connection')
+  @Get('nous/connection')
+  @Roles(UserRole.BUSINESS_OWNER)
+  @ApiBearerAuth()
   @ApiOperation({
     summary: 'Verificar conectividad con Hub Central',
     description: 'Health check para verificar la conexión con Hub Central',
@@ -90,7 +116,7 @@ export class PluginController {
       },
     },
   })
-  async checkHubCentralConnection(): Promise<Record<string, unknown>> {
-    return this.pluginService.checkHubCentralConnection();
+  async checkNousConnection(): Promise<Record<string, unknown>> {
+    return this.pluginService.checkNousConnection();
   }
 }

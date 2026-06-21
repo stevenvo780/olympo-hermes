@@ -274,7 +274,7 @@ export class UserService {
 
     const updatedUser = await this.userRepository.save(user);
 
-    await this.syncCredentialsWithHubCentral(updatedUser);
+    await this.syncCredentialsWithNous(updatedUser);
 
     return updatedUser;
   }
@@ -294,15 +294,15 @@ export class UserService {
     };
   }
 
-  private async syncCredentialsWithHubCentral(user: User): Promise<void> {
+  private async syncCredentialsWithNous(user: User): Promise<void> {
     try {
-      const hubCentralUrl =
+      const nousUrl =
         process.env.HUB_CENTRAL_URL || 'http://localhost:3002';
-      const hubCentralSecret = process.env.HUB_CENTRAL_SECRET;
+      const nousSecret = process.env.HUB_CENTRAL_SECRET;
 
-      if (!hubCentralSecret) {
+      if (!nousSecret) {
         console.error(
-          `❌ Missing HUB_CENTRAL_SECRET. Cannot sync credentials with HubCentral.`,
+          `❌ Missing HUB_CENTRAL_SECRET. Cannot sync credentials with Nous.`,
         );
         return;
       }
@@ -319,21 +319,21 @@ export class UserService {
         };
 
         await axios.put(
-          `${hubCentralUrl}/api/v1/plugins/plugins/apisigo/credentials`,
+          `${nousUrl}/api/v1/plugins/plugins/logos/credentials`,
           sigoData,
           {
             timeout: 10000,
             headers: {
               'Content-Type': 'application/json',
               'x-user-email': user.email,
-              'x-api-key': hubCentralSecret,
+              'x-api-key': nousSecret,
             },
           },
         );
       }
     } catch (error) {
       console.error(
-        `❌ Failed to sync credentials with HubCentral for user ${user.email}:`,
+        `❌ Failed to sync credentials with Nous for user ${user.email}:`,
         error.message,
         error.response?.data || '',
       );
@@ -359,7 +359,7 @@ export class UserService {
   }
 
   async findUserForCredentialsSync(email: string): Promise<{
-    grafUserId: string;
+    hermesUserId: string;
     sigo?: {
       apiKey?: string;
       username?: string;
@@ -373,7 +373,7 @@ export class UserService {
     }
 
     return {
-      grafUserId: user.id,
+      hermesUserId: user.id,
       sigo: user.hasSigoCredentials() ? user.getSigoCredentials() : undefined,
     };
   }

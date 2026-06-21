@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { OrderController } from './order.controller';
 import { OrderService } from './order.service';
-import { OrderStatus } from './entities/order.entity';
+import { OrderStatus, DistOrderStatus } from './entities/order.entity';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { getRepositoryToken } from '@nestjs/typeorm';
@@ -14,6 +14,7 @@ import {
   createMockRepository,
 } from '../test/test-utils';
 import { UserRole } from '../user/entities/user.entity';
+import { RequestWithUser } from '../auth/types';
 
 describe('OrderController', () => {
   let controller: OrderController;
@@ -31,6 +32,7 @@ describe('OrderController', () => {
       updateOrder: jest.fn(),
       removeOrder: jest.fn(),
       validateOrder: jest.fn(),
+      updateDelivery: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -378,15 +380,36 @@ describe('OrderController', () => {
   });
 
   describe('findOne', () => {
-    it('should return an order by id', async () => {
+    it('should return an order by id with authorization check', async () => {
       const orderId = '123';
       const expectedOrder = createTestOrder({ id: 123 });
+      const user = createTestUser();
+      const mockRequest = createMockRequestWithUser(user) as RequestWithUser;
 
       orderService.findOne.mockResolvedValue(expectedOrder);
 
-      const result = await controller.findOne(orderId);
+      const result = await controller.findOne(orderId, mockRequest);
 
-      expect(orderService.findOne).toHaveBeenCalledWith(123);
+      expect(orderService.findOne).toHaveBeenCalledWith(123, user);
+      expect(result).toBe(expectedOrder);
+    });
+  });
+
+  describe('updateDelivery', () => {
+    it('should update delivery data successfully', async () => {
+      const orderId = '123';
+      const deliveryDto = { distStatus: DistOrderStatus.ROUTED, routeDate: '2024-06-01' };
+
+      const expectedOrder = createTestOrder({
+        id: 123,
+        distStatus: DistOrderStatus.ROUTED,
+        routeDate: '2024-06-01',
+      });
+      orderService.updateDelivery.mockResolvedValue(expectedOrder);
+
+      const result = await controller.updateDelivery(orderId, deliveryDto as any);
+
+      expect(orderService.updateDelivery).toHaveBeenCalledWith(123, deliveryDto);
       expect(result).toBe(expectedOrder);
     });
   });
@@ -415,6 +438,21 @@ describe('OrderController', () => {
         user,
       );
       expect(result).toBe(expectedOrder);
+    });
+
+    it('should persist invoiceId and invoicePdfUrl via updateOrder', async () => {
+      const user = createTestUser({ role: UserRole.BUSINESS_OWNER });
+      const request = createMockRequestWithUser(user) as any;
+      const updateDto: UpdateOrderDto = {
+        invoiceId: 'INV-001',
+        invoicePdfUrl: 'https://storage.example.com/invoice-001.pdf',
+      };
+
+      orderService.updateOrder.mockResolvedValue(createTestOrder({ id: 123 }));
+
+      await controller.update(request, '123', updateDto);
+
+      expect(orderService.updateOrder).toHaveBeenCalledWith(123, updateDto, user);
     });
   });
 

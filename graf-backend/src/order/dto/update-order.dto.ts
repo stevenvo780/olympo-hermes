@@ -29,4 +29,14 @@ export class UpdateOrderDto extends PartialType(CreateOrderDto) {
   @IsOptional()
   @IsNumber()
   creditDays?: number;
+
+  @ApiPropertyOptional({ description: 'ID de factura' })
+  @IsOptional()
+  @IsString()
+  invoiceId?: string;
+
+  @ApiPropertyOptional({ description: 'URL del PDF de factura' })
+  @IsOptional()
+  @IsString()
+  invoicePdfUrl?: string;
 }

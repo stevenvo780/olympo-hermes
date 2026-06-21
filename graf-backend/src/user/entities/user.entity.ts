@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { ApiProperty, ApiHideProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
+import * as crypto from 'crypto';
 import { SharedProp } from '../../common/entities/sharedProp.helper';
 import { Profile } from '../../profile/entities/profile.entity';
 import { Store } from '../../store/entities/store.entity';
@@ -97,6 +98,16 @@ export class User extends SharedProp {
   @Exclude()
   apiKey: string;
 
+  @Column({
+    type: 'varchar',
+    nullable: true,
+    unique: true,
+    name: 'apikeyhash',
+  })
+  @ApiHideProperty()
+  @Exclude()
+  apiKeyHash?: string;
+
   @Column({ type: 'text', nullable: true })
   @ApiHideProperty()
   @Exclude()
@@ -137,7 +148,16 @@ export class User extends SharedProp {
   encryptCredentials() {
     const encryptionService = new EncryptionService();
 
+    // Compute HMAC-SHA256 hash of apiKey BEFORE encrypting (deterministic for lookups).
     if (this.apiKey && !this.apiKey.includes(':')) {
+      const hashSecret = process.env.API_KEY_HASH_SECRET;
+      if (!hashSecret) {
+        throw new Error('API_KEY_HASH_SECRET is required');
+      }
+      this.apiKeyHash = crypto
+        .createHmac('sha256', hashSecret)
+        .update(this.apiKey)
+        .digest('hex');
       this.apiKey = encryptionService.encrypt(this.apiKey);
     }
 

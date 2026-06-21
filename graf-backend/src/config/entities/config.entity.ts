@@ -262,7 +262,7 @@ export class Config extends SharedProp {
   @ApiProperty({
     description: 'Plugin configurations (enabled flag + API key)',
     example: {
-      sinergia: { enabled: false, apiKey: '' },
+      talanton: { enabled: false, apiKey: '' },
       meraVuelta: { enabled: false, apiKey: '' },
     },
   })

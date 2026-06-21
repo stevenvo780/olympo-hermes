@@ -41,9 +41,9 @@ const daysOfWeek = [
 
 type DefaultPlugins = Record<string, { enabled: boolean; apiKey: string }>;
 const defaultPlugins: DefaultPlugins = {
-	sinergia: { enabled: false, apiKey: '' },
+	talanton: { enabled: false, apiKey: '' },
 	meraVuelta: { enabled: false, apiKey: '' },
-	hubcentral: { enabled: false, apiKey: '' },
+	nous: { enabled: false, apiKey: '' },
 };
 
 interface MongoDBFields {
@@ -650,7 +650,7 @@ const ConfigPage = () => {
 					<Tab eventKey="servicios" title="Servicios">
 						<div className="pt-3">
 							<h2>Otros servicios</h2>
-							<p>Esta seccion es solo para planes de pago y re quiere contactarse con Cauce para solicitar la configuracion del dominio</p>
+							<p>Esta seccion es solo para planes de pago y re quiere contactarse con Prizma para solicitar la configuracion del dominio</p>
 							<Row>
 								<Col xs={12} lg={12} className="mb-3">
 									<DominiosSection dominios={formData?.dominios || []} onDominiosChange={handleDominiosChange} />

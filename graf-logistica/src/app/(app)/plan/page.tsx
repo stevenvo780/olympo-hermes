@@ -17,7 +17,7 @@ interface Truck {
 }
 interface Order {
   id: number;
-  grafOrderId: number;
+  hermesOrderId: number;
   storeId: string;
   zone: string | null;
   routeGroup: string | null;
@@ -205,7 +205,7 @@ export default function PlanPage() {
       ) : visible.length === 0 ? (
         <div className="empty">
           No hay pedidos enrutados en logística. Ve al <Link className="btn-ghost" href="/">Tablero</Link> y
-          presiona <b>Sincronizar con Graf</b>.
+          presiona <b>Sincronizar con Hermes</b>.
         </div>
       ) : (
         groups.map(([zone, list]) => {
@@ -233,7 +233,7 @@ export default function PlanPage() {
                           <input type="checkbox" style={{ width: "auto" }} checked={sel.has(o.id)} onChange={() => toggleSel(o.id)} />
                         )}
                       </td>
-                      <td><b>#{o.grafOrderId}</b><br /><span className="muted">{o.routeDate ?? ""}</span></td>
+                      <td><b>#{o.hermesOrderId}</b><br /><span className="muted">{o.routeDate ?? ""}</span></td>
                       <td>{o.customerName}<br /><span className="muted">{o.address}{o.city ? `, ${o.city}` : ""}</span></td>
                       <td>{o.sellerName ?? <span className="muted">—</span>}</td>
                       <td>{o.units} u<br /><span className="muted">{fmtKg(o.weightKg)}</span></td>

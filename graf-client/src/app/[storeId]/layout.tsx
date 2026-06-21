@@ -19,7 +19,7 @@ async function getStoreCached(storeId: string): Promise<Store | null> {
   }
 }
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.graf.com.co/';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.hermes.com.co/';
 
 export async function generateMetadata(
   { params }: { params: Promise<{ storeId: string }> }

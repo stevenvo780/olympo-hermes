@@ -66,12 +66,12 @@ afterEach(() => {
   setWindowWidth(initialWidth);
 });
 
-describe('Graf Footer', () => {
+describe('Hermes Footer', () => {
   it('renders desktop footer content', async () => {
     setWindowWidth(1024);
     await renderFooter();
 
-    expect(container.textContent).toContain('Cauce');
+    expect(container.textContent).toContain('Prizma');
     expect(container.textContent).toContain('Contacto');
     expect(container.textContent).toContain('Redes Sociales');
     expect(container.textContent).toContain('stevenvallejo780@gmail.com');

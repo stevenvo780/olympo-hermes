@@ -7,45 +7,50 @@ import { Analytics } from "@vercel/analytics/react"
 import React from 'react';
 export const metadata = {
   title: {
-    default: 'Graf',
+    default: 'Hermes',
   },
   description:
-    'Graf es una aplicación e-commerce minimalista y altamente funcional para gestionar pedidos de forma rápida y sencilla.',
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://www.graf.com.co/'),
+    'Hermes es una aplicación e-commerce minimalista y altamente funcional para gestionar pedidos de forma rápida y sencilla.',
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://www.hermes.com.co/'),
   openGraph: {
-    title: 'Graf',
+    title: 'Hermes',
     description:
       'Aplicación e-commerce minimalista y altamente funcional para gestionar tus pedidos online.',
-    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://www.graf.com.co/',
-    siteName: 'Graf',
+    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://www.hermes.com.co/',
+    siteName: 'Hermes',
     locale: 'es_ES',
     type: 'website'
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Graf',
+    title: 'Hermes',
     description:
       'App e-commerce minimalista y funcional para gestionar tus pedidos online.',
-    images: [{ url: '/images/logo.svg', alt: 'Logo de Graf' }]
+    images: [{ url: '/images/logo.svg', alt: 'Logo de Hermes' }]
   }
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1.0
 };
 
 const defaultStructuredData = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'Graf',
-  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://www.graf.com.co/',
+  name: 'Hermes',
+  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://www.hermes.com.co/',
   logo: '/images/logo.svg',
   description:
     'E-commerce minimalista y altamente funcional para gestionar pedidos de manera rápida y sencilla.',
   sameAs: [
-    'https://www.facebook.com/graf',
-    'https://instagram.com/graf',
-    'https://twitter.com/graf'
+    'https://www.facebook.com/hermes',
+    'https://instagram.com/hermes',
+    'https://twitter.com/hermes'
   ],
   potentialAction: {
     '@type': 'SearchAction',
-    target: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://www.graf.com.co/'}/search?q={search_term_string}`,
+    target: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://www.hermes.com.co/'}/search?q={search_term_string}`,
     'query-input': 'required name=search_term_string'
   }
 };
@@ -53,13 +58,10 @@ const defaultStructuredData = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
-      <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <body>
         <Script id="default-schema-org" type="application/ld+json">
           {JSON.stringify(defaultStructuredData)}
         </Script>
-      </head>
-      <body>
         <Analytics />
         <Providers>
           {children}

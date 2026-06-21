@@ -231,6 +231,9 @@ export const generateOrderWhatsAppMessage = ({
 };
 
 export const sendWhatsAppMessage = ({ phone, message }: WhatsAppParams): void => {
+  if (typeof window === 'undefined') {
+    throw new Error('sendWhatsAppMessage must run in browser');
+  }
   const digits = `${phone}`.replace(/\D/g, '');
   const url = `https://wa.me/${digits}?text=${encodeURIComponent(message)}`;
 
@@ -476,7 +479,11 @@ export const createOrderAndSendWhatsApp = async (
     const orderId = response.data.id;
 
     const cartForMessage: CartItem[] = validatedItems.map((v) => {
-      const prod = cartItems.find((c) => c.product.id === v.productId)!.product;
+      const cartItem = cartItems.find((c) => c.product.id === v.productId);
+      if (!cartItem) {
+        throw new Error(`Producto ${v.productId} no encontrado en carrito`);
+      }
+      const prod = cartItem.product;
       return { product: prod, quantity: v.quantity, finalPrice: Number(v.finalPrice) };
     });
 

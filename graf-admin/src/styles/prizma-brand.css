@@ -1,14 +1,14 @@
 /**
- * cauce-brand.css — maps the existing Bootstrap theme of graf-admin onto Cauce
- * design-system tokens (from "@cauce/ui/styles.css"). Imported once, after
- * bootstrap, in src/app/layout.tsx. The "graf" module accent (green) is applied
- * via data-module="graf" on <body>; here we wire Bootstrap's vars to Cauce tokens.
+ * prizma-brand.css — maps the existing Bootstrap theme of hermes-admin onto Prizma
+ * design-system tokens (from "prizma-ui/styles.css"). Imported once, after
+ * bootstrap, in src/app/layout.tsx. The "hermes" module accent (green) is applied
+ * via data-module="hermes" on <body>; here we wire Bootstrap's vars to Prizma tokens.
  */
 
 :root {
-  /* Bootstrap core palette -> Cauce tokens */
+  /* Bootstrap core palette -> Prizma tokens */
   --bs-primary: var(--c-accent-module);
-  --bs-primary-rgb: 34, 164, 90; /* #22A45A — graf accent */
+  --bs-primary-rgb: 34, 164, 90; /* #22A45A — hermes accent */
   --bs-link-color: var(--c-primary);
   --bs-link-color-rgb: 11, 138, 143; /* #0B8A8F — c-primary-600 */
   --bs-link-hover-color: var(--c-primary-hover);
@@ -16,6 +16,13 @@
   --bs-body-bg: var(--c-bg);
   --bs-border-color: var(--c-border);
   --bs-emphasis-color: var(--c-fg);
+  --badge-info-bg: #e0f2fe;
+  --badge-info-text: #0369a1;
+}
+
+[data-theme="dark"] {
+  --badge-info-bg: #0c4a6e;
+  --badge-info-text: #e0f2fe;
 }
 
 body {
@@ -24,7 +31,7 @@ body {
   color: var(--c-fg, inherit);
 }
 
-/* Links adopt the Cauce primary */
+/* Links adopt the Prizma primary */
 a {
   color: var(--c-primary);
 }
@@ -32,7 +39,7 @@ a:hover {
   color: var(--c-primary-hover);
 }
 
-/* Primary buttons adopt the "graf" module accent */
+/* Primary buttons adopt the "hermes" module accent */
 .btn-primary {
   --bs-btn-bg: var(--c-accent-module);
   --bs-btn-border-color: var(--c-accent-module);

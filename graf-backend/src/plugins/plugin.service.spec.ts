@@ -134,10 +134,10 @@ describe('PluginService', () => {
     });
   });
 
-  describe('checkHubCentralConnection', () => {
+  describe('checkNousConnection', () => {
     it('should return error if URL not configured', async () => {
       envConfigService.get.mockReturnValue(undefined);
-      const result = await service.checkHubCentralConnection();
+      const result = await service.checkNousConnection();
       expect(result.connected).toBe(false);
       expect(result.error).toContain('no configurada');
     });
@@ -148,7 +148,7 @@ describe('PluginService', () => {
         toPromise: jest.fn().mockResolvedValue({ data: { status: 'ok' } }),
       } as any);
 
-      const result = await service.checkHubCentralConnection();
+      const result = await service.checkNousConnection();
       expect(result.connected).toBe(true);
       expect((result as any).status).toBe('ok');
     });
@@ -159,7 +159,7 @@ describe('PluginService', () => {
         toPromise: jest.fn().mockRejectedValue(new Error('Network error')),
       } as any);
 
-      const result = await service.checkHubCentralConnection();
+      const result = await service.checkNousConnection();
       expect(result.connected).toBe(false);
       expect(result.error).toBe('Network error');
     });

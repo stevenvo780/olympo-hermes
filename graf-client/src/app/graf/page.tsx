@@ -5,39 +5,39 @@ import ClientHome from './home/ClientHome';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Graf',
+  title: 'Hermes',
   description:
-    'Discover a wide range of products with Graf, your go-to ecommerce platform for secure and fast shopping.',
-  keywords: ['ecommerce', 'online shopping', 'Graf', 'products', 'orders'],
+    'Discover a wide range of products with Hermes, your go-to ecommerce platform for secure and fast shopping.',
+  keywords: ['ecommerce', 'online shopping', 'Hermes', 'products', 'orders'],
   openGraph: {
-    title: 'Graf',
+    title: 'Hermes',
     description:
-      'Discover a wide range of products with Graf, your go-to ecommerce platform for secure and fast shopping.',
+      'Discover a wide range of products with Hermes, your go-to ecommerce platform for secure and fast shopping.',
     type: 'website',
-    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://graf.com.co',
-    siteName: 'Graf',
+    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://hermes.com.co',
+    siteName: 'Hermes',
     locale: 'en_US',
     images: [
       {
         url: '/images/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'Graf - Your Online Store',
+        alt: 'Hermes - Your Online Store',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Graf',
+    title: 'Hermes',
     description:
-      'Discover a wide range of products with Graf, your go-to ecommerce platform for secure and fast shopping.',
-    creator: '@Graf',
+      'Discover a wide range of products with Hermes, your go-to ecommerce platform for secure and fast shopping.',
+    creator: '@Hermes',
     images: ['/images/twitter-og.jpg'],
   },
   alternates: {
-    canonical: process.env.NEXT_PUBLIC_SITE_URL || 'https://graf.com.co',
+    canonical: process.env.NEXT_PUBLIC_SITE_URL || 'https://hermes.com.co',
     languages: {
-      'en-US': process.env.NEXT_PUBLIC_SITE_URL || 'https://graf.com.co',
+      'en-US': process.env.NEXT_PUBLIC_SITE_URL || 'https://hermes.com.co',
     },
   },
   robots: {

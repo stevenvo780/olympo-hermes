@@ -5,12 +5,12 @@ import {
   validateEvent,
   type EventEnvelope,
   type PublishOptions,
-} from '@cauce/contracts';
+} from 'prizma-contracts';
 
 /**
- * Cauce HubCentral integration for Graf (e-commerce backend).
+ * Prizma Nous (Nous) integration for Hermes (e-commerce backend).
  *
- * Graf is the SSOT of online orders, catalog and online customers, so it is the
+ * Hermes is the SSOT of online orders, catalog and online customers, so it is the
  * OWNER (emitter) of these events (see ARCHITECTURE.md §4-5):
  *   - ORDER_PAID                 (pedido.pagado)
  *   - ORDER_PENDING_APPROVAL     (pedido.pendiente_aprobacion)
@@ -22,24 +22,29 @@ import {
  * helper here is therefore safe to `await` inline without try/catch.
  */
 @Injectable()
-export class CauceHubService {
-  private readonly logger = new Logger(CauceHubService.name);
+export class PrizmaHubService {
+  private readonly logger = new Logger(PrizmaHubService.name);
 
   private readonly client = new HubClient({
-    source: 'graf',
-    hubUrl: process.env.CAUCE_HUB_URL,
-    secret: process.env.CAUCE_HUB_SECRET,
+    // 'hermes' is the source key registered in prizma-contracts; renaming it to
+    // 'hermes' is gated on the contracts (R1) registry adding the new key.
+    source: 'hermes',
+    hubUrl: process.env.NOUS_HUB_URL,
+    secret: process.env.NOUS_HUB_SECRET,
     // throwOnError stays false: never break the local e-commerce flow.
   });
 
   /** Whether the connector is enabled (opt-in via env, default on). */
   private get enabled(): boolean {
-    return process.env.CAUCE_HUB_ENABLED !== 'false';
+    return (
+      process.env.NOUS_HUB_ENABLED !==
+      'false'
+    );
   }
 
   /**
    * Low-level publish. Validates the payload against the contract schema
-   * (best-effort) and forwards to HubCentral. Returns true on success.
+   * (best-effort) and forwards to Nous. Returns true on success.
    */
   async publish(
     eventType: string,
@@ -54,13 +59,13 @@ export class CauceHubService {
       data,
       eventId: '',
       timestamp: '',
-      source: 'graf',
+      source: 'hermes',
       priority: 'normal',
     } as EventEnvelope);
     if (!probe.ok) {
       const reason = (probe as { ok: false; error: string }).error;
       this.logger.warn(
-        `[cauce] skipping invalid "${eventType}" event: ${reason}`,
+        `[prizma] skipping invalid "${eventType}" event: ${reason}`,
       );
       return false;
     }
@@ -71,15 +76,15 @@ export class CauceHubService {
       // Defensive: HubClient already swallows network errors, but never let an
       // unexpected throw bubble into the business transaction.
       this.logger.warn(
-        `[cauce] publish "${eventType}" failed (non-fatal): ${(err as Error).message}`,
+        `[prizma] publish "${eventType}" failed (non-fatal): ${(err as Error).message}`,
       );
       return false;
     }
   }
 
-  // --- Graf-owned event helpers -------------------------------------------
+  // --- Hermes-owned event helpers -------------------------------------------
 
-  /** Flow 1 — online order paid. Consumed by ApiSoftia, ApiSigo, MeraVuelta, EMW. */
+  /** Flow 1 — online order paid. Consumed by Mnemosyne, Logos, Talaria, IRIS. */
   orderPaid(data: {
     orderId: string;
     customer: {
@@ -102,7 +107,7 @@ export class CauceHubService {
     return this.publish(EVENTS.ORDER_PAID, data, { priority: 'high' });
   }
 
-  /** Flow 2 — offline order awaiting Sinergia approval. */
+  /** Flow 2 — offline order awaiting Talanton approval. */
   orderPendingApproval(data: {
     orderId: string;
     customer: {
@@ -125,7 +130,7 @@ export class CauceHubService {
     return this.publish(EVENTS.ORDER_APPROVED, data);
   }
 
-  /** Flow 5 — new online customer. Consumed by ApiSoftia (CRM). */
+  /** Flow 5 — new online customer. Consumed by Mnemosyne (CRM). */
   customerCreated(data: {
     customer: {
       id?: string;

@@ -2,6 +2,8 @@
 import React from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
+import fs from 'fs';
+import path from 'path';
 import { CustomersList } from '../CustomersList';
 import type { Customer } from '@/app/[storeId]/customers/hooks/useCustomers';
 
@@ -285,5 +287,116 @@ describe('CustomersList', () => {
     });
 
     confirmSpy.mockRestore();
+  });
+
+  it('shows create customer button in empty state when onCreate is provided', () => {
+    const onCreate = vi.fn();
+
+    render(
+      <CustomersList
+        customers={[]}
+        isLoading={false}
+        storeId="store-1"
+        onCreate={onCreate}
+      />
+    );
+
+    const button = screen.getByRole('button', { name: /Crear Primer Cliente/i });
+    expect(button).toBeTruthy();
+
+    fireEvent.click(button);
+    expect(onCreate).toHaveBeenCalled();
+  });
+
+  it('hides create customer button when search has results but no customers', () => {
+    const onCreate = vi.fn();
+
+    render(
+      <CustomersList
+        customers={[]}
+        isLoading={false}
+        storeId="store-1"
+        onCreate={onCreate}
+      />
+    );
+
+    fireEvent.change(screen.getByPlaceholderText('Buscar clientes...'), {
+      target: { value: 'search term' },
+    });
+
+    expect(screen.queryByRole('button', { name: /Crear Primer Cliente/i })).toBeNull();
+  });
+
+  it('renders badge-info with data-test-contrast attribute', () => {
+    const customers = [buildCustomer({ loyaltyPoints: 123 })];
+    render(<CustomersList customers={customers} isLoading={false} storeId="store-1" />);
+    
+    const badge = screen.getByText('123 pts');
+    expect(badge).toBeTruthy();
+    expect(badge.getAttribute('data-test-contrast')).toBe('badge-info');
+  });
+
+  it('validates badge colors contrast ratios by reading and parsing prizma-brand.css', () => {
+    const cssPath = path.resolve(__dirname, '../../../styles/prizma-brand.css');
+    const cssContent = fs.readFileSync(cssPath, 'utf8');
+
+    // Simple regex to parse variables
+    // Parse light mode variables under :root
+    const rootBlockMatch = cssContent.match(/:root\s*{([^}]+)}/);
+    expect(rootBlockMatch).not.toBeNull();
+    const rootContent = rootBlockMatch![1];
+    const lightBgMatch = rootContent.match(/--badge-info-bg:\s*(#[a-fA-F0-9]{3,8})/);
+    const lightTextMatch = rootContent.match(/--badge-info-text:\s*(#[a-fA-F0-9]{3,8})/);
+
+    expect(lightBgMatch).not.toBeNull();
+    expect(lightTextMatch).not.toBeNull();
+    const lightBg = lightBgMatch![1].trim();
+    const lightText = lightTextMatch![1].trim();
+
+    // Parse dark mode variables under [data-theme="dark"]
+    const darkBlockMatch = cssContent.match(/\[data-theme="dark"\]\s*{([^}]+)}/);
+    expect(darkBlockMatch).not.toBeNull();
+    const darkContent = darkBlockMatch![1];
+    const darkBgMatch = darkContent.match(/--badge-info-bg:\s*(#[a-fA-F0-9]{3,8})/);
+    const darkTextMatch = darkContent.match(/--badge-info-text:\s*(#[a-fA-F0-9]{3,8})/);
+
+    expect(darkBgMatch).not.toBeNull();
+    expect(darkTextMatch).not.toBeNull();
+    const darkBg = darkBgMatch![1].trim();
+    const darkText = darkTextMatch![1].trim();
+
+    function getLuminance(hexColor: string): number {
+      const hex = hexColor.replace('#', '');
+      let r = 0, g = 0, b = 0;
+      if (hex.length === 3) {
+        r = parseInt(hex[0] + hex[0], 16) / 255;
+        g = parseInt(hex[1] + hex[1], 16) / 255;
+        b = parseInt(hex[2] + hex[2], 16) / 255;
+      } else {
+        r = parseInt(hex.substring(0, 2), 16) / 255;
+        g = parseInt(hex.substring(2, 4), 16) / 255;
+        b = parseInt(hex.substring(4, 6), 16) / 255;
+      }
+
+      const a = [r, g, b].map(v => {
+        return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+      });
+
+      return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+    }
+
+    function getContrastRatio(hex1: string, hex2: string): number {
+      const l1 = getLuminance(hex1);
+      const l2 = getLuminance(hex2);
+      const brightest = Math.max(l1, l2);
+      const darkest = Math.min(l1, l2);
+      return (brightest + 0.05) / (darkest + 0.05);
+    }
+
+    const lightContrast = getContrastRatio(lightBg, lightText);
+    expect(lightContrast).toBeGreaterThanOrEqual(4.5);
+
+    const darkContrast = getContrastRatio(darkBg, darkText);
+    expect(darkContrast).toBeGreaterThanOrEqual(4.5);
   });
 });

@@ -3,17 +3,17 @@ import {
   fetchOrders,
   STORE_IDS,
   DEFAULT_UNIT_WEIGHT_KG,
-  type GrafOrder,
-} from "./graf";
+  type HermesOrder,
+} from "./hermes";
 
-function units(o: GrafOrder): number {
+function units(o: HermesOrder): number {
   return (o.items ?? []).reduce((sum, it) => sum + (it.quantity || 0), 0);
 }
 
-function mapOrder(o: GrafOrder, storeId: string) {
+function mapOrder(o: HermesOrder, storeId: string) {
   const u = units(o);
   return {
-    grafOrderId: o.id,
+    hermesOrderId: o.id,
     storeId,
     zone: o.deliveryZone?.zone ?? null,
     routeGroup: o.deliveryZone?.routeGroup ?? null,
@@ -27,7 +27,7 @@ function mapOrder(o: GrafOrder, storeId: string) {
     units: u,
     weightKg: Math.round(u * DEFAULT_UNIT_WEIGHT_KG * 100) / 100,
     totalAmount: Number(o.amount?.total ?? 0),
-    grafDistStatus: o.distStatus ?? null,
+    hermesDistStatus: o.distStatus ?? null,
     notes: o.notes ?? null,
   };
 }
@@ -42,8 +42,8 @@ export interface SyncResult {
 }
 
 /**
- * Pulls routed + dispatched orders from Graf and upserts them into the
- * logistics DB. Idempotent: re-running only refreshes the Graf snapshot and
+ * Pulls routed + dispatched orders from Hermes and upserts them into the
+ * logistics DB. Idempotent: re-running only refreshes the Hermes snapshot and
  * NEVER clobbers the local logistics state (truck assignment, sequence, the
  * loaded/dispatched/delivered status set in this app).
  */
@@ -67,10 +67,10 @@ export async function syncStore(storeId: string): Promise<SyncResult> {
       const data = mapOrder(o, storeId);
       if (data.isCarrier) result.carriers++;
       const existing = await prisma.dispatchOrder.findUnique({
-        where: { grafOrderId_storeId: { grafOrderId: o.id, storeId } },
+        where: { hermesOrderId_storeId: { hermesOrderId: o.id, storeId } },
       });
       if (existing) {
-        // refresh only the Graf snapshot fields; keep logistics state intact
+        // refresh only the Hermes snapshot fields; keep logistics state intact
         await prisma.dispatchOrder.update({
           where: { id: existing.id },
           data: { ...data, syncedAt: new Date() },

@@ -29,7 +29,7 @@ const RegisterClient: React.FC<RegisterClientProps> = ({ storeId }) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const config = useSelector((state: RootState) => state.ui.store?.configuration);
-  const storeName = storeId ? (config?.store?.name || 'Graf') : 'Graf';
+  const storeName = storeId ? (config?.store?.name || 'Hermes') : 'Hermes';
   const logoSrc = storeId ? (config?.logo || '/images/logo.svg') : '/images/logo.svg';
 
   const [formData, setFormData] = useState({
@@ -280,7 +280,7 @@ const RegisterClient: React.FC<RegisterClientProps> = ({ storeId }) => {
                     <span style={{ fontSize: '0.85rem' }}>
                       He leído y acepto el{' '}
                       <a
-                        href="/graf/privacyPolicies"
+                        href="/hermes/privacyPolicies"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="fw-semibold"

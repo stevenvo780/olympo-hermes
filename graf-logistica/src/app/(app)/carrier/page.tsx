@@ -6,7 +6,7 @@ import { api, fmtKg } from "@/lib/api";
 
 interface Order {
   id: number;
-  grafOrderId: number;
+  hermesOrderId: number;
   zone: string | null;
   customerName: string | null;
   sellerName: string | null;
@@ -83,8 +83,8 @@ export default function CarrierPage() {
       </div>
 
       <div className="banner banner-info">
-        Estos pedidos vienen de zonas marcadas como <b>transportadora</b> en Graf. Dirección y teléfono
-        son obligatorios (validados en Graf al crear el pedido), por eso aquí siempre llegan completos.
+        Estos pedidos vienen de zonas marcadas como <b>transportadora</b> en Hermes. Dirección y teléfono
+        son obligatorios (validados en Hermes al crear el pedido), por eso aquí siempre llegan completos.
       </div>
 
       {loading ? (
@@ -108,7 +108,7 @@ export default function CarrierPage() {
               const next = C_NEXT[o.status];
               return (
                 <tr key={o.id}>
-                  <td><b>#{o.grafOrderId}</b><br /><span className="muted">{o.zone}</span></td>
+                  <td><b>#{o.hermesOrderId}</b><br /><span className="muted">{o.zone}</span></td>
                   <td>{o.customerName}<br /><span className="muted">{o.address}{o.city ? `, ${o.city}` : ""}</span></td>
                   <td>{o.phone || <span className="muted">—</span>}</td>
                   <td>{o.units} u<br /><span className="muted">{fmtKg(o.weightKg)}</span></td>

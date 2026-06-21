@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { ValidationPipe } from '@nestjs/common';
 import compression from 'compression';
 import * as dotenv from 'dotenv';
 import { json, urlencoded } from 'express';
@@ -32,10 +33,31 @@ async function bootstrap() {
       cors: true,
     });
     // Aumentar límite de payload para cargas grandes (Excel, Imágenes)
-    app.use(json({ limit: '50mb' }));
+    app.use(
+      json({
+        limit: '50mb',
+        // Capturar el cuerpo crudo para verificación HMAC byte-a-byte
+        // (webhooks del Hub/Mercado Pago: la firma se calcula sobre el raw).
+        verify: (req, _res, buf) => {
+          (req as unknown as { rawBody?: string }).rawBody = buf.toString('utf8');
+        },
+      }),
+    );
     app.use(urlencoded({ extended: true, limit: '50mb' }));
 
     app.use(compression());
+
+    // Global validation pipe: validates & sanitizes all DTOs
+    app.useGlobalPipes(
+      new ValidationPipe({
+        whitelist: true,
+        transform: true,
+        forbidNonWhitelisted: false,
+        transformOptions: {
+          enableImplicitConversion: true,
+        },
+      }),
+    );
     const config = new DocumentBuilder()
       .setTitle('Total Pedidos API')
       .setDescription(

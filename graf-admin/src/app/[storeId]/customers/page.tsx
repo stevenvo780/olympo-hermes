@@ -11,7 +11,8 @@ import ExportModal from '@/components/Dashboard/ExportModal';
 import ImportCustomersModal from '@/components/Dashboard/ImportCustomersModal';
 
 export default function CustomersPage() {
-  const { storeId } = useParams();
+  const params = useParams<{ storeId: string }>();
+  const storeId = params?.storeId ?? '';
   const [showExportModal, setShowExportModal] = useState(false);
   const [showImportModal, setShowImportModal] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -123,6 +124,7 @@ export default function CustomersPage() {
         storeId={storeId as string}
         onUpdateCustomer={(id, data) => updateCustomer(id, data)}
         onDeleteCustomer={(id) => deleteCustomer(id)}
+        onCreate={() => setShowCreateModal(true)}
       />
 
       {showExportModal && (

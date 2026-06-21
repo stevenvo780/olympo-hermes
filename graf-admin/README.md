@@ -1,22 +1,22 @@
-# 🎛️ Graf Admin
+# 🎛️ Hermes Admin
 ## E-commerce Administration Dashboard
 
 <div align="center">
 
-![Graf Admin](https://img.shields.io/badge/Graf-Admin-blue?style=for-the-badge&logo=react)
+![Hermes Admin](https://img.shields.io/badge/Hermes-Admin-blue?style=for-the-badge&logo=react)
 ![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![Redux](https://img.shields.io/badge/Redux-593D88?style=for-the-badge&logo=redux&logoColor=white)
 ![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
 
 **Panel de administración completo para gestión de e-commerce**  
-*Parte del Ecosistema Humanizar*
+*Parte del Ecosistema Prizma*
 
 </div>
 
 ## 🌟 Descripción General
 
-Graf Admin es el panel de administración principal para el sistema de e-commerce del **Ecosistema Humanizar**. Esta aplicación web moderna, construida con Next.js 14+ y TypeScript, proporciona una interfaz completa y poderosa para gestionar tiendas, productos, pedidos, clientes y todas las operaciones comerciales del ecosistema.
+Hermes Admin es el panel de administración principal para el sistema de e-commerce del **Ecosistema Prizma**. Esta aplicación web moderna, construida con Next.js 14+ y TypeScript, proporciona una interfaz completa y poderosa para gestionar tiendas, productos, pedidos, clientes y todas las operaciones comerciales del ecosistema.
 
 ### 🎯 Propósito en el Ecosistema
 - **Centro de control**: Administración completa del e-commerce
@@ -45,8 +45,8 @@ Graf Admin es el panel de administración principal para el sistema de e-commerc
 - **Centro de pedidos**: Vista centralizada de todos los pedidos
 - **Estados personalizables**: Workflow de estados flexible
 - **Facturación automática**: Integración con SUNAT
-- **Gestión de envíos**: Integración con MeraVuelta
-- **Notificaciones**: WhatsApp automático vía EMW
+- **Gestión de envíos**: Integración con Talaria
+- **Notificaciones**: WhatsApp automático vía IRIS
 - **Reportes detallados**: Analytics de ventas
 
 ### 👥 Administración de Clientes
@@ -89,7 +89,7 @@ Graf Admin es el panel de administración principal para el sistema de e-commerc
 
 ### Estructura de Directorios
 ```
-📁 graf-admin/
+📁 hermes-admin/
 ├── 📁 src/
 │   ├── 📁 app/                           # App Router (Next.js 14+)
 │   │   ├── 📄 layout.tsx                 # Layout principal
@@ -207,7 +207,7 @@ Graf Admin es el panel de administración principal para el sistema de e-commerc
 ├── 📁 public/                            # Archivos estáticos
 │   ├── 📄 favicon.webp                   # Favicon
 │   └── 📁 images/                        # Imágenes
-│       ├── 📄 humanizar-logo.png         # Logo Humanizar
+│       ├── 📄 prizma-logo.png         # Logo Prizma
 │       ├── 📄 login.png                  # Imagen de login
 │       └── 📄 logo.svg                   # Logo SVG
 ├── 📄 next.config.ts                     # Configuración Next.js
@@ -222,13 +222,13 @@ Graf Admin es el panel de administración principal para el sistema de e-commerc
 ### Prerrequisitos
 - **Node.js** >= 16.x
 - **npm** >= 8.x o **yarn** >= 1.x
-- **Graf Backend** ejecutándose
+- **Hermes Backend** ejecutándose
 - **Firebase project** configurado
 
 ### 1️⃣ Instalación
 ```bash
 # Navegar al directorio
-cd Graf/graf-admin
+cd Hermes/hermes-admin
 
 # Instalar dependencias
 npm install
@@ -260,7 +260,7 @@ NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=123456789
 NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
 
 # App Configuration
-NEXT_PUBLIC_APP_NAME=Graf Admin
+NEXT_PUBLIC_APP_NAME=Hermes Admin
 NEXT_PUBLIC_APP_VERSION=1.0.0
 NEXT_PUBLIC_ENVIRONMENT=development
 
@@ -278,9 +278,9 @@ NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloud_name
 NEXT_PUBLIC_WOMPI_PUBLIC_KEY=pub_test_your_public_key
 
 # Ecosystem Integration
-NEXT_PUBLIC_EMW_URL=http://localhost:3001
-NEXT_PUBLIC_MERAVUELTA_URL=http://localhost:3002
-NEXT_PUBLIC_FIAR_URL=http://localhost:3004
+NEXT_PUBLIC_IRIS_URL=http://localhost:3001
+NEXT_PUBLIC_TALARIA_URL=http://localhost:3002
+NEXT_PUBLIC_PISTIS_URL=http://localhost:3004
 ```
 
 ## 🏃‍♂️ Ejecución
@@ -312,10 +312,10 @@ yarn start
 ### Con Docker
 ```bash
 # Construir imagen Docker
-docker build -t graf-admin .
+docker build -t hermes-admin .
 
 # Ejecutar contenedor
-docker run -p 3001:3000 graf-admin
+docker run -p 3001:3000 hermes-admin
 ```
 
 ## 🎨 Características de la Interfaz
@@ -349,7 +349,7 @@ docker run -p 3001:3000 graf-admin
 - **Detalle completo**: Información del cliente y productos
 - **Cambio de estados**: Workflow personalizable
 - **Facturación**: Generación automática
-- **Tracking de envío**: Integración MeraVuelta
+- **Tracking de envío**: Integración Talaria
 - **Notificaciones**: WhatsApp automático
 
 ### 👥 Gestión de Clientes
@@ -369,7 +369,7 @@ docker run -p 3001:3000 graf-admin
 
 ## 🔌 Integración con el Ecosistema
 
-### Graf Backend API
+### Hermes Backend API
 ```typescript
 
 const apiClient = axios.create({
@@ -448,7 +448,7 @@ export const store = configureStore({
 - **Error handling**: Reportes de errores detallados
 
 ### Customización Visual
-- **Theme editor**: Colores y tipografías
+- **Theme editor**: Colores y tipohermesías
 - **Logo upload**: Gestión de branding
 - **Layout options**: Configuración de diseño
 - **Preview mode**: Vista previa en tiempo real
@@ -501,10 +501,10 @@ vercel
 ### Docker Production
 ```bash
 # Build para producción
-docker build -f Dockerfile.prod -t graf-admin:prod .
+docker build -f Dockerfile.prod -t hermes-admin:prod .
 
 # Run en producción
-docker run -p 3001:3000 graf-admin:prod
+docker run -p 3001:3000 hermes-admin:prod
 ```
 
 ### Ambientes
@@ -516,7 +516,7 @@ npm run dev
 npm run build && npm start
 
 # Production
-docker-compose up -d graf-admin
+docker-compose up -d hermes-admin
 ```
 
 ## 📱 Responsive Design
@@ -552,9 +552,9 @@ docker-compose up -d graf-admin
 ## 📞 Soporte
 
 ### Enlaces Útiles
-- [Graf Backend Documentation](../graf-backend/README.md)
-- [Graf Client Documentation](../graf-client/README.md)
-- [Ecosistema Humanizar](../../README.md)
+- [Hermes Backend Documentation](../hermes-backend/README.md)
+- [Hermes Client Documentation](../hermes-client/README.md)
+- [Ecosistema Prizma](../../README.md)
 - [Next.js Documentation](https://nextjs.org/docs)
 
 ### Contacto
@@ -587,9 +587,9 @@ npm run type-check
 
 <div align="center">
 
-**Graf Admin v1.0.0**  
-*Panel de Administración E-commerce - Ecosistema Humanizar*
+**Hermes Admin v1.0.0**  
+*Panel de Administración E-commerce - Ecosistema Prizma*
 
-![Humanizar](https://img.shields.io/badge/Humanizar-Ecosystem-orange?style=for-the-badge)
+![Prizma](https://img.shields.io/badge/Prizma-Ecosystem-orange?style=for-the-badge)
 
 </div>

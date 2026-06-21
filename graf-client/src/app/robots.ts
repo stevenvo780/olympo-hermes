@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { Store } from '@/types';
 
 export default async function robots(): Promise<MetadataRoute.Robots> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://graf.com.co';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hermes.com.co';
   
   let stores: Store[] = [];
   try {
@@ -17,9 +17,9 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
 
   const staticAllowedRoutes = [
     '/',
-    '/graf',
-    '/graf/home',
-    '/graf/privacyPolicies'
+    '/hermes',
+    '/hermes/home',
+    '/hermes/privacyPolicies'
   ];
   
   const publicSubPaths = ['', '/about', '/products'];
@@ -32,10 +32,10 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
     '/dashboard/*',
     '/login',
     '/register',
-    '/graf/login',
-    '/graf/register',
-    '/graf/profile',
-    '/graf/orders',
+    '/hermes/login',
+    '/hermes/register',
+    '/hermes/profile',
+    '/hermes/orders',
     ...stores.flatMap((store: Store) => [
       `/${store.id}/login`,
       `/${store.id}/register`,

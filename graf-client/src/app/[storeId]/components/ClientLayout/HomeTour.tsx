@@ -46,7 +46,7 @@ interface HomeTourProps {
 }
 
 const HomeTour: React.FC<HomeTourProps> = ({ onStart }) => {
-  const tour = usePrizmaTour({ runKey: 'graf-client-v1', total: TOUR_STEPS.length });
+  const tour = usePrizmaTour({ runKey: 'hermes-client-v1', total: TOUR_STEPS.length });
 
   // Expose the start function to the parent via callback ref pattern
   React.useEffect(() => {
@@ -58,7 +58,7 @@ const HomeTour: React.FC<HomeTourProps> = ({ onStart }) => {
   return (
     <PrizmaTour
       steps={TOUR_STEPS}
-      runKey="graf-client-v1"
+      runKey="hermes-client-v1"
       autoStart
       onFinish={() => {}}
       onSkip={() => {}}

@@ -23,6 +23,7 @@ import { ProductCoreService } from '../product/modules/core/product-core.service
 import { PluginService } from '../plugins/plugin.service';
 import { ConfigService as AppConfigService } from '../config/config.service';
 import { CustomerService } from '../customer/customer.service';
+import { PrizmaHubService } from '../prizma/prizma-hub.service';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import {
   createMockRepository,
@@ -68,6 +69,13 @@ describe('OrderService - Business Logic', () => {
       updateCustomerOrderStats: jest.fn(),
     };
 
+    const mockPrizmaHub = {
+      orderPaid: jest.fn().mockResolvedValue(true),
+      orderPendingApproval: jest.fn().mockResolvedValue(true),
+      orderApproved: jest.fn().mockResolvedValue(true),
+      customerCreated: jest.fn().mockResolvedValue(true),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         OrderService,
@@ -91,6 +99,7 @@ describe('OrderService - Business Logic', () => {
         { provide: PluginService, useValue: mockPluginService },
         { provide: AppConfigService, useValue: { findByStoreId: jest.fn() } },
         { provide: CustomerService, useValue: mockCustomerService },
+        { provide: PrizmaHubService, useValue: mockPrizmaHub },
       ],
     }).compile();
 

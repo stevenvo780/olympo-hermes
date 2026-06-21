@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Button, ButtonGroup, Row, Col } from 'react-bootstrap';
+import SafeHtmlRenderer from '@/components/SafeHtmlRenderer';
 
 type AboutSectionProps = {
   about: string;
@@ -86,7 +87,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({ about, handleInputChange })
                 }}
               >
                 {about ? (
-                  <div dangerouslySetInnerHTML={{ __html: about }} />
+                  <SafeHtmlRenderer html={about} />
                 ) : (
                   <div className="text-muted text-center p-4">
                     <p>La vista previa aparecerá aquí...</p>

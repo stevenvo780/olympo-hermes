@@ -55,7 +55,7 @@ const ConfirmStep: React.FC<ConfirmStepProps> = ({
       </p>
 
       {/* ── Cart items ── */}
-      <div style={{ maxHeight: '200px', overflowY: 'auto', marginBottom: '1rem' }}>
+      <div style={{ maxHeight: '200px', overflowY: 'auto', marginBottom: '1rem', borderBottom: '2px solid rgba(0, 0, 0, 0.1)' }}>
         {cartItems.map(item => {
           const unitPrice = Number(item.product.totalPrice ?? item.product.basePrice);
           const lineTotal = unitPrice * item.quantity;

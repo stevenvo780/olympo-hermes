@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   },
   twitter: { images: [] },
   keywords: ['perfil', 'comercio', 'editar', 'configuración', 'tienda'],
-  alternates: { canonical: 'https://graf.com.co/profile' },
+  alternates: { canonical: 'https://hermes.com.co/profile' },
 };
 
 interface StoreParams {

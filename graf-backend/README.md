@@ -1,29 +1,29 @@
-# 🛒 Graf Backend API
+# 🛒 Hermes Backend API
 ## E-commerce Platform - Core Backend Service
 
 <div align="center">
 
-![Graf Backend](https://img.shields.io/badge/Graf-Backend-green?style=for-the-badge&logo=nestjs)
+![Hermes Backend](https://img.shields.io/badge/Hermes-Backend-green?style=for-the-badge&logo=nestjs)
 ![NestJS](https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=nestjs&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
 
 **API robusta y escalable para e-commerce completo**  
-*Parte del Ecosistema Humanizar*
+*Parte del Ecosistema Prizma*
 
 </div>
 
 ## 🌟 Descripción General
 
-Graf Backend es el núcleo del sistema de e-commerce del **Ecosistema Humanizar**. Esta API moderna y robusta, construida con NestJS y TypeScript, proporciona una plataforma completa para la gestión de tiendas en línea, productos, pedidos, pagos y usuarios. Es el motor que impulsa tanto el panel administrativo como la tienda de clientes finales.
+Hermes Backend es el núcleo del sistema de e-commerce del **Ecosistema Prizma**. Esta API moderna y robusta, construida con NestJS y TypeScript, proporciona una plataforma completa para la gestión de tiendas en línea, productos, pedidos, pagos y usuarios. Es el motor que impulsa tanto el panel administrativo como la tienda de clientes finales.
 
 ### 🎯 Propósito en el Ecosistema
 - **Centro de e-commerce**: API principal para todas las operaciones comerciales
-- **Integración con EMW**: Notificaciones de pedidos vía WhatsApp
-- **Soporte a MeraVuelta**: Gestión de entregas y domicilios
-- **Conexión FIAR**: Sistema de créditos integrado
-- **Facturación**: Integración con ApiSigo para SUNAT
+- **Integración con IRIS**: Notificaciones de pedidos vía WhatsApp
+- **Soporte a Talaria**: Gestión de entregas y domicilios
+- **Conexión PISTIS**: Sistema de créditos integrado
+- **Facturación**: Integración con Logos para SUNAT
 
 ## ✨ Características Principales
 
@@ -74,7 +74,7 @@ Graf Backend es el núcleo del sistema de e-commerce del **Ecosistema Humanizar*
 
 ### Módulos Principales
 ```
-📦 Graf Backend
+📦 Hermes Backend
 ├── 🏪 Store Module           # Gestión de tiendas
 ├── 📦 Product Module         # Productos y catálogo  
 ├── 📊 Category Module        # Categorías de productos
@@ -92,7 +92,7 @@ Graf Backend es el núcleo del sistema de e-commerce del **Ecosistema Humanizar*
 
 ### Estructura Detallada del Proyecto
 ```
-📁 graf-backend/
+📁 hermes-backend/
 ├── 📁 src/                           # Código fuente principal
 │   ├── 📄 main.ts                    # Punto de entrada de la aplicación
 │   ├── 📄 app.module.ts              # Módulo principal
@@ -152,7 +152,7 @@ Graf Backend es el núcleo del sistema de e-commerce del **Ecosistema Humanizar*
 ### Swagger/OpenAPI
 La documentación completa e interactiva de la API está disponible en:
 - **Desarrollo**: [http://localhost:3000/api](http://localhost:3000/api)
-- **Producción**: [https://api.graf.humanizar.com/api](https://api.graf.humanizar.com/api)
+- **Producción**: [https://api.hermes.prizma.com/api](https://api.hermes.prizma.com/api)
 
 ## 🚀 Instalación y Configuración
 
@@ -165,7 +165,7 @@ La documentación completa e interactiva de la API está disponible en:
 ### 1️⃣ Instalación
 ```bash
 # Clonar repositorio (si es necesario)
-cd Graf/graf-backend
+cd Hermes/hermes-backend
 
 # Instalar dependencias
 npm install
@@ -176,13 +176,13 @@ yarn install
 ### 2️⃣ Configuración de Base de Datos
 ```bash
 # Crear base de datos PostgreSQL
-createdb graf_db
+createdb hermes_db
 
 # O usando psql
 psql -U postgres
-CREATE DATABASE graf_db;
-CREATE USER graf_user WITH PASSWORD 'your_password';
-GRANT ALL PRIVILEGES ON DATABASE graf_db TO graf_user;
+CREATE DATABASE hermes_db;
+CREATE USER hermes_user WITH PASSWORD 'your_password';
+GRANT ALL PRIVILEGES ON DATABASE hermes_db TO hermes_user;
 ```
 
 ### 3️⃣ Variables de Entorno
@@ -199,9 +199,9 @@ nano .env
 # Base de Datos
 DB_HOST=localhost
 DB_PORT=5432
-DB_USERNAME=graf_user
+DB_USERNAME=hermes
 DB_PASSWORD=your_secure_password
-DB_NAME=graf_db
+DB_NAME=hermes
 DB_SYNCHRONIZE=false  # true solo en desarrollo
 
 # Firebase Configuration
@@ -231,9 +231,9 @@ API_KEY_SECRET=your_api_key_secret
 ENCRYPTION_KEY=your_32_character_encryption_key
 
 # Integrations
-EMW_API_URL=http://localhost:3001
-MERAVUELTA_API_URL=http://localhost:3002
-APISIGO_URL=http://localhost:3003
+IRIS_API_URL=http://localhost:3001
+TALARIA_API_URL=http://localhost:3002
+LOGOS_URL=http://localhost:3003
 ECOSYSTEM_API_KEY=your_ecosystem_key
 ```
 
@@ -273,7 +273,7 @@ npm run docker:build
 docker-compose up -d
 
 # Ver logs
-docker-compose logs -f graf-backend
+docker-compose logs -f hermes-backend
 ```
 
 ## 🧪 Testing Avanzado
@@ -452,39 +452,39 @@ const firebaseConfig = {
 
 ## 🔗 Integraciones del Ecosistema
 
-### EMW (Marketing WhatsApp)
+### IRIS (Marketing WhatsApp)
 ```bash
 # Notificaciones automáticas de pedidos
-EMW_WEBHOOK_URL=http://localhost:3001/webhook/order-created
-EMW_API_KEY=your_emw_api_key
+IRIS_WEBHOOK_URL=http://localhost:3001/webhook/order-created
+IRIS_API_KEY=your_iris_api_key
 
 # Templates de mensajes
 ORDER_CREATED_TEMPLATE=order_confirmation
 ORDER_SHIPPED_TEMPLATE=shipping_notification
 ```
 
-### MeraVuelta (Entregas)
+### Talaria (Entregas)
 ```bash
 # Integración para gestión de entregas
-MERAVUELTA_API_URL=http://localhost:3002/api
-MERAVUELTA_API_KEY=your_meravuelta_key
+TALARIA_API_URL=http://localhost:3002/api
+TALARIA_API_KEY=your_talaria_key
 
 # Webhook para updates de estado
-MERAVUELTA_WEBHOOK_SECRET=your_webhook_secret
+TALARIA_WEBHOOK_SECRET=your_webhook_secret
 ```
 
-### FIAR (Sistema de Créditos)
+### PISTIS (Sistema de Créditos)
 ```bash
 # Integración para pagos a crédito
-FIAR_API_URL=http://localhost:3004/api
-FIAR_API_KEY=your_fiar_key
+PISTIS_API_URL=http://localhost:3004/api
+PISTIS_API_KEY=your_pistis_key
 
 # Configuración de crédito
 DEFAULT_CREDIT_LIMIT=500000
 CREDIT_APPROVAL_WEBHOOK=http://localhost:3004/webhook/approval
 ```
 
-### ApiSigo (Facturación SUNAT)
+### Logos (Facturación SUNAT)
 ```bash
 # Facturación electrónica
 SIGO_API_URL=http://localhost:3003/api
@@ -513,14 +513,14 @@ npm run gcp:deploy
 ### Docker Production
 ```bash
 # Build de producción
-docker build -f Dockerfile -t graf-backend:prod .
+docker build -f Dockerfile -t hermes-backend:prod .
 
 # Ejecutar en producción
 docker run -d \
-  --name graf-backend \
+  --name hermes-backend \
   -p 3000:3000 \
   --env-file .env.production \
-  graf-backend:prod
+  hermes-backend:prod
 ```
 
 ### Variables por Ambiente
@@ -559,7 +559,7 @@ GET /health/wompi             # Estado de Wompi
 npm run logs
 
 # Logs estructurados en producción
-docker-compose logs -f graf-backend
+docker-compose logs -f hermes-backend
 
 # Análisis de logs
 tail -f logs/application.log | grep ERROR
@@ -592,9 +592,9 @@ tail -f logs/application.log | grep ERROR
 ## 📞 Soporte y Documentación
 
 ### Enlaces Útiles
-- [Graf Admin Documentation](../graf-admin/README.md)
-- [Graf Client Documentation](../graf-client/README.md)
-- [Ecosistema Humanizar](../../README.md)
+- [Hermes Admin Documentation](../hermes-admin/README.md)
+- [Hermes Client Documentation](../hermes-client/README.md)
+- [Ecosistema Prizma](../../README.md)
 - [NestJS Documentation](https://docs.nestjs.com)
 - [TypeORM Documentation](https://typeorm.io)
 
@@ -611,7 +611,7 @@ tail -f logs/application.log | grep ERROR
 pg_isready -h localhost -p 5432
 
 # Verificar credenciales
-psql -h localhost -U graf_user -d graf_db
+psql -h localhost -U hermes_user -d hermes_db
 ```
 
 #### Problemas con migraciones
@@ -637,9 +637,9 @@ curl -X POST https://identitytoolkit.googleapis.com/v1/accounts:signInWithPasswo
 
 <div align="center">
 
-**Graf Backend API v0.0.1**  
-*E-commerce Platform - Ecosistema Humanizar*
+**Hermes Backend API v0.0.1**  
+*E-commerce Platform - Ecosistema Prizma*
 
-![Humanizar](https://img.shields.io/badge/Humanizar-Ecosystem-orange?style=for-the-badge)
+![Prizma](https://img.shields.io/badge/Prizma-Ecosystem-orange?style=for-the-badge)
 
 </div>
