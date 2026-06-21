@@ -1,4 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'prizma-ui/styles.css';
 import '@/styles/globals.scss';
 import '@/styles/bootstrap.css';
 import Script from 'next/script';
