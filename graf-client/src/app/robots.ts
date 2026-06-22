@@ -1,6 +1,9 @@
 import { MetadataRoute } from 'next';
 import { Store } from '@/types';
 
+// Prevent prerendering robots - it requires API calls that may fail in build time
+export const dynamic = 'force-dynamic';
+
 export default async function robots(): Promise<MetadataRoute.Robots> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hermes.com.co';
   

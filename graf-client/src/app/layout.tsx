@@ -6,6 +6,9 @@ import Script from 'next/script';
 import { Providers } from '@/providers';
 import { Analytics } from "@vercel/analytics/react"
 import React from 'react';
+
+// Disable prerendering for pages that depend on Firebase and env vars
+export const dynamic = 'force-dynamic';
 export const metadata = {
   title: {
     default: 'Hermes',

@@ -7,6 +7,14 @@ const outputFileTracingRoot = process.env.NEXT_OUTPUT_TRACING_ROOT
 
 const nextConfig: NextConfig = {
   ...(outputFileTracingRoot ? { outputFileTracingRoot } : {}),
+  typescript: {
+    ignoreBuildErrors: false,
+  },
+  staticPageGenerationTimeout: 120,
+  onDemandEntries: {
+    maxInactiveAge: 60000,
+    pagesBufferLength: 5,
+  },
   images: {
     remotePatterns: [
       {
