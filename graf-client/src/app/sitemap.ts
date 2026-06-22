@@ -5,7 +5,7 @@ import { Store } from '@/types';
 export const dynamic = 'force-dynamic';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hermes.com.co';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://prizma-hermes.vercel.app';
 
   let stores: Store[] = [];
   try {

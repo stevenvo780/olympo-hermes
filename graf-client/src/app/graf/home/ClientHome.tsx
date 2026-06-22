@@ -30,7 +30,7 @@ const ClientHome: React.FC = () => {
   const searchTimeout = useRef<NodeJS.Timeout | null>(null);
   const abortRef = useRef<AbortController | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const adminUrl = process.env.NEXT_PUBLIC_API_URL || 'https://prizma-hermes-kjopuery2a-uc.a.run.app';
+  const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL || 'https://prizma-hermes-kjopuery2a-uc.a.run.app';
 
   const isSearchActive = searchTerm.trim().length > 0 || searchFocused;
 
@@ -277,8 +277,8 @@ const ClientHome: React.FC = () => {
                   <Col key={i} xs={6} md={4} lg={2}>
                     <div className="text-center p-3 hermes-feature-card">
                       <div style={{ fontSize: '1.6rem', color: PRIMARY, marginBottom: 8 }}>{f.icon}</div>
-                      <h6 className="fw-bold mb-1" style={{ fontSize: '0.85rem' }}>{f.title}</h6>
-                      <small className="text-muted" style={{ fontSize: '0.75rem' }}>{f.desc}</small>
+                      <h3 className="fw-bold mb-1" style={{ fontSize: '0.85rem' }}>{f.title}</h3>
+                      <p className="text-muted mb-0" style={{ fontSize: '0.75rem' }}>{f.desc}</p>
                     </div>
                   </Col>
                 ))}

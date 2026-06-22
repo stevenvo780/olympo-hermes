@@ -56,7 +56,7 @@ const AboutPage: React.FC = () => {
           <Button
             variant="light"
             size="lg"
-            href="https://wa.me/573246780067?text=Hola,%20estoy%20interesado%20en%20los%20servicios%20de%20Prizma"
+            href="https://wa.me/573246780067?text=Hola,%20estoy%20interesado%20en%20los%20servicios%20de%20Hermes%20Prizma"
             target="_blank"
             rel="noreferrer"
             className="px-4 py-2"
@@ -187,7 +187,7 @@ const AboutPage: React.FC = () => {
                   </div>
                   <div>
                     <h5 className="mb-0">Teléfono</h5>
-                    <p className="mb-0">+57 3246780067</p>
+                    <p className="mb-0">+57 324 678 0067</p>
                   </div>
                 </div>
 
@@ -207,7 +207,7 @@ const AboutPage: React.FC = () => {
                   </div>
                   <div>
                     <h5 className="mb-0">Email</h5>
-                    <p className="mb-0">stevenvallejo780@gmail.com</p>
+                    <p className="mb-0">contacto@prisma-enterprise.cloud</p>
                   </div>
                 </div>
 
@@ -271,7 +271,7 @@ const AboutPage: React.FC = () => {
                 <Card.Body className="p-4">
                   <h3 className="mb-4">Envíanos un mensaje</h3>
                   <Form
-                    action="https://formsubmit.co/stevenvallejo780@gmail.com"
+                    action="https://formsubmit.co/contacto@prisma-enterprise.cloud"
                     method="POST"
                     onSubmit={handleContactSubmit}
                     noValidate
@@ -338,12 +338,12 @@ const AboutPage: React.FC = () => {
         }}
       >
         <Container>
-          <p className="mb-0">&copy; {new Date().getFullYear()} Steven Vallejo. Todos los derechos reservados.</p>
+          <p className="mb-0">&copy; {new Date().getFullYear()} Hermes by Prizma. Todos los derechos reservados.</p>
         </Container>
       </footer>
 
       <a
-        href="https://wa.me/573246780067?text=Necesito%20soporte%20de%20Prizma"
+        href="https://wa.me/573246780067?text=Necesito%20soporte%20de%20Hermes%20Prizma"
         target="_blank"
         rel="noreferrer"
         style={{

@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   },
   keywords: ['registro', 'crear cuenta', 'ecommerce', 'Hermes'],
   alternates: {
-    canonical: 'https://hermes.com.co/register',
+    canonical: 'https://prizma-hermes.vercel.app/graf/register',
   }
 };
 

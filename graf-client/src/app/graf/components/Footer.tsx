@@ -12,16 +12,16 @@ const DefaultFooter: React.FC = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
   const mobileAccordionButton = { background: 'none', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', padding: '0', color: 'inherit', fontWeight: 600, cursor: 'pointer' };
-  const sectionTitleStyle = { borderBottom: '2px solid var(--accent-color)', paddingBottom: '8px', marginBottom: '15px', fontWeight: 600 };
+  const sectionTitleStyle = { borderBottom: '2px solid var(--secondary-color)', paddingBottom: '8px', marginBottom: '15px', fontWeight: 600 };
   const socialLinkStyle = { color: 'var(--link-color)', textDecoration: 'none', transition: 'color 0.3s ease', display: 'flex', alignItems: 'center', marginBottom: '10px' };
   const iconStyle = { marginRight: '10px', fontSize: '18px' };
-  const defaultName = 'Prizma';
+  const defaultName = 'Hermes';
   const defaultLocation = 'Colombia';
-  const defaultPhone = '57 3246780067';
-  const defaultEmail = 'stevenvallejo780@gmail.com';
-  const defaultSlogan = 'Prizma: el prizma de tu negocio. Tecnología al servicio de tu crecimiento';
-  const defaultDescription = 'Enfócate hacer lo que te gusta, que los sistemas se encarguen del resto';
-  const defaultSocialNetworks = [{ name: 'Website', url: 'https://www.prizma.co/' }];
+  const defaultPhone = '+57 3246780067';
+  const defaultEmail = 'contacto@prisma-enterprise.cloud';
+  const defaultSlogan = 'Hermes: tu ecommerce profesional al alcance de todos. Tecnología al servicio de tu crecimiento';
+  const defaultDescription = 'Enfócate a hacer lo que te gusta, que los sistemas se encarguen del resto';
+  const defaultSocialNetworks = [{ name: 'Website', url: 'https://prizma-hermes.vercel.app/' }];
   const CustomToggle = ({ children, eventKey }: { children: React.ReactNode; eventKey: string }) => {
     const [isOpen, setIsOpen] = useState(false);
     const decoratedOnClick = useAccordionButton(eventKey, () => setIsOpen(!isOpen));
@@ -51,7 +51,7 @@ const DefaultFooter: React.FC = () => {
               </a>
             </li>
             <li className="mb-2">
-              <a href={`tel:${defaultPhone}`} style={socialLinkStyle}>
+              <a href="tel:+573246780067" style={socialLinkStyle}>
                 <FaPhone style={iconStyle} />
                 {defaultPhone}
               </a>
@@ -86,7 +86,7 @@ const DefaultFooter: React.FC = () => {
         </Col>
       </Row>
       <Row>
-        <Col className="text-center mt-4 pt-3" style={{ borderTop: '1px solid var(--border-color-light)' }}>
+        <Col className="text-center mt-4 pt-3" style={{ borderTop: '1px solid var(--border-color)' }}>
           <small>&copy; {new Date().getFullYear()} {defaultName}. Todos los derechos reservados.</small>
         </Col>
       </Row>
@@ -114,7 +114,7 @@ const DefaultFooter: React.FC = () => {
                       </a>
                     </li>
                     <li className="mb-2">
-                      <a href={`tel:${defaultPhone}`} style={socialLinkStyle}>
+                      <a href="tel:+573246780067" style={socialLinkStyle}>
                         <FaPhone style={iconStyle} />
                         {defaultPhone}
                       </a>
@@ -159,7 +159,7 @@ const DefaultFooter: React.FC = () => {
         </Col>
       </Row>
       <Row>
-        <Col className="text-center mt-4 pt-3" style={{ borderTop: '1px solid var(--border-color-light)' }}>
+        <Col className="text-center mt-4 pt-3" style={{ borderTop: '1px solid var(--border-color)' }}>
           <small>&copy; {new Date().getFullYear()} {defaultName}. Todos los derechos reservados.</small>
         </Col>
       </Row>

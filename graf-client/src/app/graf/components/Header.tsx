@@ -1,7 +1,9 @@
 'use client';
 import React, { memo, useCallback } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Navbar, Nav, Container, Dropdown, Image } from 'react-bootstrap';
+import { Navbar, Nav, Container, Dropdown } from 'react-bootstrap';
+import NextImage from 'next/image';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { logout } from '@/redux/auth';
@@ -12,68 +14,64 @@ const Header: React.FC = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
-  const defaultTitle = "Hermes";
-  const defaultLogo = "/images/logo-hermes.png";
+  const defaultTitle = 'Hermes';
+  const defaultLogo = '/images/logo-hermes.png';
   const routesList = [
-    { name: 'Inicio', path: '/graf', icon: <FaHome /> },
-    { name: 'Nosotros', path: '/graf/about', icon: <FaInfoCircle /> }
+    { name: 'Inicio', path: '/', icon: <FaHome aria-hidden="true" /> },
+    { name: 'Nosotros', path: '/graf/about', icon: <FaInfoCircle aria-hidden="true" /> },
   ];
   const handleLogout = useCallback(async () => {
     dispatch(logout());
-    router.push('/login');
+    router.push('/graf/login');
   }, [dispatch, router]);
   const handleLoginRedirect = useCallback(() => {
-    router.push('/login');
-  }, [router]);
-  const handleLogoClick = useCallback(() => {
-    router.push('/');
-  }, [router]);
-  const handleRoute = useCallback((path: string) => {
-    router.push(path);
+    router.push('/graf/login');
   }, [router]);
 
   return (
     <Navbar
       className="navbar-dark"
       fixed="top"
-      bg="secondary"
       data-bs-theme="dark"
-      style={{ width: '100%', top: 0, zIndex: 1000 }}
+      style={{
+        width: '100%',
+        top: 0,
+        zIndex: 1000,
+        backgroundColor: 'var(--secondary-color)',
+      }}
     >
       <Container>
-        <div
-          onClick={handleLogoClick}
-          style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', gap: '0.5rem' }}
-        >
-          <Image src={defaultLogo} alt="Logo"  width={50} height={50} />
-          <span style={{ color: 'var(--white-color)', fontSize: '1.3rem', fontWeight:'800' }}>{defaultTitle}</span>
-        </div>
+        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none' }}>
+          <NextImage src={defaultLogo} alt="Hermes logo" width={40} height={40} style={{ objectFit: 'contain' }} />
+          <span style={{ color: 'var(--white-color)', fontSize: '1.3rem', fontWeight: 800 }}>{defaultTitle}</span>
+        </Link>
         <Nav>
           {routesList.map((route, index) => (
-            <Nav.Link
+            <Link
               key={index}
-              onClick={() => handleRoute(route.path)}
-              style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem' }}
+              href={route.path}
+              style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem', padding: '0.5rem 0.75rem', textDecoration: 'none', color: 'var(--white-color)' }}
             >
-              <span style={{ color: 'var(--white-color)' }}>{route.icon} {route.name}</span>
-            </Nav.Link>
+              {route.icon} {route.name}
+            </Link>
           ))}
           <Dropdown align="end">
             <Dropdown.Toggle
               as="span"
-              style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', fontSize: '1.3rem', lineHeight: 1, marginTop: '0.5rem', marginLeft: '0.5rem', color: 'var(--white-color)' }}            >
-              <FaUserCircle />
+              style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', fontSize: '1.3rem', lineHeight: 1, marginTop: '0.5rem', marginLeft: '0.5rem', color: 'var(--white-color)' }}
+            >
+              <FaUserCircle aria-label="Cuenta de usuario" />
             </Dropdown.Toggle>
             <Dropdown.Menu
               style={{ backgroundColor: 'var(--primary-color)', color: 'var(--white-color)' }}
             >
               {isLoggedIn ? (
                 <Dropdown.Item onClick={handleLogout}>
-                  <FaSignOutAlt /> Cerrar sesión
+                  <FaSignOutAlt aria-hidden="true" /> Cerrar sesión
                 </Dropdown.Item>
               ) : (
                 <Dropdown.Item onClick={handleLoginRedirect}>
-                  <FaSignInAlt /> Iniciar sesión
+                  <FaSignInAlt aria-hidden="true" /> Iniciar sesión
                 </Dropdown.Item>
               )}
             </Dropdown.Menu>

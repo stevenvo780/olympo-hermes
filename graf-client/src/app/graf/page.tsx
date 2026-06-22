@@ -4,7 +4,7 @@ import ClientHome from './home/ClientHome';
 
 export const dynamic = 'force-dynamic';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hermes.prisma-enterprise.cloud';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://prizma-hermes.vercel.app';
 
 export const metadata: Metadata = {
   title: 'Hermes | Crea tu tienda online con Prizma',
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     locale: 'es_ES',
     images: [
       {
-        url: '/images/og-image.jpg',
+        url: `${siteUrl}/images/og-image.jpg`,
         width: 1200,
         height: 630,
         alt: 'Hermes by Prizma - Tu plataforma e-commerce',
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     title: 'Hermes | Crea tu tienda online con Prizma',
     description:
       'Crea tu tienda online con Hermes de Prizma: alta personalización, alto rendimiento y soporte profesional.',
-    images: [{ url: '/images/twitter-og.jpg', width: 1200, height: 630 }],
+    images: [{ url: `${siteUrl}/images/twitter-og.jpg`, width: 1200, height: 630 }],
   },
   alternates: {
     canonical: siteUrl,

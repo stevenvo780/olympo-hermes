@@ -1,38 +1,40 @@
 import { Metadata } from 'next';
-import { redirect } from 'next/navigation';
+import React from 'react';
+import ClientLayout from './graf/components/ClientLayout';
+import ClientHome from './graf/home/ClientHome';
 
 export const dynamic = 'force-dynamic';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hermes.prisma-enterprise.cloud';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://prizma-hermes.vercel.app';
 
 export const metadata: Metadata = {
-  title: 'Hermes | E-commerce Prizma',
+  title: 'Hermes | Crea tu tienda online con Prizma',
   description:
-    'Hermes es la plataforma e-commerce de Prizma: minimalista, altamente funcional y fácil de gestionar.',
+    'Hermes es la plataforma e-commerce de Prizma: crea tu tienda online con alta personalización, rendimiento excepcional y a un costo accesible.',
   keywords: ['ecommerce', 'tienda online', 'Hermes', 'Prizma', 'productos', 'pedidos'],
   openGraph: {
-    title: 'Hermes | E-commerce Prizma',
+    title: 'Hermes | Crea tu tienda online con Prizma',
     description:
-      'Plataforma e-commerce minimalista y altamente funcional para gestionar tus pedidos online.',
+      'Crea tu tienda online con Hermes de Prizma: alta personalización, alto rendimiento y soporte profesional.',
     type: 'website',
     url: siteUrl,
     siteName: 'Hermes by Prizma',
     locale: 'es_ES',
     images: [
       {
-        url: '/images/og-image.jpg',
+        url: `${siteUrl}/images/og-image.jpg`,
         width: 1200,
         height: 630,
-        alt: 'Hermes by Prizma',
+        alt: 'Hermes by Prizma - Tu plataforma e-commerce',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Hermes | E-commerce Prizma',
+    title: 'Hermes | Crea tu tienda online con Prizma',
     description:
-      'Plataforma e-commerce minimalista y funcional para gestionar tus pedidos online.',
-    images: [{ url: '/images/twitter-og.jpg', width: 1200, height: 630 }],
+      'Crea tu tienda online con Hermes de Prizma: alta personalización, alto rendimiento y soporte profesional.',
+    images: [{ url: `${siteUrl}/images/twitter-og.jpg`, width: 1200, height: 630 }],
   },
   alternates: {
     canonical: siteUrl,
@@ -54,5 +56,9 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  return redirect('/graf');
+  return (
+    <ClientLayout>
+      <ClientHome />
+    </ClientLayout>
+  );
 }

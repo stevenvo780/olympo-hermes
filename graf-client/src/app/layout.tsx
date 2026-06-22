@@ -10,7 +10,7 @@ import React from 'react';
 // Disable prerendering for pages that depend on Firebase and env vars
 export const dynamic = 'force-dynamic';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hermes.prisma-enterprise.cloud';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://prizma-hermes.vercel.app';
 
 export const metadata = {
   title: {
@@ -19,6 +19,9 @@ export const metadata = {
   description:
     'Hermes es la plataforma e-commerce de Prizma: minimalista, altamente funcional y fácil de gestionar.',
   metadataBase: new URL(siteUrl),
+  alternates: {
+    canonical: siteUrl,
+  },
   openGraph: {
     title: 'Hermes | E-commerce Prizma',
     description:
@@ -29,7 +32,7 @@ export const metadata = {
     type: 'website',
     images: [
       {
-        url: '/images/og-image.jpg',
+        url: `${siteUrl}/images/og-image.jpg`,
         width: 1200,
         height: 630,
         alt: 'Hermes by Prizma',
@@ -41,7 +44,7 @@ export const metadata = {
     title: 'Hermes | E-commerce Prizma',
     description:
       'Plataforma e-commerce minimalista y funcional para gestionar tus pedidos online.',
-    images: [{ url: '/images/twitter-og.jpg', width: 1200, height: 630, alt: 'Hermes by Prizma' }]
+    images: [{ url: `${siteUrl}/images/twitter-og.jpg`, width: 1200, height: 630, alt: 'Hermes by Prizma' }]
   },
   icons: {
     icon: [
@@ -65,7 +68,7 @@ const defaultStructuredData = {
   '@type': 'Organization',
   name: 'Hermes by Prizma',
   url: siteUrl,
-  logo: `${siteUrl}/images/logo-hermes.png`,
+  logo: `${siteUrl}/images/hermes-logo-512.png`,
   description:
     'Plataforma e-commerce minimalista y altamente funcional para gestionar pedidos de manera rápida y sencilla.',
   sameAs: [

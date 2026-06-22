@@ -19,7 +19,7 @@ async function getStoreCached(storeId: string): Promise<Store | null> {
   }
 }
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.hermes.com.co/';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://prizma-hermes.vercel.app';
 
 export async function generateMetadata(
   { params }: { params: Promise<{ storeId: string }> }

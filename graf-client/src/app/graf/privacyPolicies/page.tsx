@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   },
   keywords: ['privacidad', 'datos personales', 'aviso legal', 'Hermes'],
   alternates: {
-    canonical: 'https://hermes.com.co/privacy-notice',
+    canonical: 'https://prizma-hermes.vercel.app/graf/privacyPolicies',
   }
 };
 

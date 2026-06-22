@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   },
   twitter: { images: [] },
   keywords: ['registro', 'crear cuenta', 'ecommerce', 'Hermes'],
-  alternates: { canonical: 'https://hermes.com.co/register' },
+  alternates: { canonical: 'https://prizma-hermes.vercel.app/register' },
 };
 
 interface StoreParams {

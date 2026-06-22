@@ -1,6 +1,5 @@
 'use client';
 import React, { memo } from 'react';
-import { BrowserRouter } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 import InfoAlert from '@/components/InfoAlert';
@@ -27,7 +26,7 @@ const ClientLayout: React.FC<ClientLayoutProps> = ({ children }) => {
   applyPalette(defaultPalette);
 
   return (
-    <BrowserRouter>
+    <>
       <Header />
       <div style={{
         marginTop: '4.1rem',
@@ -35,7 +34,7 @@ const ClientLayout: React.FC<ClientLayoutProps> = ({ children }) => {
       <main className="main-content">{children}</main>
       <InfoAlert />
       <Footer />
-    </BrowserRouter>
+    </>
   );
 };
 

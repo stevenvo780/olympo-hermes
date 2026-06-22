@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   twitter: { images: [] },
   keywords: ['pedidos', 'ordenes', 'gestión', 'comercio', 'tienda'],
   alternates: {
-    canonical: 'https://hermes.com.co/orders',
+    canonical: 'https://prizma-hermes.vercel.app/orders',
   },
 };
 

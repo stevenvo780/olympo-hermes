@@ -127,7 +127,7 @@ const formatPrice = (value: number): string => {
 
 const PricingSection: React.FC = () => {
   const [isAnnual, setIsAnnual] = useState(false);
-  const adminUrl = process.env.NEXT_PUBLIC_API_URL || 'https://prizma-hermes-kjopuery2a-uc.a.run.app';
+  const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL || 'https://prizma-hermes-kjopuery2a-uc.a.run.app';
 
   return (
     <section className="pricing-section">
@@ -233,7 +233,7 @@ const PricingSection: React.FC = () => {
                     }}
                   >
                     <div className="mb-2" style={{ opacity: 0.9 }}>{plan.icon}</div>
-                    <h4 className="fw-bold mb-1">{plan.name}</h4>
+                    <h3 className="fw-bold mb-1" style={{ fontSize: '1.25rem' }}>{plan.name}</h3>
                     <small style={{ opacity: 0.85 }}>{plan.description}</small>
                   </div>
 
