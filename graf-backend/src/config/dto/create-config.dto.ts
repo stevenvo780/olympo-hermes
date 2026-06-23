@@ -326,7 +326,7 @@ export class CreateConfigDto {
     description: 'Plugin configurations (enabled flag + API key)',
     example: {
       talanton: { enabled: true, apiKey: 'KEY123' },
-      meraVuelta: { enabled: false, apiKey: '' },
+      talaria: { enabled: false, apiKey: '' },
     },
   })
   plugins?: Record<string, { enabled: boolean; apiKey: string }>;

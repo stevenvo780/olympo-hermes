@@ -154,7 +154,7 @@ export class ConfigService {
       nous: { enabled: false, apiKey: '' },
       sigo: { enabled: false, apiKey: '' },
       talanton: { enabled: false, apiKey: '' },
-      meraVuelta: { enabled: false, apiKey: '' },
+      talaria: { enabled: false, apiKey: '' },
     };
     defaultConfig.productViewConfig = {
       defaultView: RecommendedCardType.CAROUSEL,
@@ -179,7 +179,7 @@ export class ConfigService {
       nous: { enabled: false, apiKey: '' },
       sigo: { enabled: false, apiKey: '' },
       talanton: { enabled: false, apiKey: '' },
-      meraVuelta: { enabled: false, apiKey: '' },
+      talaria: { enabled: false, apiKey: '' },
     };
   }
 

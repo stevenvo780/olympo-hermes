@@ -42,7 +42,7 @@ const daysOfWeek = [
 type DefaultPlugins = Record<string, { enabled: boolean; apiKey: string }>;
 const defaultPlugins: DefaultPlugins = {
 	talanton: { enabled: false, apiKey: '' },
-	meraVuelta: { enabled: false, apiKey: '' },
+	talaria: { enabled: false, apiKey: '' },
 	nous: { enabled: false, apiKey: '' },
 };
 

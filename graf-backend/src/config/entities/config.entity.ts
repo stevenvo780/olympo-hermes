@@ -263,7 +263,7 @@ export class Config extends SharedProp {
     description: 'Plugin configurations (enabled flag + API key)',
     example: {
       talanton: { enabled: false, apiKey: '' },
-      meraVuelta: { enabled: false, apiKey: '' },
+      talaria: { enabled: false, apiKey: '' },
     },
   })
   plugins: Record<string, { enabled: boolean; apiKey: string }>;
